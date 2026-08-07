@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ShoppingCart } from "lucide-react";
+import CartBadge from "@/components/ui/CartBadge";
 
 export default function Navbar() {
   return (
@@ -17,10 +17,7 @@ export default function Navbar() {
             </div>
           </div>
           <div className="flex items-center gap-4">
-            <Link href="/cart" className="flex items-center gap-2 hover:text-accent transition-colors">
-              <ShoppingCart size={20} />
-              <span className="bg-accent text-secondary text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
-            </Link>
+            <CartBadge />
             <Link href="/login" className="hidden md:inline-flex bg-secondary text-primary hover:bg-gray-100 px-4 py-2 rounded-md text-sm font-medium transition-colors">
               Sign In
             </Link>

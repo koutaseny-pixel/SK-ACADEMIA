@@ -1,22 +1,94 @@
+"use client";
+
 import Link from "next/link";
-import { Lock } from "lucide-react";
+import { Lock, ArrowRight, CheckCircle2 } from "lucide-react";
+import { useCartStore } from "@/store/cart";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Checkout() {
-  const subtotal = 8500;
-  
+  const { items, getTotal, clearCart } = useCartStore();
+  const [mounted, setMounted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const router = useRouter();
+
+  // Avoid hydration mismatch
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
+
+  const subtotal = getTotal();
+
+  const handleCheckout = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    
+    // Simulate API call to save order in Supabase
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    
+    // In a real app, we'd save to the `orders` table here
+    clearCart();
+    setSuccess(true);
+    setIsSubmitting(false);
+  };
+
+  if (success) {
+    return (
+      <div className="max-w-3xl mx-auto px-4 py-24 text-center">
+        <CheckCircle2 size={80} className="text-green-500 mx-auto mb-6" />
+        <h1 className="text-4xl font-bold text-gray-900 mb-4">Commande Confirmée !</h1>
+        <p className="text-xl text-gray-600 mb-8">
+          Votre commande a bien été enregistrée. Si vous avez choisi le paiement par Mobile Money, veuillez transférer le montant total au numéro suivant : <strong className="text-gray-900">77 000 00 00</strong>.
+        </p>
+        <Link href="/catalog" className="bg-primary hover:bg-primary-hover text-white font-bold py-3 px-8 rounded-lg transition-colors inline-block">
+          Retour au Catalogue
+        </Link>
+      </div>
+    );
+  }
+
+  if (items.length === 0) {
+    return (
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full text-center">
+        <h1 className="text-3xl font-bold text-gray-900 mb-8">Checkout</h1>
+        <p className="text-xl text-gray-600 mb-6">Your cart is empty.</p>
+        <Link href="/catalog" className="text-primary hover:underline font-bold">
+          Retour au Catalogue
+        </Link>
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
       <h1 className="text-3xl font-bold text-gray-900 mb-8">Checkout</h1>
       
-      <div className="flex flex-col lg:flex-row gap-8">
+      <form onSubmit={handleCheckout} className="flex flex-col lg:flex-row gap-8">
         {/* Checkout Form */}
         <div className="lg:w-2/3">
           <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 mb-6">
             <h2 className="text-xl font-bold text-gray-900 mb-4">Contact Information</h2>
             <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Prénom</label>
+                  <input required type="text" className="w-full border border-gray-300 rounded-md p-3 outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="Votre prénom" />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Nom</label>
+                  <input required type="text" className="w-full border border-gray-300 rounded-md p-3 outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="Votre nom" />
+                </div>
+              </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
-                <input type="email" className="w-full border border-gray-300 rounded-md p-3 outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="you@example.com" />
+                <input required type="email" className="w-full border border-gray-300 rounded-md p-3 outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="you@example.com" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Numéro de téléphone</label>
+                <input required type="tel" className="w-full border border-gray-300 rounded-md p-3 outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="ex: 77 000 00 00" />
               </div>
             </div>
           </div>
@@ -24,23 +96,17 @@ export default function Checkout() {
           <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
             <h2 className="text-xl font-bold text-gray-900 mb-4">Payment Method</h2>
             <div className="space-y-4">
-              <div className="border border-gray-200 rounded-lg p-4">
+              <div className="border border-primary bg-primary/5 rounded-lg p-4">
                 <label className="flex items-center gap-3 cursor-pointer">
                   <input type="radio" name="payment" className="text-primary focus:ring-primary h-4 w-4" defaultChecked />
-                  <span className="font-medium">Mobile Money (Wave, Orange Money)</span>
-                </label>
-              </div>
-              <div className="border border-gray-200 rounded-lg p-4">
-                <label className="flex items-center gap-3 cursor-pointer">
-                  <input type="radio" name="payment" className="text-primary focus:ring-primary h-4 w-4" />
-                  <span className="font-medium">Credit Card (Stripe)</span>
+                  <span className="font-medium">Mobile Money (Wave, Orange Money, Free Money)</span>
                 </label>
               </div>
             </div>
             
             <div className="mt-8 flex items-center gap-2 text-sm text-gray-500">
               <Lock size={16} />
-              <span>Payments are secure and encrypted.</span>
+              <span>Payments are processed securely.</span>
             </div>
           </div>
         </div>
@@ -50,15 +116,13 @@ export default function Checkout() {
           <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 sticky top-24">
             <h3 className="text-xl font-bold text-gray-900 mb-6">Order Summary</h3>
             
-            <div className="flex flex-col gap-4 mb-6">
-              <div className="flex justify-between text-sm">
-                <span className="text-gray-600">Complete Math Guide (x1)</span>
-                <span className="font-medium">5 000 FCFA</span>
-              </div>
-              <div className="flex justify-between text-sm">
-                <span className="text-gray-600">Physics Past Papers (x1)</span>
-                <span className="font-medium">3 500 FCFA</span>
-              </div>
+            <div className="flex flex-col gap-4 mb-6 max-h-64 overflow-y-auto pr-2">
+              {items.map(item => (
+                <div key={item.id} className="flex justify-between text-sm">
+                  <span className="text-gray-600 line-clamp-1 flex-1 pr-4">{item.name} (x{item.quantity})</span>
+                  <span className="font-medium whitespace-nowrap">{(item.price * item.quantity).toLocaleString("fr-SN", { style: "currency", currency: "XOF" })}</span>
+                </div>
+              ))}
             </div>
             
             <div className="border-t border-gray-100 pt-4 space-y-4 mb-6">
@@ -68,12 +132,16 @@ export default function Checkout() {
               </div>
             </div>
             
-            <Link href="/success" className="w-full bg-primary hover:bg-primary-hover text-white font-bold py-4 px-6 rounded-lg transition-colors flex items-center justify-center">
-              Complete Order
-            </Link>
+            <button 
+              type="submit" 
+              disabled={isSubmitting}
+              className="w-full bg-primary hover:bg-primary-hover text-white font-bold py-4 px-6 rounded-lg transition-colors flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isSubmitting ? "Traitement..." : "Confirmer la commande"}
+            </button>
           </div>
         </div>
-      </div>
+      </form>
     </div>
   );
 }
