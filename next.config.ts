@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   output: "export",
-  basePath: "/SK-ACADEMIA-WEB",
+  basePath: "/SK-ACADEMIA",
   images: {
     unoptimized: true,
   },
