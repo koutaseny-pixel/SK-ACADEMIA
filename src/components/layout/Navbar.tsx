@@ -21,7 +21,7 @@ export default function Navbar() {
               <ShoppingCart size={20} />
               <span className="bg-accent text-secondary text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
             </Link>
-            <Link href="/dashboard" className="hidden md:inline-flex bg-secondary text-primary hover:bg-gray-100 px-4 py-2 rounded-md text-sm font-medium transition-colors">
+            <Link href="/login" className="hidden md:inline-flex bg-secondary text-primary hover:bg-gray-100 px-4 py-2 rounded-md text-sm font-medium transition-colors">
               Sign In
             </Link>
           </div>
