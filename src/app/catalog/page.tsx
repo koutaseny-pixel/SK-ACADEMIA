@@ -1,14 +1,18 @@
 import ProductCard from "@/components/ui/ProductCard";
+import { createClient } from "@/lib/supabase/server";
 
-export default function Catalog() {
-  const products = [
-    { id: "1", title: "Complete Math Guide for BAC 2026", category: "Study Guide", price: 5000, imageUrl: "" },
-    { id: "2", title: "Physics Past Papers (2015-2025)", category: "Past Papers", price: 3500, imageUrl: "" },
-    { id: "3", title: "Mastering Chemistry PDF Course", category: "Ebook", price: 7000, imageUrl: "" },
-    { id: "4", title: "Intensive Philosophy Training", category: "Online Course", price: 15000, imageUrl: "" },
-    { id: "5", title: "Biology Revision Notes", category: "Study Guide", price: 4000, imageUrl: "" },
-    { id: "6", title: "English for University Students", category: "Ebook", price: 3000, imageUrl: "" },
-  ];
+export default async function Catalog() {
+  const supabase = await createClient();
+  const { data: products, error } = await supabase
+    .from('products')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error("Error fetching products:", error);
+  }
+
+  const catalogProducts = products || [];
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
@@ -42,7 +46,7 @@ export default function Catalog() {
         {/* Product Grid */}
         <div className="flex-1">
           <div className="mb-6 flex justify-between items-center">
-            <span className="text-gray-600">Showing {products.length} resources</span>
+            <span className="text-gray-600">Showing {catalogProducts.length} resources</span>
             <select className="border border-gray-300 rounded-md p-2 bg-white outline-none focus:ring-1 focus:ring-primary">
               <option>Sort by: Recommended</option>
               <option>Price: Low to High</option>
@@ -51,7 +55,7 @@ export default function Catalog() {
             </select>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {products.map(product => (
+            {catalogProducts.map((product: any) => (
               <ProductCard key={product.id} product={product} />
             ))}
           </div>
