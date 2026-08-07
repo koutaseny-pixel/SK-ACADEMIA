@@ -3,10 +3,10 @@ import ProductCard from "@/components/ui/ProductCard";
 
 export default function Home() {
   const featuredProducts = [
-    { id: "1", title: "Complete Math Guide for BAC 2026", category: "Study Guide", price: 5000, imageUrl: "" },
-    { id: "2", title: "Physics Past Papers (2015-2025)", category: "Past Papers", price: 3500, imageUrl: "" },
-    { id: "3", title: "Mastering Chemistry PDF Course", category: "Ebook", price: 7000, imageUrl: "" },
-    { id: "4", title: "Intensive Philosophy Training", category: "Online Course", price: 15000, imageUrl: "" },
+    { id: "1", name: "Complete Math Guide for BAC 2026", category: "Study Guide", price: 5000, image_url: "" },
+    { id: "2", name: "Physics Past Papers (2015-2025)", category: "Past Papers", price: 3500, image_url: "" },
+    { id: "3", name: "Mastering Chemistry PDF Course", category: "Ebook", price: 7000, image_url: "" },
+    { id: "4", name: "Intensive Philosophy Training", category: "Online Course", price: 15000, image_url: "" },
   ];
 
   return (
