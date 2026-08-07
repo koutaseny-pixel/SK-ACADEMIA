@@ -1,53 +1,47 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { 
-  signInWithEmailAndPassword, 
-  createUserWithEmailAndPassword,
-  signInWithPopup,
-  RecaptchaVerifier,
-  signInWithPhoneNumber
-} from "firebase/auth";
-import { auth, googleProvider } from "@/lib/firebase/client";
-import { Mail, Phone, Lock, User as UserIcon } from "lucide-react";
+import { useState } from "react";
+import { createClient } from "@/lib/supabase/client";
+import { Mail, Lock } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 export default function Login() {
-  const [method, setMethod] = useState<"email" | "phone">("email");
   const [isLogin, setIsLogin] = useState(true);
   
   // Form states
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [verificationCode, setVerificationCode] = useState("");
-  const [confirmationResult, setConfirmationResult] = useState<any>(null);
   
   // UI states
   const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-
-  // Initialize Recaptcha
-  useEffect(() => {
-    if (typeof window !== 'undefined' && !window.recaptchaVerifier) {
-      window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
-        'size': 'invisible',
-      });
-    }
-  }, []);
+  
+  const supabase = createClient();
 
   const handleEmailAuth = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError("");
+    setMessage("");
+    
     try {
       if (isLogin) {
-        await signInWithEmailAndPassword(auth, email, password);
+        const { error } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
+        if (error) throw error;
+        router.push("/dashboard");
       } else {
-        await createUserWithEmailAndPassword(auth, email, password);
+        const { error } = await supabase.auth.signUp({
+          email,
+          password,
+        });
+        if (error) throw error;
+        setMessage("Check your email for the confirmation link!");
       }
-      router.push("/dashboard");
     } catch (err: any) {
       setError(err.message || "Failed to authenticate.");
     } finally {
@@ -59,40 +53,15 @@ export default function Login() {
     setLoading(true);
     setError("");
     try {
-      await signInWithPopup(auth, googleProvider);
-      router.push("/dashboard");
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${window.location.origin}/auth/callback`,
+        }
+      });
+      if (error) throw error;
     } catch (err: any) {
       setError(err.message || "Google authentication failed.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handlePhoneAuth = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setError("");
-    try {
-      const appVerifier = window.recaptchaVerifier;
-      const result = await signInWithPhoneNumber(auth, phoneNumber, appVerifier);
-      setConfirmationResult(result);
-    } catch (err: any) {
-      setError(err.message || "Failed to send SMS.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const verifyPhoneCode = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setError("");
-    try {
-      await confirmationResult.confirm(verificationCode);
-      router.push("/dashboard");
-    } catch (err: any) {
-      setError(err.message || "Invalid verification code.");
-    } finally {
       setLoading(false);
     }
   };
@@ -104,137 +73,72 @@ export default function Login() {
           {isLogin ? "Welcome Back" : "Create an Account"}
         </h1>
 
-        {/* Auth Method Toggle */}
-        <div className="flex bg-gray-100 p-1 rounded-lg mb-6">
-          <button 
-            onClick={() => { setMethod("email"); setConfirmationResult(null); }}
-            className={`flex-1 py-2 text-sm font-medium rounded-md transition-colors ${method === "email" ? "bg-white shadow-sm text-gray-900" : "text-gray-500"}`}
-          >
-            Email
-          </button>
-          <button 
-            onClick={() => setMethod("phone")}
-            className={`flex-1 py-2 text-sm font-medium rounded-md transition-colors ${method === "phone" ? "bg-white shadow-sm text-gray-900" : "text-gray-500"}`}
-          >
-            Phone
-          </button>
-        </div>
-
         {error && (
           <div className="bg-red-50 text-red-600 p-3 rounded-md text-sm mb-4">
             {error}
           </div>
         )}
-
-        {method === "email" ? (
-          <form onSubmit={handleEmailAuth} className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
-                  <Mail size={18} />
-                </div>
-                <input 
-                  type="email" 
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full border border-gray-300 rounded-md py-2 pl-10 pr-3 outline-none focus:ring-2 focus:ring-primary focus:border-transparent" 
-                  placeholder="you@example.com" 
-                  required
-                />
-              </div>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
-                  <Lock size={18} />
-                </div>
-                <input 
-                  type="password" 
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="w-full border border-gray-300 rounded-md py-2 pl-10 pr-3 outline-none focus:ring-2 focus:ring-primary focus:border-transparent" 
-                  placeholder="••••••••" 
-                  required
-                />
-              </div>
-            </div>
-            <button 
-              type="submit" 
-              disabled={loading}
-              className="w-full bg-primary hover:bg-primary-hover text-white font-bold py-3 rounded-lg transition-colors disabled:opacity-50"
-            >
-              {loading ? "Please wait..." : (isLogin ? "Sign In" : "Sign Up")}
-            </button>
-            
-            <div className="text-center text-sm mt-4">
-              <span className="text-gray-500">
-                {isLogin ? "Don't have an account?" : "Already have an account?"}
-              </span>
-              <button 
-                type="button" 
-                onClick={() => setIsLogin(!isLogin)}
-                className="ml-2 text-primary font-bold hover:underline"
-              >
-                {isLogin ? "Sign Up" : "Sign In"}
-              </button>
-            </div>
-          </form>
-        ) : (
-          <div className="space-y-4">
-            {!confirmationResult ? (
-              <form onSubmit={handlePhoneAuth} className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
-                  <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
-                      <Phone size={18} />
-                    </div>
-                    <input 
-                      type="tel" 
-                      value={phoneNumber}
-                      onChange={(e) => setPhoneNumber(e.target.value)}
-                      className="w-full border border-gray-300 rounded-md py-2 pl-10 pr-3 outline-none focus:ring-2 focus:ring-primary focus:border-transparent" 
-                      placeholder="+221770000000" 
-                      required
-                    />
-                  </div>
-                  <p className="text-xs text-gray-500 mt-1">Include country code (e.g., +221)</p>
-                </div>
-                <div id="recaptcha-container"></div>
-                <button 
-                  type="submit" 
-                  disabled={loading}
-                  className="w-full bg-primary hover:bg-primary-hover text-white font-bold py-3 rounded-lg transition-colors disabled:opacity-50"
-                >
-                  {loading ? "Sending SMS..." : "Send SMS Code"}
-                </button>
-              </form>
-            ) : (
-              <form onSubmit={verifyPhoneCode} className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Verification Code</label>
-                  <input 
-                    type="text" 
-                    value={verificationCode}
-                    onChange={(e) => setVerificationCode(e.target.value)}
-                    className="w-full border border-gray-300 rounded-md py-2 px-3 outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-center tracking-widest text-lg" 
-                    placeholder="123456" 
-                    required
-                  />
-                </div>
-                <button 
-                  type="submit" 
-                  disabled={loading}
-                  className="w-full bg-primary hover:bg-primary-hover text-white font-bold py-3 rounded-lg transition-colors disabled:opacity-50"
-                >
-                  {loading ? "Verifying..." : "Verify & Sign In"}
-                </button>
-              </form>
-            )}
+        
+        {message && (
+          <div className="bg-green-50 text-green-600 p-3 rounded-md text-sm mb-4">
+            {message}
           </div>
         )}
+
+        <form onSubmit={handleEmailAuth} className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
+                <Mail size={18} />
+              </div>
+              <input 
+                type="email" 
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full border border-gray-300 rounded-md py-2 pl-10 pr-3 outline-none focus:ring-2 focus:ring-primary focus:border-transparent" 
+                placeholder="you@example.com" 
+                required
+              />
+            </div>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
+                <Lock size={18} />
+              </div>
+              <input 
+                type="password" 
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full border border-gray-300 rounded-md py-2 pl-10 pr-3 outline-none focus:ring-2 focus:ring-primary focus:border-transparent" 
+                placeholder="••••••••" 
+                required
+              />
+            </div>
+          </div>
+          <button 
+            type="submit" 
+            disabled={loading}
+            className="w-full bg-primary hover:bg-primary-hover text-white font-bold py-3 rounded-lg transition-colors disabled:opacity-50"
+          >
+            {loading ? "Please wait..." : (isLogin ? "Sign In" : "Sign Up")}
+          </button>
+          
+          <div className="text-center text-sm mt-4">
+            <span className="text-gray-500">
+              {isLogin ? "Don't have an account?" : "Already have an account?"}
+            </span>
+            <button 
+              type="button" 
+              onClick={() => { setIsLogin(!isLogin); setError(""); setMessage(""); }}
+              className="ml-2 text-primary font-bold hover:underline"
+            >
+              {isLogin ? "Sign Up" : "Sign In"}
+            </button>
+          </div>
+        </form>
 
         {/* Divider */}
         <div className="relative my-6">
@@ -263,10 +167,4 @@ export default function Login() {
       </div>
     </div>
   );
-}
-
-declare global {
-  interface Window {
-    recaptchaVerifier: any;
-  }
 }
