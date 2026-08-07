@@ -1,0 +1,18 @@
+{
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "auth": {
+    "authorizedDomains": ["localhost", "sk-academia-70457.firebaseapp.com"],
+    "providers": {
+      "anonymous": false,
+      "emailPassword": true,
+      "googleSignIn": {
+        "oAuthBrandDisplayName": "SK Academia",
+        "supportEmail": "support@skacademia.sn"
+      },
+      "phone": true
+    }
+  }
+}
