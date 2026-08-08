@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Mail, Phone, MapPin, Facebook, Instagram, Youtube } from "lucide-react";
+import { Mail, Phone, MapPin, Globe, MessageCircle, Video } from "lucide-react";
 
 export default function Footer() {
   return (
@@ -13,9 +13,9 @@ export default function Footer() {
               Votre clé pour réussir les concours au Sénégal. Fascicules numériques, cours vidéo, et formations en informatique de qualité pour exceller.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="w-8 h-8 rounded bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"><Facebook size={16} /></a>
-              <a href="#" className="w-8 h-8 rounded bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"><Instagram size={16} /></a>
-              <a href="#" className="w-8 h-8 rounded bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"><Youtube size={16} /></a>
+              <a href="#" className="w-8 h-8 rounded bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"><Globe size={16} /></a>
+              <a href="#" className="w-8 h-8 rounded bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"><MessageCircle size={16} /></a>
+              <a href="#" className="w-8 h-8 rounded bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"><Video size={16} /></a>
             </div>
           </div>
 
