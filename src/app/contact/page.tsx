@@ -1,65 +1,83 @@
-import { MapPin, Phone, Mail } from "lucide-react";
+import { MapPin, Phone, Mail, Send } from "lucide-react";
 
 export default function Contact() {
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 w-full flex flex-col md:flex-row gap-12">
-      <div className="md:w-1/2">
-        <h1 className="text-4xl font-extrabold text-gray-900 mb-6">Get in Touch</h1>
-        <p className="text-lg text-gray-600 mb-8">
-          Have questions about our resources or need support with your downloads? We're here to help.
-        </p>
+    <div className="min-h-screen bg-gray-50 py-16">
+      <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
         
-        <div className="space-y-6">
-          <div className="flex items-start gap-4">
-            <div className="bg-primary/10 p-3 rounded-full text-primary">
-              <Mail size={24} />
-            </div>
-            <div>
-              <h3 className="font-bold text-gray-900 text-lg">Email Us</h3>
-              <p className="text-gray-600">support@skacademia.sn</p>
-            </div>
-          </div>
-          <div className="flex items-start gap-4">
-            <div className="bg-primary/10 p-3 rounded-full text-primary">
-              <Phone size={24} />
-            </div>
-            <div>
-              <h3 className="font-bold text-gray-900 text-lg">Call Us</h3>
-              <p className="text-gray-600">+221 77 000 00 00</p>
-            </div>
-          </div>
-          <div className="flex items-start gap-4">
-            <div className="bg-primary/10 p-3 rounded-full text-primary">
-              <MapPin size={24} />
-            </div>
-            <div>
-              <h3 className="font-bold text-gray-900 text-lg">Office</h3>
-              <p className="text-gray-600">Dakar, Senegal</p>
-            </div>
-          </div>
+        <div className="text-center mb-16">
+          <h1 className="text-4xl md:text-5xl font-black text-gray-900 mb-4 tracking-tight">Contactez-nous</h1>
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            Vous avez des questions sur nos fascicules ou besoin d'aide avec un téléchargement ? Notre équipe est là pour vous.
+          </p>
         </div>
-      </div>
 
-      <div className="md:w-1/2">
-        <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-100">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Send a Message</h2>
-          <form className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
-              <input type="text" className="w-full border border-gray-300 rounded-md p-3 outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="Your name" />
+        <div className="flex flex-col lg:flex-row gap-12 lg:gap-16">
+          {/* Informations de contact */}
+          <div className="lg:w-1/3 space-y-8">
+            <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 flex items-start gap-4 hover:shadow-md transition-shadow">
+              <div className="w-14 h-14 bg-orange-50 rounded-2xl flex items-center justify-center text-orange-500 shrink-0">
+                <Mail size={24} />
+              </div>
+              <div>
+                <h3 className="font-bold text-gray-900 text-lg mb-1">Email</h3>
+                <p className="text-gray-600 mb-2">Notre équipe répond sous 24h.</p>
+                <a href="mailto:support@skacademia.sn" className="font-medium text-[#1b508f] hover:underline">support@skacademia.sn</a>
+              </div>
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-              <input type="email" className="w-full border border-gray-300 rounded-md p-3 outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="you@example.com" />
+
+            <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 flex items-start gap-4 hover:shadow-md transition-shadow">
+              <div className="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center text-[#1b508f] shrink-0">
+                <Phone size={24} />
+              </div>
+              <div>
+                <h3 className="font-bold text-gray-900 text-lg mb-1">Téléphone</h3>
+                <p className="text-gray-600 mb-2">Lun - Ven, 9h à 18h.</p>
+                <a href="tel:+221770000000" className="font-medium text-orange-500 hover:underline">+221 77 000 00 00</a>
+              </div>
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Message</label>
-              <textarea rows={5} className="w-full border border-gray-300 rounded-md p-3 outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="How can we help you?"></textarea>
+
+            <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 flex items-start gap-4 hover:shadow-md transition-shadow">
+              <div className="w-14 h-14 bg-green-50 rounded-2xl flex items-center justify-center text-green-500 shrink-0">
+                <MapPin size={24} />
+              </div>
+              <div>
+                <h3 className="font-bold text-gray-900 text-lg mb-1">Siège</h3>
+                <p className="text-gray-600">Dakar, Sénégal<br/>(Sur rendez-vous uniquement)</p>
+              </div>
             </div>
-            <button type="button" className="w-full bg-primary hover:bg-primary-hover text-white font-bold py-4 rounded-lg transition-colors text-lg">
-              Send Message
-            </button>
-          </form>
+          </div>
+
+          {/* Formulaire */}
+          <div className="lg:w-2/3">
+            <div className="bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-gray-100">
+              <h2 className="text-2xl font-black text-gray-900 mb-8">Envoyer un message</h2>
+              <form className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-sm font-bold text-gray-700 mb-2">Nom complet</label>
+                    <input type="text" className="w-full border border-gray-200 bg-gray-50 rounded-xl p-3 outline-none focus:bg-white focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all" placeholder="Votre nom" />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-bold text-gray-700 mb-2">Adresse Email</label>
+                    <input type="email" className="w-full border border-gray-200 bg-gray-50 rounded-xl p-3 outline-none focus:bg-white focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all" placeholder="vous@exemple.com" />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-2">Sujet</label>
+                  <input type="text" className="w-full border border-gray-200 bg-gray-50 rounded-xl p-3 outline-none focus:bg-white focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all" placeholder="Comment pouvons-nous aider ?" />
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-2">Message</label>
+                  <textarea rows={6} className="w-full border border-gray-200 bg-gray-50 rounded-xl p-3 outline-none focus:bg-white focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all resize-none" placeholder="Décrivez votre demande en détail..."></textarea>
+                </div>
+                <button type="button" className="w-full flex items-center justify-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-bold py-4 rounded-xl transition-all shadow-lg shadow-orange-500/20 hover:-translate-y-1 text-lg">
+                  <Send size={20} />
+                  Envoyer le message
+                </button>
+              </form>
+            </div>
+          </div>
         </div>
       </div>
     </div>
