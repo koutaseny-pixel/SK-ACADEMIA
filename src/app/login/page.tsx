@@ -39,11 +39,26 @@ export default function Login() {
     
     try {
       if (mode === "login") {
-        const { error } = await supabase.auth.signInWithPassword({
+        const { data: { user }, error } = await supabase.auth.signInWithPassword({
           email,
           password,
         });
         if (error) throw error;
+        
+        // Check if user is admin for redirection
+        if (user) {
+          const { data: profile } = await supabase
+            .from('profiles')
+            .select('role')
+            .eq('id', user.id)
+            .single();
+            
+          if (profile?.role === 'admin') {
+            router.push("/admin");
+            return;
+          }
+        }
+        
         router.push("/dashboard");
       } else if (mode === "signup") {
         if (password !== confirmPassword) {
