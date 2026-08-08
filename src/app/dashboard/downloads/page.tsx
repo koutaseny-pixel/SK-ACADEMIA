@@ -21,28 +21,33 @@ export default async function DownloadsLibrary() {
     .eq("user_id", user?.id)
     .eq("status", "paid");
 
-  // Flatten the items and generate signed URLs
+  // Fetch download counts for this user
+  const { data: downloadCounts } = await supabase
+    .from("product_downloads")
+    .select("order_item_id")
+    .eq("user_id", user?.id);
+
+  // Group counts by order_item_id
+  const downloadCountMap = (downloadCounts || []).reduce((acc: any, curr: any) => {
+    acc[curr.order_item_id] = (acc[curr.order_item_id] || 0) + 1;
+    return acc;
+  }, {});
+
+  const MAX_DOWNLOADS = 5;
+
+  // Flatten the items and attach download stats
   const rawItems = paidOrders?.flatMap(order => order.order_items) || [];
   
-  const accessibleItems = await Promise.all(
-    rawItems.map(async (item: any) => {
-      let signedUrl = null;
-      const filePath = item.products?.file_url;
-      
-      if (filePath) {
-        const { data } = await supabase.storage
-          .from("product-files")
-          .createSignedUrl(filePath, 60 * 60); // 1 hour validity
-          
-        signedUrl = data?.signedUrl;
-      }
-      
-      return {
-        ...item,
-        signedUrl
-      };
-    })
-  );
+  const accessibleItems = rawItems.map((item: any) => {
+    const count = downloadCountMap[item.id] || 0;
+    return {
+      ...item,
+      downloadCount: count,
+      remainingDownloads: Math.max(0, MAX_DOWNLOADS - count),
+      isDownloadable: count < MAX_DOWNLOADS,
+      downloadUrl: `/api/downloads/${item.id}`
+    };
+  });
 
   return (
     <div className="space-y-8">
@@ -72,13 +77,23 @@ export default async function DownloadsLibrary() {
                 <div className="flex-1">
                   <h4 className="font-semibold text-gray-900 line-clamp-2 mb-1">{item.product_name}</h4>
                   <p className="text-sm text-gray-500 mb-3">Format PDF</p>
-                  {item.signedUrl ? (
-                    <a href={item.signedUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-primary font-medium text-sm hover:underline">
-                      <Download size={16} />
-                      Télécharger
-                    </a>
+                  {item.isDownloadable ? (
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+                      <a href={item.downloadUrl} className="inline-flex items-center gap-2 text-white bg-primary hover:bg-primary-hover font-medium text-sm py-2 px-4 rounded-lg transition-colors">
+                        <Download size={16} />
+                        Télécharger
+                      </a>
+                      <span className="text-xs font-medium text-gray-500 bg-gray-100 px-2.5 py-1 rounded-full">
+                        {item.remainingDownloads} restant(s)
+                      </span>
+                    </div>
                   ) : (
-                    <span className="text-gray-400 text-sm italic">Fichier indisponible</span>
+                    <div className="flex flex-col gap-1">
+                      <span className="inline-flex items-center gap-1 text-red-500 font-bold text-sm">
+                        <Lock size={14} /> Limite atteinte
+                      </span>
+                      <span className="text-xs text-gray-400">Contactez le support si besoin.</span>
+                    </div>
                   )}
                 </div>
               </div>
