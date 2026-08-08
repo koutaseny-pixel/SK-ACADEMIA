@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ChevronLeft, FileText, Download, ShieldCheck, CheckCircle2 } from "lucide-react";
 import AddToCartButton from "./AddToCartButton";
+import ProductCard from "@/components/ui/ProductCard";
 
 export default async function ProductDetail({ params }: { params: { id: string } }) {
   // Wait for params to be resolved properly in Next.js 16/Next 15+ async params
@@ -18,6 +19,15 @@ export default async function ProductDetail({ params }: { params: { id: string }
   if (error || !product) {
     notFound();
   }
+
+  // Fetch related products (same category, not this product, limited to 3)
+  const { data: relatedProducts } = await supabase
+    .from('products')
+    .select('*')
+    .eq('category', product.category)
+    .eq('is_published', true)
+    .neq('id', product.id)
+    .limit(3);
 
   const defaultImage = product.category?.toLowerCase().includes("informatique") 
     ? "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
@@ -50,7 +60,7 @@ export default async function ProductDetail({ params }: { params: { id: string }
           {/* Product Info Section */}
           <div className="w-full md:w-1/2 p-8 md:p-12 lg:p-16 flex flex-col justify-center">
             <span className="text-orange-500 font-bold uppercase tracking-widest text-sm mb-4 block">
-              {product.category}
+              {product.category === 'prepa' ? 'Préparation Concours' : (product.category === 'formation' ? 'Formation Informatique' : product.category)}
             </span>
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-gray-900 leading-tight mb-6 tracking-tight">
               {product.name}
@@ -111,6 +121,21 @@ export default async function ProductDetail({ params }: { params: { id: string }
           </ul>
         </div>
 
+        {/* Related Products */}
+        {relatedProducts && relatedProducts.length > 0 && (
+          <div className="mt-24">
+            <h2 className="text-3xl font-black text-gray-900 mb-8">Produits Similaires</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {relatedProducts.map(p => (
+                <div key={p.id} className="transform hover:-translate-y-2 transition-transform duration-300">
+                  {/* We can't easily import ProductCard because it's a client component and this is a server component? 
+                      Actually we can import client components in server components! */}
+                  <ProductCard product={p} />
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

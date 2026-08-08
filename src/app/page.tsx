@@ -1,14 +1,16 @@
 import Link from "next/link";
 import ProductCard from "@/components/ui/ProductCard";
 import { Award, MonitorPlay, BookDown, ArrowRight, MessageCircle, Star, ShieldCheck, Zap, HelpCircle, CheckCircle2 } from "lucide-react";
+import { createClient } from "@/lib/supabase/server";
 
-export default function Home() {
-  const featuredProducts = [
-    { id: "1", name: "Fascicule ENA 2026", category: "Préparation Concours", price: 5000, image_url: "" },
-    { id: "2", name: "Fascicule Gendarmerie", category: "Préparation Concours", price: 3500, image_url: "" },
-    { id: "3", name: "Bureautique (Word/Excel)", category: "Formation Informatique", price: 7000, image_url: "" },
-    { id: "4", name: "Initiation Web Design", category: "Formation Informatique", price: 15000, image_url: "" },
-  ];
+export default async function Home() {
+  const supabase = await createClient();
+  const { data: featuredProducts } = await supabase
+    .from('products')
+    .select('*')
+    .eq('is_published', true)
+    .order('created_at', { ascending: false })
+    .limit(4);
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
@@ -181,7 +183,7 @@ export default function Home() {
           </div>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {featuredProducts.map(product => (
+            {(featuredProducts || []).map(product => (
               <ProductCard key={product.id} product={product} />
             ))}
           </div>

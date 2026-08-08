@@ -1,37 +1,51 @@
 import { createClient } from "@/lib/supabase/server";
 import CatalogClient from "@/components/catalog/CatalogClient";
 
-export default async function Catalog({ searchParams }: { searchParams: { category?: string } }) {
+export default async function Catalog({ searchParams }: { searchParams: { category?: string, search?: string, sort?: string } }) {
   // Wait for searchParams (Next 15+)
   const params = await searchParams;
-  const initialCategory = params?.category;
+  const currentCategory = params?.category;
+  const currentSearch = params?.search;
+  const currentSort = params?.sort || 'recommended';
 
   const supabase = await createClient();
-  const { data: products, error } = await supabase
+  
+  let query = supabase
     .from('products')
     .select('*')
-    .eq('is_published', true)
-    .order('created_at', { ascending: false });
+    .eq('is_published', true);
+
+  if (currentCategory) {
+    query = query.eq('category', currentCategory);
+  }
+
+  if (currentSearch) {
+    query = query.ilike('name', `%${currentSearch}%`);
+  }
+
+  // Handle sorting
+  if (currentSort === 'price-asc') {
+    query = query.order('price', { ascending: true });
+  } else if (currentSort === 'price-desc') {
+    query = query.order('price', { ascending: false });
+  } else {
+    query = query.order('created_at', { ascending: false });
+  }
+
+  const { data: products, error } = await query;
 
   if (error) {
     console.error("Error fetching products:", error);
   }
 
-  // Adding mock badges to some products to showcase the badge feature
-  const catalogProducts = (products || []).map((p, index) => {
-    let badge = undefined;
-    if (index === 0) badge = "Nouveau";
-    else if (index === 2) badge = "Meilleure Vente";
-    
-    return {
-      ...p,
-      badge
-    };
-  });
-
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
-      <CatalogClient initialProducts={catalogProducts} initialCategory={initialCategory} />
+      <CatalogClient 
+        products={products || []} 
+        currentCategory={currentCategory}
+        currentSearch={currentSearch}
+        currentSort={currentSort}
+      />
     </div>
   );
 }
