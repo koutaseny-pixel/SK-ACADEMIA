@@ -1,6 +1,6 @@
 import Link from "next/link";
 import ProductCard from "@/components/ui/ProductCard";
-import { Award, MonitorPlay, BookDown, ArrowRight } from "lucide-react";
+import { Award, MonitorPlay, BookDown, ArrowRight, MessageCircle } from "lucide-react";
 
 export default function Home() {
   const featuredProducts = [
@@ -12,33 +12,66 @@ export default function Home() {
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
-      {/* Hero Section with Diagonal Split */}
-      <section className="relative bg-white overflow-hidden">
-        {/* The Diagonal Blue Background on the right */}
-        <div className="hidden lg:block absolute top-0 right-0 w-1/2 h-full bg-[#1b508f] transform origin-top-left -skew-x-[20deg] translate-x-32 z-0"></div>
-        
-        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-stretch relative z-10">
-          {/* Left Content */}
-          <div className="w-full lg:w-1/2 py-20 px-4 sm:px-6 lg:px-8 lg:py-32 flex flex-col justify-center">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-gray-900 mb-6 leading-tight">
-              SK ACADEMY : VOTRE CLÉ POUR RÉUSSIR LES CONCOURS AU SÉNÉGAL
-            </h1>
-            <p className="text-lg md:text-xl text-gray-600 mb-10 max-w-lg font-medium">
-              Fascicules numériques, cours vidéo, et formations en informatique de qualité pour exceller.
-            </p>
-            <div>
-              <Link href="/catalog" className="inline-block bg-[#1b508f] hover:bg-blue-800 text-white font-bold py-4 px-8 rounded transition-colors text-lg">
-                DÉCOUVRE NOS PRODUITS
-              </Link>
+      {/* Hero Section */}
+      <section className="bg-white overflow-hidden pt-12 pb-24">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col lg:flex-row items-center gap-12">
+            
+            {/* Left Content */}
+            <div className="w-full lg:w-1/2 flex flex-col justify-center relative">
+              {/* Top Badge */}
+              <div className="inline-flex items-center gap-2 bg-orange-50 text-orange-500 font-bold px-4 py-2 rounded-full text-xs uppercase tracking-wider mb-8 w-max">
+                La Plateforme Éducative #1 au Sénégal
+              </div>
+              
+              <h1 className="text-5xl md:text-6xl lg:text-[4rem] font-black tracking-tight text-gray-900 leading-[1.1] mb-6">
+                SK ACADEMIA :<br/>VOTRE CLÉ POUR<br/>
+                <span className="text-orange-500">RÉUSSIR LES<br/>CONCOURS AU<br/>SÉNÉGAL</span>
+              </h1>
+              
+              <p className="text-lg text-gray-500 mb-10 max-w-lg font-medium leading-relaxed">
+                Fascicules numériques, cours vidéo, et formations en informatique de qualité pour exceller.
+              </p>
             </div>
-          </div>
-          
-          {/* Right Image (Placeholder for now) */}
-          <div className="w-full lg:w-1/2 bg-gray-200 lg:bg-transparent min-h-[400px] lg:min-h-full relative overflow-hidden flex items-center justify-center p-8">
-             {/* Note: User will replace this div with the actual image of students */}
-             <div className="w-full max-w-lg aspect-[4/3] bg-gray-300 rounded-xl shadow-2xl relative z-10 flex items-center justify-center text-gray-500 font-medium border-4 border-white/20">
-               [Image Étudiants]
-             </div>
+            
+            {/* Right Image */}
+            <div className="w-full lg:w-1/2 relative flex justify-end">
+              <div className="relative w-full max-w-[600px] rounded-3xl overflow-hidden shadow-2xl bg-gray-100 aspect-[4/3] flex items-center justify-center text-gray-400 font-medium border-8 border-white">
+                [Image Étudiant]
+              </div>
+
+              {/* Floating Badges */}
+              <div className="absolute top-1/4 -left-8 bg-white p-4 rounded-xl shadow-xl flex items-center gap-4 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-300">
+                <div className="bg-blue-50 p-3 rounded-lg text-[#1b508f]">
+                  <BookDown size={24} />
+                </div>
+                <div>
+                  <div className="font-black text-gray-900 leading-tight">500+ Docs</div>
+                  <div className="text-xs text-gray-500 font-medium">Disponibles</div>
+                </div>
+              </div>
+
+              <div className="absolute bottom-8 right-8 bg-white p-4 rounded-xl shadow-xl flex items-center gap-4 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-500 z-10">
+                <div className="bg-orange-50 p-3 rounded-lg text-orange-500">
+                  <Award size={24} />
+                </div>
+                <div>
+                  <div className="font-black text-gray-900 leading-tight">98% Réussite</div>
+                  <div className="text-xs text-gray-500 font-medium">Nos étudiants</div>
+                </div>
+              </div>
+
+              {/* Floating Chat Buttons (WhatsApp/Messenger style) */}
+              <div className="absolute -right-4 -bottom-4 flex flex-col gap-3 z-20">
+                <div className="w-14 h-14 bg-blue-600 rounded-full flex items-center justify-center text-white shadow-lg cursor-pointer hover:scale-110 transition-transform">
+                  <MessageCircle size={28} />
+                </div>
+                <div className="w-14 h-14 bg-green-500 rounded-full flex items-center justify-center text-white shadow-lg cursor-pointer hover:scale-110 transition-transform">
+                  <MessageCircle size={28} />
+                </div>
+              </div>
+            </div>
+            
           </div>
         </div>
       </section>
