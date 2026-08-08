@@ -1,8 +1,13 @@
 import Link from "next/link";
 import CartBadge from "@/components/ui/CartBadge";
 import { GraduationCap, Gift, UserCircle } from "lucide-react";
+import { createClient } from "@/lib/supabase/server";
+import UserMenu from "./UserMenu";
 
-export default function Navbar() {
+export default async function Navbar() {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
   return (
     <header className="bg-white border-b border-gray-100 sticky top-0 z-50 shadow-sm">
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
@@ -40,7 +45,7 @@ export default function Navbar() {
             </Link>
           </nav>
 
-          {/* Cart & Parrainage */}
+          {/* Cart & Parrainage & Auth */}
           <div className="flex items-center gap-6">
             <CartBadge />
             
@@ -48,9 +53,14 @@ export default function Navbar() {
               <Link href="#" className="hidden sm:flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white px-5 py-2.5 rounded-full font-bold text-sm transition-colors shadow-md">
                 <Gift size={16} /> Parrainage
               </Link>
-              <Link href="/login" className="text-gray-400 hover:text-gray-600 transition-colors">
-                <UserCircle size={32} strokeWidth={1.5} />
-              </Link>
+              
+              {user ? (
+                <UserMenu user={user} />
+              ) : (
+                <Link href="/login" className="text-gray-400 hover:text-orange-500 transition-colors ml-2">
+                  <UserCircle size={32} strokeWidth={1.5} />
+                </Link>
+              )}
             </div>
           </div>
         </div>
