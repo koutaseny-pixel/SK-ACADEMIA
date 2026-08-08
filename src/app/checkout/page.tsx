@@ -11,6 +11,15 @@ export default function Checkout() {
   const [mounted, setMounted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
+  
+  // State for the form
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: ""
+  });
+
   const router = useRouter();
 
   // Avoid hydration mismatch
@@ -26,13 +35,51 @@ export default function Checkout() {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Simulate API call to save order in Supabase
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    // In a real app, we'd save to the `orders` table here
-    clearCart();
-    setSuccess(true);
-    setIsSubmitting(false);
+    try {
+      // 1. Create Supabase client
+      const { createClient } = await import("@/lib/supabase/client");
+      const supabase = createClient();
+
+      // 2. Insert into orders table
+      const { data: order, error: orderError } = await supabase
+        .from('orders')
+        .insert({
+          customer_first_name: formData.firstName,
+          customer_last_name: formData.lastName,
+          customer_email: formData.email,
+          customer_phone: formData.phone,
+          total_amount: subtotal,
+          payment_method: 'mobile_money'
+        })
+        .select()
+        .single();
+
+      if (orderError) throw orderError;
+
+      // 3. Insert order items
+      const orderItemsToInsert = items.map(item => ({
+        order_id: order.id,
+        product_id: item.id,
+        product_name: item.name,
+        quantity: item.quantity,
+        price_at_time: item.price
+      }));
+
+      const { error: itemsError } = await supabase
+        .from('order_items')
+        .insert(orderItemsToInsert);
+
+      if (itemsError) throw itemsError;
+
+      // 4. Success!
+      clearCart();
+      setSuccess(true);
+    } catch (error) {
+      console.error("Error placing order:", error);
+      alert("Une erreur s'est produite lors de la validation de la commande. Veuillez réessayer.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (success) {
@@ -75,20 +122,48 @@ export default function Checkout() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Prénom</label>
-                  <input required type="text" className="w-full border border-gray-300 rounded-md p-3 outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="Votre prénom" />
+                  <input 
+                    required 
+                    type="text" 
+                    value={formData.firstName}
+                    onChange={(e) => setFormData({...formData, firstName: e.target.value})}
+                    className="w-full border border-gray-300 rounded-md p-3 outline-none focus:ring-2 focus:ring-primary focus:border-transparent" 
+                    placeholder="Votre prénom" 
+                  />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Nom</label>
-                  <input required type="text" className="w-full border border-gray-300 rounded-md p-3 outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="Votre nom" />
+                  <input 
+                    required 
+                    type="text" 
+                    value={formData.lastName}
+                    onChange={(e) => setFormData({...formData, lastName: e.target.value})}
+                    className="w-full border border-gray-300 rounded-md p-3 outline-none focus:ring-2 focus:ring-primary focus:border-transparent" 
+                    placeholder="Votre nom" 
+                  />
                 </div>
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
-                <input required type="email" className="w-full border border-gray-300 rounded-md p-3 outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="you@example.com" />
+                <input 
+                  required 
+                  type="email" 
+                  value={formData.email}
+                  onChange={(e) => setFormData({...formData, email: e.target.value})}
+                  className="w-full border border-gray-300 rounded-md p-3 outline-none focus:ring-2 focus:ring-primary focus:border-transparent" 
+                  placeholder="you@example.com" 
+                />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Numéro de téléphone</label>
-                <input required type="tel" className="w-full border border-gray-300 rounded-md p-3 outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="ex: 77 000 00 00" />
+                <input 
+                  required 
+                  type="tel" 
+                  value={formData.phone}
+                  onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                  className="w-full border border-gray-300 rounded-md p-3 outline-none focus:ring-2 focus:ring-primary focus:border-transparent" 
+                  placeholder="ex: 77 000 00 00" 
+                />
               </div>
             </div>
           </div>
