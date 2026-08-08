@@ -75,7 +75,7 @@ export default async function AdminProductsPage() {
                       <span className="text-xs font-bold uppercase tracking-wider text-gray-500">{product.category}</span>
                     </td>
                     <td className="p-4 font-bold text-[#1b508f]">
-                      {product.price.toLocaleString("fr-SN", { style: "currency", currency: "XOF" })}
+                      {Number(product.price).toLocaleString("fr-SN", { style: "currency", currency: "XOF" })}
                     </td>
                     <td className="p-4 text-center">
                       {product.is_published ? (

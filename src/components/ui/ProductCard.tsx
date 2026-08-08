@@ -67,7 +67,7 @@ export default function ProductCard({ product }: { product: Product }) {
         </Link>
         <div className="mt-auto pt-4 flex flex-col items-center">
           <span className="font-black text-xl text-[#1b508f] mb-4">
-            {product.price.toLocaleString("fr-SN", { style: "currency", currency: "XOF" })}
+            {Number(product.price).toLocaleString("fr-SN", { style: "currency", currency: "XOF" })}
           </span>
           <button 
             onClick={handleAdd}

@@ -88,7 +88,7 @@ export default async function ProductDetail({ params }: { params: { id: string }
             </p>
 
             <div className="text-5xl font-black text-[#1b508f] mb-8 tracking-tight">
-              {product.price.toLocaleString("fr-SN", { style: "currency", currency: "XOF" })}
+              {Number(product.price).toLocaleString("fr-SN", { style: "currency", currency: "XOF" })}
             </div>
 
             <AddToCartButton product={product} />
