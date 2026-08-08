@@ -2,6 +2,7 @@
 CREATE TABLE orders (
   id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
   created_at timestamp with time zone DEFAULT timezone('utc'::text, now()) NOT NULL,
+  user_id uuid REFERENCES auth.users(id) ON DELETE SET NULL,
   customer_first_name text NOT NULL,
   customer_last_name text NOT NULL,
   customer_email text NOT NULL,

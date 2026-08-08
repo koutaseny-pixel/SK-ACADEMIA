@@ -28,11 +28,11 @@ export default function AddToCartButton({ product }: { product: ProductData }) {
       className={`flex-1 font-bold py-4 px-8 rounded-lg transition-colors flex items-center justify-center gap-2 text-lg
         ${added 
           ? 'bg-green-500 hover:bg-green-600 text-white' 
-          : 'bg-accent hover:bg-accent-hover text-white'
+          : 'bg-[#1b508f] hover:bg-blue-800 text-white'
         }`}
     >
       <ShoppingCart size={24} />
-      {added ? "Added to Cart!" : "Add to Cart"}
+      {added ? "Ajouté au panier !" : "Ajouter au panier"}
     </button>
   );
 }

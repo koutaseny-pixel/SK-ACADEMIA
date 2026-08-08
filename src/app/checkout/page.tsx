@@ -23,6 +23,23 @@ export default function Checkout() {
 
   useEffect(() => {
     setMounted(true);
+    
+    const fetchUser = async () => {
+      const { createClient } = await import("@/lib/supabase/client");
+      const supabase = createClient();
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      if (user) {
+        setFormData(prev => ({
+          ...prev,
+          firstName: user.user_metadata?.first_name || "",
+          lastName: user.user_metadata?.last_name || "",
+          email: user.email || "",
+        }));
+      }
+    };
+    
+    fetchUser();
   }, []);
 
   if (!mounted) return null;
@@ -37,9 +54,12 @@ export default function Checkout() {
       const { createClient } = await import("@/lib/supabase/client");
       const supabase = createClient();
 
+      const { data: { user } } = await supabase.auth.getUser();
+
       const { data: order, error: orderError } = await supabase
         .from('orders')
         .insert({
+          user_id: user?.id || null,
           customer_first_name: formData.firstName,
           customer_last_name: formData.lastName,
           customer_email: formData.email,
