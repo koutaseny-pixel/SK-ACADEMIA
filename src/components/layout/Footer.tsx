@@ -1,47 +1,72 @@
 import Link from "next/link";
-import { Mail, Globe, MessageCircle } from "lucide-react";
+import { Mail, Phone, MapPin, Facebook, Instagram, Youtube } from "lucide-react";
 
 export default function Footer() {
   return (
-    <footer className="bg-foreground text-secondary py-12">
+    <footer className="bg-[#1b508f] text-white py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
+          {/* Column 1 */}
           <div>
-            <h3 className="text-xl font-bold mb-4">SK ACADEMIA</h3>
-            <p className="text-gray-400 text-sm">
-              Empowering students in Senegal and beyond with top-tier educational resources, study guides, and online courses.
+            <h3 className="text-xl font-black mb-6 tracking-tight">SK ACADEMY</h3>
+            <p className="text-blue-100 text-sm mb-6 leading-relaxed">
+              Votre clé pour réussir les concours au Sénégal. Fascicules numériques, cours vidéo, et formations en informatique de qualité pour exceller.
             </p>
-          </div>
-          <div>
-            <h4 className="font-semibold mb-4">Quick Links</h4>
-            <ul className="space-y-2 text-sm text-gray-400">
-              <li><Link href="/catalog" className="hover:text-accent transition-colors">Catalog</Link></li>
-              <li><Link href="/about" className="hover:text-accent transition-colors">About Us</Link></li>
-              <li><Link href="/contact" className="hover:text-accent transition-colors">Contact</Link></li>
-              <li><Link href="/dashboard" className="hover:text-accent transition-colors">My Dashboard</Link></li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="font-semibold mb-4">Legal</h4>
-            <ul className="space-y-2 text-sm text-gray-400">
-              <li><Link href="#" className="hover:text-accent transition-colors">Terms of Service</Link></li>
-              <li><Link href="#" className="hover:text-accent transition-colors">Privacy Policy</Link></li>
-              <li><Link href="#" className="hover:text-accent transition-colors">Refund Policy</Link></li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="font-semibold mb-4">Connect With Us</h4>
-            <div className="flex space-x-4 mb-4">
-              <a href="#" className="text-gray-400 hover:text-accent transition-colors" title="Facebook"><Globe size={20} /></a>
-              <a href="#" className="text-gray-400 hover:text-accent transition-colors" title="Twitter"><MessageCircle size={20} /></a>
+            <div className="flex space-x-4">
+              <a href="#" className="w-8 h-8 rounded bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"><Facebook size={16} /></a>
+              <a href="#" className="w-8 h-8 rounded bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"><Instagram size={16} /></a>
+              <a href="#" className="w-8 h-8 rounded bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"><Youtube size={16} /></a>
             </div>
-            <a href="mailto:support@skacademia.sn" className="text-sm text-gray-400 hover:text-accent flex items-center gap-2 transition-colors">
-              <Mail size={16} /> support@skacademia.sn
-            </a>
+          </div>
+
+          {/* Column 2 */}
+          <div>
+            <h4 className="font-bold mb-6 text-sm uppercase tracking-wider text-blue-200">ACCUEIL</h4>
+            <ul className="space-y-3 text-sm text-blue-100">
+              <li><Link href="/catalog" className="hover:text-white transition-colors">Boutique</Link></li>
+              <li><Link href="/catalog?category=prepa" className="hover:text-white transition-colors">Préparation concours</Link></li>
+              <li><Link href="/faq" className="hover:text-white transition-colors">Foire aux questions</Link></li>
+              <li><Link href="/about" className="hover:text-white transition-colors">À propos de nous</Link></li>
+            </ul>
+          </div>
+
+          {/* Column 3 */}
+          <div>
+            <h4 className="font-bold mb-6 text-sm uppercase tracking-wider text-blue-200">FORMATIONS</h4>
+            <ul className="space-y-3 text-sm text-blue-100">
+              <li><Link href="/catalog?category=formation" className="hover:text-white transition-colors">Bureautique (Word, Excel)</Link></li>
+              <li><Link href="/catalog?category=formation" className="hover:text-white transition-colors">Programmation</Link></li>
+              <li><Link href="/catalog?category=formation" className="hover:text-white transition-colors">Web Design</Link></li>
+              <li><Link href="/catalog?category=formation" className="hover:text-white transition-colors">Entrepreneuriat</Link></li>
+            </ul>
+          </div>
+
+          {/* Column 4 */}
+          <div>
+            <h4 className="font-bold mb-6 text-sm uppercase tracking-wider text-blue-200">CONTACT</h4>
+            <ul className="space-y-4 text-sm text-blue-100">
+              <li className="flex items-start gap-3">
+                <Phone size={18} className="shrink-0 mt-0.5" />
+                <span>+221 77 000 00 00<br/>+221 76 000 00 00</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <Mail size={18} className="shrink-0 mt-0.5" />
+                <a href="mailto:support@skacademy.sn" className="hover:text-white transition-colors">support@skacademy.sn</a>
+              </li>
+              <li className="flex items-start gap-3">
+                <MapPin size={18} className="shrink-0 mt-0.5" />
+                <span>Dakar, Sénégal</span>
+              </li>
+            </ul>
           </div>
         </div>
-        <div className="border-t border-gray-800 mt-12 pt-8 text-sm text-center text-gray-500">
-          &copy; {new Date().getFullYear()} SK Academia. All rights reserved.
+        
+        <div className="border-t border-white/10 mt-16 pt-8 text-sm text-center text-blue-200 flex flex-col md:flex-row justify-between items-center gap-4">
+          <p>&copy; {new Date().getFullYear()} SK Academy. Tous droits réservés.</p>
+          <div className="flex gap-4">
+            <Link href="#" className="hover:text-white transition-colors">Conditions générales</Link>
+            <Link href="#" className="hover:text-white transition-colors">Politique de confidentialité</Link>
+          </div>
         </div>
       </div>
     </footer>
