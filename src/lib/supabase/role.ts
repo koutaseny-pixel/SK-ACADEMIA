@@ -9,7 +9,7 @@ export async function getUserRole(): Promise<'admin' | 'customer' | null> {
     return null;
   }
 
-  if (user.email === 'koutaseny@gmail.com') {
+  if (user.email === 'skacademia25@gmail.com') {
     return 'admin';
   }
 

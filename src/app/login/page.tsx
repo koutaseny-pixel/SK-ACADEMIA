@@ -47,7 +47,7 @@ export default function Login() {
         
         // Check if user is admin for redirection
         if (user) {
-          if (user.email === 'koutaseny@gmail.com') {
+          if (user.email === 'skacademia25@gmail.com') {
             router.push("/admin");
             return;
           }
