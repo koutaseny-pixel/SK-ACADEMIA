@@ -9,6 +9,10 @@ export async function getUserRole(): Promise<'admin' | 'customer' | null> {
     return null;
   }
 
+  if (user.email === 'koutaseny@gmail.com') {
+    return 'admin';
+  }
+
   const { data: profile, error: profileError } = await supabase
     .from('profiles')
     .select('role')

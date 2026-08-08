@@ -47,6 +47,11 @@ export default function Login() {
         
         // Check if user is admin for redirection
         if (user) {
+          if (user.email === 'koutaseny@gmail.com') {
+            router.push("/admin");
+            return;
+          }
+
           const { data: profile } = await supabase
             .from('profiles')
             .select('role')
