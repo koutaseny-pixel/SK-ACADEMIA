@@ -37,7 +37,11 @@ export default function Home() {
             {/* Right Image */}
             <div className="w-full lg:w-1/2 relative flex justify-end">
               <div className="relative w-full max-w-[600px] rounded-3xl overflow-hidden shadow-2xl bg-gray-100 aspect-[4/3] flex items-center justify-center text-gray-400 font-medium border-8 border-white">
-                [Image Étudiant]
+                <img 
+                  src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                  alt="Étudiant étudiant sur son ordinateur" 
+                  className="w-full h-full object-cover"
+                />
               </div>
 
               {/* Floating Badges */}
@@ -149,9 +153,13 @@ export default function Home() {
 
       {/* Bottom Content Section */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white">
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-12 bg-blue-50 rounded-3xl overflow-hidden">
+        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-12 bg-blue-50 rounded-3xl overflow-hidden shadow-lg border border-blue-100">
           <div className="w-full md:w-1/2 aspect-square md:aspect-auto md:h-[400px] bg-gray-300 flex items-center justify-center text-gray-500 font-medium">
-            [Image Étudiante]
+            <img 
+              src="https://images.unsplash.com/photo-1513258496099-48168024aec0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+              alt="Étudiante souriante" 
+              className="w-full h-full object-cover"
+            />
           </div>
           <div className="w-full md:w-1/2 p-8 md:p-12">
             <h2 className="text-3xl font-black text-gray-900 mb-6 uppercase leading-tight">
@@ -160,7 +168,7 @@ export default function Home() {
             <p className="text-gray-600 mb-8 font-medium">
               Fascicules numériques, cours vidéo, et formations en informatique de qualité pour exceller dans vos études et votre carrière professionnelle au Sénégal.
             </p>
-            <Link href="/about" className="inline-block bg-accent hover:bg-accent-hover text-white font-bold py-3 px-8 rounded transition-colors">
+            <Link href="/about" className="inline-block bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-8 rounded transition-colors shadow-md">
               DÉCOUVRIR PLUS
             </Link>
           </div>
