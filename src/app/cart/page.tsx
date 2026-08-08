@@ -56,7 +56,7 @@ export default function CartPage() {
                       {/* Image Placeholder */}
                       <div className="w-24 h-24 bg-gray-100 rounded-xl shrink-0 overflow-hidden">
                         <img 
-                          src={item.image_url || "https://images.unsplash.com/photo-1456406644174-8ddd4cd52a06?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80"} 
+                          src={item.image_url || "https://images.unsplash.com/photo-1571260894064-6e13d8e5d790?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80"} 
                           alt={item.name} 
                           className="w-full h-full object-cover"
                         />

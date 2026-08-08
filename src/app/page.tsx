@@ -49,7 +49,7 @@ export default async function Home() {
             <div className="w-full lg:w-1/2 relative flex justify-end">
               <div className="relative w-full max-w-[600px] rounded-3xl overflow-hidden shadow-2xl bg-gray-100 aspect-[4/3] flex items-center justify-center border-8 border-white">
                 <img 
-                  src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                  src="https://images.unsplash.com/photo-1544717305-2782549b5136?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
                   alt="Étudiant étudiant sur son ordinateur" 
                   className="w-full h-full object-cover"
                 />
@@ -289,7 +289,7 @@ export default async function Home() {
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-12 bg-white rounded-[2rem] overflow-hidden shadow-2xl border border-gray-100">
           <div className="w-full md:w-1/2 aspect-square md:aspect-auto md:h-[500px] bg-gray-300 relative">
             <img 
-              src="https://images.unsplash.com/photo-1513258496099-48168024aec0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+              src="https://images.unsplash.com/photo-1531123414780-f74242c2b052?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
               alt="Étudiante souriante avec son diplôme" 
               className="w-full h-full object-cover"
             />

@@ -29,9 +29,26 @@ export default async function ProductDetail({ params }: { params: { id: string }
     .neq('id', product.id)
     .limit(3);
 
+  // Fallback image based on category
   const defaultImage = product.category?.toLowerCase().includes("informatique") 
-    ? "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
-    : "https://images.unsplash.com/photo-1456406644174-8ddd4cd52a06?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80";
+    ? "https://images.unsplash.com/photo-1531482615713-2afd69097998?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
+    : "https://images.unsplash.com/photo-1571260894064-6e13d8e5d790?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80";
+
+  // Dynamic colors for categories
+  const getCategoryColor = (name: string, category: string) => {
+    const lowerName = name?.toLowerCase() || "";
+    if (lowerName.includes("ena")) return "bg-blue-600";
+    if (lowerName.includes("douane")) return "bg-yellow-600";
+    if (lowerName.includes("police")) return "bg-red-600";
+    if (lowerName.includes("gendarmerie")) return "bg-green-700";
+    if (lowerName.includes("fastef")) return "bg-purple-600";
+    
+    if (category?.toLowerCase() === "formation") return "bg-indigo-600";
+    if (category?.toLowerCase() === "ressources") return "bg-teal-600";
+    return "bg-orange-500";
+  };
+
+  const badgeColorClass = getCategoryColor(product.name, product.category);
 
   return (
     <div className="min-h-screen bg-gray-50 pb-24">
@@ -59,8 +76,8 @@ export default async function ProductDetail({ params }: { params: { id: string }
 
           {/* Product Info Section */}
           <div className="w-full md:w-1/2 p-8 md:p-12 lg:p-16 flex flex-col justify-center">
-            <span className="text-orange-500 font-bold uppercase tracking-widest text-sm mb-4 block">
-              {product.category === 'prepa' ? 'Préparation Concours' : (product.category === 'formation' ? 'Formation Informatique' : product.category)}
+            <span className={`inline-block w-fit text-xs font-bold text-white px-3 py-1 rounded-full uppercase tracking-wider mb-4 ${badgeColorClass}`}>
+              {product.category}
             </span>
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-gray-900 leading-tight mb-6 tracking-tight">
               {product.name}

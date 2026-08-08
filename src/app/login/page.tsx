@@ -146,8 +146,8 @@ export default function Login() {
       {/* Côté Gauche : Image / Branding (Caché sur mobile) */}
       <div className="hidden lg:flex w-1/2 relative overflow-hidden bg-[#1b508f]">
         <img 
-          src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1400&q=80" 
-          alt="Étudiants"
+          src="https://images.unsplash.com/photo-1571260894064-6e13d8e5d790?ixlib=rb-4.0.3&auto=format&fit=crop&w=1400&q=80" 
+          alt="Étudiants Africains"
           className="absolute inset-0 w-full h-full object-cover mix-blend-overlay opacity-60"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#1b508f] via-[#1b508f]/80 to-transparent"></div>

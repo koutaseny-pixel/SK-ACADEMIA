@@ -25,9 +25,26 @@ export default function ProductCard({ product }: { product: Product }) {
   };
 
   // Determine a placeholder image based on category
+  // Determine a placeholder image based on category
   const defaultImage = product.category?.toLowerCase().includes("informatique") 
-    ? "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
-    : "https://images.unsplash.com/photo-1456406644174-8ddd4cd52a06?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80";
+    ? "https://images.unsplash.com/photo-1531482615713-2afd69097998?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" // Black women working on laptop
+    : "https://images.unsplash.com/photo-1571260894064-6e13d8e5d790?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"; // African students
+
+  // Determine dynamic colors for categories / concours
+  const getCategoryColor = (name: string, category: string) => {
+    const lowerName = name.toLowerCase();
+    if (lowerName.includes("ena")) return "bg-blue-600";
+    if (lowerName.includes("douane")) return "bg-yellow-600";
+    if (lowerName.includes("police")) return "bg-red-600";
+    if (lowerName.includes("gendarmerie")) return "bg-green-700";
+    if (lowerName.includes("fastef")) return "bg-purple-600";
+    
+    if (category.toLowerCase() === "formation") return "bg-indigo-600";
+    if (category.toLowerCase() === "ressources") return "bg-teal-600";
+    return "bg-orange-500";
+  };
+
+  const badgeColorClass = getCategoryColor(product.name, product.category);
 
   return (
     <div className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 flex flex-col h-full group">
@@ -38,7 +55,7 @@ export default function ProductCard({ product }: { product: Product }) {
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
          />
          {product.badge && (
-           <div className="absolute top-3 right-3 bg-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md uppercase tracking-wide">
+           <div className={`absolute top-3 right-3 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md uppercase tracking-wide ${badgeColorClass}`}>
              {product.badge}
            </div>
          )}
@@ -54,10 +71,10 @@ export default function ProductCard({ product }: { product: Product }) {
           </span>
           <button 
             onClick={handleAdd}
-            className={`w-full font-bold py-3 px-4 rounded-xl transition-all text-sm shadow-md
+            className={`w-full font-bold py-3 px-4 rounded-xl transition-all text-sm shadow-md text-white
               ${added 
-                ? 'bg-green-500 hover:bg-green-600 text-white shadow-green-500/20' 
-                : 'bg-orange-500 hover:bg-orange-600 text-white shadow-orange-500/20'
+                ? 'bg-green-500 hover:bg-green-600 shadow-green-500/20' 
+                : `${badgeColorClass} hover:opacity-90 shadow-black/10`
               }`}
           >
             {added ? "AJOUTÉ !" : "AJOUTER AU PANIER"}
