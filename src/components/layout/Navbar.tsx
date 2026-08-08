@@ -2,11 +2,13 @@ import Link from "next/link";
 import CartBadge from "@/components/ui/CartBadge";
 import { GraduationCap, Gift, UserCircle } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
+import { getUserRole } from "@/lib/supabase/role";
 import UserMenu from "./UserMenu";
 
 export default async function Navbar() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
+  const role = user ? await getUserRole() : null;
 
   return (
     <header className="bg-white border-b border-gray-100 sticky top-0 z-50 shadow-sm">
@@ -55,7 +57,7 @@ export default async function Navbar() {
               </Link>
               
               {user ? (
-                <UserMenu user={user} />
+                <UserMenu user={user} role={role} />
               ) : (
                 <Link href="/login" className="text-gray-400 hover:text-orange-500 transition-colors ml-2">
                   <UserCircle size={32} strokeWidth={1.5} />

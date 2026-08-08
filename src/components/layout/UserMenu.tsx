@@ -8,9 +8,10 @@ import { createClient } from "@/lib/supabase/client";
 
 interface UserMenuProps {
   user: any;
+  role?: 'admin' | 'customer' | null;
 }
 
-export default function UserMenu({ user }: UserMenuProps) {
+export default function UserMenu({ user, role }: UserMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
@@ -45,6 +46,11 @@ export default function UserMenu({ user }: UserMenuProps) {
         <div className="absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-xl border border-gray-100 py-2 z-50 animate-in fade-in slide-in-from-top-2">
           <div className="px-4 py-3 border-b border-gray-100">
             <p className="text-sm font-medium text-gray-900 truncate">{user.email}</p>
+            {role === 'admin' && (
+              <span className="inline-block mt-1 px-2 py-0.5 bg-orange-100 text-orange-600 text-xs font-bold rounded-full uppercase tracking-wider">
+                Administrateur
+              </span>
+            )}
           </div>
           
           <div className="py-1">
@@ -55,6 +61,16 @@ export default function UserMenu({ user }: UserMenuProps) {
             >
               <LayoutDashboard size={16} /> Mon Espace
             </Link>
+            
+            {role === 'admin' && (
+              <Link 
+                href="/admin" 
+                onClick={() => setIsOpen(false)}
+                className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-[#1b508f] transition-colors font-medium"
+              >
+                <Settings size={16} /> Administration
+              </Link>
+            )}
           </div>
           
           <div className="py-1 border-t border-gray-100">
