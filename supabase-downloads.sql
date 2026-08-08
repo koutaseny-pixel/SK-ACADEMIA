@@ -19,11 +19,25 @@ ALTER TABLE product_downloads ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Users can view their own downloads" ON product_downloads 
 FOR SELECT USING (auth.uid() = user_id);
 
--- Only admins/service role can insert into product_downloads (via the API route)
--- Or we can allow users to insert their own records if they match user_id
+-- Allow users to insert their own download records (via the API route)
 CREATE POLICY "Users can insert their own downloads" ON product_downloads 
 FOR INSERT WITH CHECK (auth.uid() = user_id);
 
 -- Admins can view everything
 CREATE POLICY "Admins can view all downloads" ON product_downloads 
 FOR ALL USING ((SELECT role FROM public.profiles WHERE id = auth.uid()) = 'admin');
+
+-- Add policies for customers to view their own orders
+DROP POLICY IF EXISTS "Customers can view their own orders" ON orders;
+CREATE POLICY "Customers can view their own orders" ON orders 
+FOR SELECT USING (auth.uid() = user_id);
+
+DROP POLICY IF EXISTS "Customers can view their own order items" ON order_items;
+CREATE POLICY "Customers can view their own order items" ON order_items 
+FOR SELECT USING (
+  EXISTS (
+    SELECT 1 FROM orders 
+    WHERE orders.id = order_items.order_id 
+    AND orders.user_id = auth.uid()
+  )
+);
