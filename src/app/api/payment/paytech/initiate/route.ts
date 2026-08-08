@@ -11,9 +11,13 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Données manquantes" }, { status: 400 });
     }
 
-    if (!process.env.WAVE_API_KEY || !process.env.NEXT_PUBLIC_BASE_URL) {
-      console.error("Wave API key or Base URL not configured");
-      return NextResponse.json({ error: "Paiement non configuré" }, { status: 500 });
+    const API_KEY = process.env.PAYTECH_API_KEY;
+    const API_SECRET = process.env.PAYTECH_API_SECRET;
+    const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+
+    if (!API_KEY || !API_SECRET || !BASE_URL) {
+      console.error("PayTech API keys or Base URL not configured");
+      return NextResponse.json({ error: "Paiement non configuré sur le serveur" }, { status: 500 });
     }
 
     const supabase = await createClient();
@@ -40,7 +44,7 @@ export async function POST(request: Request) {
         customer_email: formData.email,
         customer_phone: formData.phone,
         total_amount: total,
-        payment_method: "wave",
+        payment_method: "paytech", // Storing paytech generically
         status: "pending",
       })
       .select()
@@ -70,48 +74,65 @@ export async function POST(request: Request) {
       throw itemsError;
     }
 
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+    // 3. Create PayTech Payment Request
+    const paytechBody = {
+      item_name: items.length === 1 ? items[0].name : `Commande de ${items.length} articles`,
+      item_price: total,
+      currency: "XOF",
+      ref_command: reference,
+      command_name: `Paiement commande ${reference} sur SK Academia`,
+      env: "test", // Change to "prod" once your PayTech account is activated for production!
+      ipn_url: `${BASE_URL}/api/payment/paytech/callback`,
+      success_url: `${BASE_URL}/success?ref=${reference}`,
+      cancel_url: `${BASE_URL}/checkout?error=payment_cancelled`,
+      custom_field: JSON.stringify({ order_id: order.id, email: formData.email })
+    };
 
-    // 3. Create Wave Checkout Session
-    const waveResponse = await fetch("https://api.wave.com/v1/checkout/sessions", {
+    const paytechResponse = await fetch("https://paytech.sn/api/payment/request-payment", {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${process.env.WAVE_API_KEY}`,
+        "API_KEY": API_KEY,
+        "API_SECRET": API_SECRET,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        amount: total.toString(),
-        currency: "XOF",
-        client_reference: reference,
-        success_url: `${baseUrl}/success?ref=${reference}`,
-        error_url: `${baseUrl}/checkout?error=payment_failed&ref=${reference}`,
-      }),
+      body: JSON.stringify(paytechBody),
     });
 
-    if (!waveResponse.ok) {
-      const waveError = await waveResponse.text();
-      console.error("Wave API error:", waveError);
-      // Mark order as cancelled if Wave fails
+    if (!paytechResponse.ok) {
+      const errorText = await paytechResponse.text();
+      console.error("PayTech API HTTP error:", errorText);
       await supabase.from("orders").update({ status: "cancelled" }).eq("id", order.id);
       return NextResponse.json(
-        { error: "Erreur lors de la création de la session de paiement Wave." },
+        { error: "Erreur HTTP lors de la communication avec PayTech." },
         { status: 502 }
       );
     }
 
-    const waveData = await waveResponse.json();
-    const { wave_launch_url } = waveData;
+    const paytechData = await paytechResponse.json();
 
-    if (!wave_launch_url) {
-      console.error("No wave_launch_url in response:", waveData);
+    if (paytechData.success !== 1) {
+      console.error("PayTech API logical error:", paytechData);
       await supabase.from("orders").update({ status: "cancelled" }).eq("id", order.id);
       return NextResponse.json(
-        { error: "Réponse invalide de Wave." },
+        { error: "Erreur logique de l'API PayTech." },
         { status: 502 }
       );
     }
 
-    return NextResponse.json({ wave_launch_url, reference });
+    const redirectUrl = paytechData.redirect_url || paytechData.redirectUrl;
+
+    if (!redirectUrl) {
+      console.error("No redirect URL in PayTech response:", paytechData);
+      await supabase.from("orders").update({ status: "cancelled" }).eq("id", order.id);
+      return NextResponse.json(
+        { error: "Réponse PayTech invalide (URL manquante)." },
+        { status: 502 }
+      );
+    }
+
+    // 4. Return URL to frontend to redirect the user
+    return NextResponse.json({ redirect_url: redirectUrl, reference });
+
   } catch (error: any) {
     console.error("Initiate payment error:", error);
     return NextResponse.json(

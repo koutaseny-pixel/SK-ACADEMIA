@@ -35,10 +35,10 @@ export default function Checkout() {
     };
     fetchUser();
     
-    // Show payment failed error from Wave redirect
+    // Show payment failed error from PayTech redirect
     const params = new URLSearchParams(window.location.search);
-    if (params.get("error") === "payment_failed") {
-      setError("Le paiement a échoué ou a été annulé. Veuillez réessayer.");
+    if (params.get("error") === "payment_cancelled") {
+      setError("Le paiement a été annulé. Veuillez réessayer.");
     }
   }, []);
 
@@ -52,8 +52,8 @@ export default function Checkout() {
     setError("");
 
     try {
-      // Call our secure server-side Wave initiation route
-      const response = await fetch("/api/payment/wave/initiate", {
+      // Call our secure server-side PayTech initiation route
+      const response = await fetch("/api/payment/paytech/initiate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ formData, items }),
@@ -65,13 +65,13 @@ export default function Checkout() {
         throw new Error(data.error || "Erreur lors de l'initialisation du paiement.");
       }
 
-      const { wave_launch_url } = data;
+      const { redirect_url } = data;
 
-      // Clear cart before redirecting to Wave
+      // Clear cart before redirecting to PayTech
       clearCart();
 
-      // Redirect to Wave payment page
-      window.location.href = wave_launch_url;
+      // Redirect to PayTech payment page
+      window.location.href = redirect_url;
 
     } catch (err: any) {
       console.error("Payment initiation error:", err);
@@ -109,14 +109,14 @@ export default function Checkout() {
           </Link>
           <div className="flex items-center gap-2 text-green-600 font-bold text-sm bg-green-50 px-3 py-1.5 rounded-full">
             <ShieldCheck size={16} />
-            Paiement Sécurisé Wave
+            Paiement 100% Sécurisé
           </div>
         </div>
       </div>
 
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <h1 className="text-3xl md:text-4xl font-black text-gray-900 tracking-tight mb-2">Validation de la commande</h1>
-        <p className="text-gray-500 mb-8">Renseignez vos informations, puis vous serez redirigé vers Wave pour payer.</p>
+        <p className="text-gray-500 mb-8">Renseignez vos informations, puis vous serez redirigé vers le paiement sécurisé.</p>
 
         {error && (
           <div className="bg-red-50 border border-red-200 text-red-700 font-medium px-5 py-4 rounded-2xl mb-6 flex items-start gap-3">
@@ -184,28 +184,29 @@ export default function Checkout() {
               </div>
             </div>
 
-            {/* Payment method — Wave */}
+            {/* Payment method — PayTech */}
             <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 relative overflow-hidden">
-              <div className="absolute top-0 left-0 w-1 h-full bg-orange-500" />
+              <div className="absolute top-0 left-0 w-1 h-full bg-[#1b508f]" />
               <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-                <span className="w-8 h-8 rounded-full bg-orange-50 text-orange-500 flex items-center justify-center text-sm font-black">2</span>
+                <span className="w-8 h-8 rounded-full bg-blue-50 text-[#1b508f] flex items-center justify-center text-sm font-black">2</span>
                 Méthode de paiement
               </h2>
 
-              {/* Wave option */}
-              <div className="flex items-start gap-4 p-5 rounded-2xl border-2 border-orange-400 bg-gradient-to-br from-orange-50 to-amber-50">
-                <div className="w-12 h-12 bg-orange-500 rounded-xl flex items-center justify-center shrink-0">
-                  <Zap size={24} className="text-white" />
+              {/* PayTech option */}
+              <div className="flex items-start gap-4 p-5 rounded-2xl border-2 border-[#1b508f] bg-gradient-to-br from-blue-50 to-white">
+                <div className="w-12 h-12 bg-[#1b508f] rounded-xl flex items-center justify-center shrink-0">
+                  <CreditCard size={24} className="text-white" />
                 </div>
                 <div className="flex-1">
-                  <p className="font-black text-gray-900 mb-0.5">Wave — Paiement instantané</p>
-                  <p className="text-sm text-gray-600">
-                    Après confirmation, vous serez redirigé vers l'interface Wave sécurisée pour valider le paiement depuis votre compte Wave.
+                  <p className="font-black text-gray-900 mb-0.5">Mobile Money & Carte (PayTech)</p>
+                  <p className="text-sm text-gray-600 mb-3">
+                    Payez avec Orange Money, Wave, Free Money ou par Carte Bancaire sur la passerelle sécurisée PayTech.
                   </p>
-                  <div className="flex flex-wrap gap-2 mt-3">
-                    {["✅ Sécurisé", "⚡ Instantané", "📱 Mobile-first"].map(tag => (
-                      <span key={tag} className="text-xs bg-white border border-orange-200 text-orange-700 font-bold px-2.5 py-1 rounded-full">{tag}</span>
-                    ))}
+                  <div className="flex flex-wrap gap-2">
+                    <span className="text-xs bg-orange-100 text-orange-700 font-bold px-2.5 py-1 rounded-md">Orange Money</span>
+                    <span className="text-xs bg-blue-100 text-blue-700 font-bold px-2.5 py-1 rounded-md">Wave</span>
+                    <span className="text-xs bg-red-100 text-red-700 font-bold px-2.5 py-1 rounded-md">Free Money</span>
+                    <span className="text-xs bg-gray-100 text-gray-700 font-bold px-2.5 py-1 rounded-md">Visa / Mastercard</span>
                   </div>
                 </div>
               </div>
@@ -256,7 +257,7 @@ export default function Checkout() {
                 </div>
                 <div className="flex justify-between items-center pt-3 border-t border-gray-100">
                   <span className="font-black text-gray-900">Total</span>
-                  <span className="font-black text-2xl text-orange-500">
+                  <span className="font-black text-2xl text-[#1b508f]">
                     {subtotal.toLocaleString("fr-SN", { style: "currency", currency: "XOF" })}
                   </span>
                 </div>
@@ -265,16 +266,16 @@ export default function Checkout() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-orange-500 hover:bg-orange-600 text-white font-black py-4 px-6 rounded-2xl transition-all shadow-lg shadow-orange-500/20 flex items-center justify-center gap-3 disabled:opacity-60 disabled:cursor-not-allowed hover:-translate-y-0.5 active:translate-y-0 text-lg"
+                className="w-full bg-[#1b508f] hover:bg-blue-800 text-white font-black py-4 px-6 rounded-2xl transition-all shadow-lg shadow-[#1b508f]/20 flex items-center justify-center gap-3 disabled:opacity-60 disabled:cursor-not-allowed hover:-translate-y-0.5 active:translate-y-0 text-lg"
               >
                 {isSubmitting ? (
                   <>
                     <Loader2 size={22} className="animate-spin" />
-                    Redirection vers Wave...
+                    Redirection sécurisée...
                   </>
                 ) : (
                   <>
-                    <Zap size={22} />
+                    <Lock size={20} />
                     Payer {subtotal.toLocaleString("fr-SN", { style: "currency", currency: "XOF" })}
                     <ArrowRight size={20} />
                   </>

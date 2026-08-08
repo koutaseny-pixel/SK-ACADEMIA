@@ -3,9 +3,9 @@ import { LayoutDashboard, Package, ShoppingCart, Users, Settings, LogOut } from 
 
 export default function AdminSidebar() {
   const menuItems = [
-    { name: "Dashboard", icon: LayoutDashboard, href: "/admin" },
-    { name: "Commandes", icon: ShoppingCart, href: "/admin/orders" },
+    { name: "Vue d'ensemble", icon: LayoutDashboard, href: "/admin" },
     { name: "Produits", icon: Package, href: "/admin/products" },
+    { name: "Commandes", icon: ShoppingCart, href: "/admin/orders" },
     { name: "Clients", icon: Users, href: "/admin/customers" },
     { name: "Paramètres", icon: Settings, href: "/admin/settings" },
   ];
