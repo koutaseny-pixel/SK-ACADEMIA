@@ -11,6 +11,7 @@ export default async function OrderHistory() {
     .from("orders")
     .select(`
       id, 
+      reference,
       status, 
       created_at, 
       total_amount,
@@ -20,7 +21,7 @@ export default async function OrderHistory() {
         price_at_time
       )
     `)
-    .eq("customer_email", user?.email)
+    .eq("user_id", user?.id)
     .order("created_at", { ascending: false });
 
   return (
@@ -48,7 +49,7 @@ export default async function OrderHistory() {
               <div key={order.id} className="p-6">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4 pb-4 border-b border-gray-50">
                   <div>
-                    <h3 className="font-bold text-gray-900">Commande #{order.id.split('-')[0]}</h3>
+                    <h3 className="font-bold text-gray-900">Commande {order.reference}</h3>
                     <p className="text-sm text-gray-500">Passée le {new Date(order.created_at).toLocaleDateString('fr-SN', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
                   </div>
                   <div className="flex items-center gap-4">

@@ -1,6 +1,11 @@
+-- Drop tables if they exist to allow clean recreation
+DROP TABLE IF EXISTS order_items;
+DROP TABLE IF EXISTS orders;
+
 -- Table: orders
 CREATE TABLE orders (
   id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+  reference text UNIQUE NOT NULL,
   created_at timestamp with time zone DEFAULT timezone('utc'::text, now()) NOT NULL,
   user_id uuid REFERENCES auth.users(id) ON DELETE SET NULL,
   customer_first_name text NOT NULL,

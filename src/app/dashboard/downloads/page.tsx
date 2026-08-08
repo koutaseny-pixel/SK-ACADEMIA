@@ -12,14 +12,37 @@ export default async function DownloadsLibrary() {
       id,
       order_items (
         product_id,
-        product_name
+        product_name,
+        products (
+          file_url
+        )
       )
     `)
-    .eq("customer_email", user?.email)
+    .eq("user_id", user?.id)
     .eq("status", "paid");
 
-  // Flatten the items
-  const accessibleItems = paidOrders?.flatMap(order => order.order_items) || [];
+  // Flatten the items and generate signed URLs
+  const rawItems = paidOrders?.flatMap(order => order.order_items) || [];
+  
+  const accessibleItems = await Promise.all(
+    rawItems.map(async (item: any) => {
+      let signedUrl = null;
+      const filePath = item.products?.file_url;
+      
+      if (filePath) {
+        const { data } = await supabase.storage
+          .from("product-files")
+          .createSignedUrl(filePath, 60 * 60); // 1 hour validity
+          
+        signedUrl = data?.signedUrl;
+      }
+      
+      return {
+        ...item,
+        signedUrl
+      };
+    })
+  );
 
   return (
     <div className="space-y-8">
@@ -49,10 +72,14 @@ export default async function DownloadsLibrary() {
                 <div className="flex-1">
                   <h4 className="font-semibold text-gray-900 line-clamp-2 mb-1">{item.product_name}</h4>
                   <p className="text-sm text-gray-500 mb-3">Format PDF</p>
-                  <button className="flex items-center gap-2 text-primary font-medium text-sm hover:underline">
-                    <Download size={16} />
-                    Télécharger
-                  </button>
+                  {item.signedUrl ? (
+                    <a href={item.signedUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-primary font-medium text-sm hover:underline">
+                      <Download size={16} />
+                      Télécharger
+                    </a>
+                  ) : (
+                    <span className="text-gray-400 text-sm italic">Fichier indisponible</span>
+                  )}
                 </div>
               </div>
             ))}

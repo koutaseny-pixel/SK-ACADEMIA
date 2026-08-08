@@ -56,9 +56,12 @@ export default function Checkout() {
 
       const { data: { user } } = await supabase.auth.getUser();
 
+      const reference = `SK-${Math.floor(100000 + Math.random() * 900000)}`;
+
       const { data: order, error: orderError } = await supabase
         .from('orders')
         .insert({
+          reference,
           user_id: user?.id || null,
           customer_first_name: formData.firstName,
           customer_last_name: formData.lastName,
