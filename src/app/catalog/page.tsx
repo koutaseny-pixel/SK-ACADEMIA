@@ -10,6 +10,7 @@ export default async function Catalog({ searchParams }: { searchParams: { catego
   const { data: products, error } = await supabase
     .from('products')
     .select('*')
+    .eq('is_published', true)
     .order('created_at', { ascending: false });
 
   if (error) {
