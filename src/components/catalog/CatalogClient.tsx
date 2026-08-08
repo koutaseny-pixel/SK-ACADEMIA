@@ -1,23 +1,32 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import ProductCard, { Product } from "@/components/ui/ProductCard";
 import { Search, Filter, X, ChevronLeft, ChevronRight } from "lucide-react";
 
 interface CatalogClientProps {
   initialProducts: Product[];
+  initialCategory?: string;
 }
 
 const CATEGORIES = ["Préparation Concours", "Formation Informatique", "Ressources & E-books"];
 const LEVELS = ["Lycée", "Université", "Concours Professionnel"];
 
-export default function CatalogClient({ initialProducts }: CatalogClientProps) {
+export default function CatalogClient({ initialProducts, initialCategory }: CatalogClientProps) {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedLevels, setSelectedLevels] = useState<string[]>([]);
   const [sortBy, setSortBy] = useState("recommended");
   const [currentPage, setCurrentPage] = useState(1);
   const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
+
+  useEffect(() => {
+    if (initialCategory) {
+      if (initialCategory === 'prepa') setSelectedCategories(["Préparation Concours"]);
+      else if (initialCategory === 'formation') setSelectedCategories(["Formation Informatique"]);
+      else if (initialCategory === 'ressources') setSelectedCategories(["Ressources & E-books"]);
+    }
+  }, [initialCategory]);
 
   const ITEMS_PER_PAGE = 9;
 

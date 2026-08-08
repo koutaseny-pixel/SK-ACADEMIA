@@ -1,7 +1,11 @@
 import { createClient } from "@/lib/supabase/server";
 import CatalogClient from "@/components/catalog/CatalogClient";
 
-export default async function Catalog() {
+export default async function Catalog({ searchParams }: { searchParams: { category?: string } }) {
+  // Wait for searchParams (Next 15+)
+  const params = await searchParams;
+  const initialCategory = params?.category;
+
   const supabase = await createClient();
   const { data: products, error } = await supabase
     .from('products')
@@ -26,7 +30,7 @@ export default async function Catalog() {
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
-      <CatalogClient initialProducts={catalogProducts} />
+      <CatalogClient initialProducts={catalogProducts} initialCategory={initialCategory} />
     </div>
   );
 }
