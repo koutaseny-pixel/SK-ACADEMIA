@@ -13,11 +13,13 @@ export async function POST(request: Request) {
 
     const API_KEY = process.env.PAYTECH_API_KEY;
     const API_SECRET = process.env.PAYTECH_API_SECRET;
-    const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+    const protocol = request.headers.get("x-forwarded-proto") || "http";
+    const host = request.headers.get("host");
+    const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || `${protocol}://${host}`;
 
-    if (!API_KEY || !API_SECRET || !BASE_URL) {
-      console.error("PayTech API keys or Base URL not configured");
-      return NextResponse.json({ error: "Paiement non configuré sur le serveur" }, { status: 500 });
+    if (!API_KEY || !API_SECRET) {
+      console.error("PayTech API keys not configured");
+      return NextResponse.json({ error: "Clés PayTech non configurées sur le serveur" }, { status: 500 });
     }
 
     const supabase = await createClient();
@@ -102,8 +104,20 @@ export async function POST(request: Request) {
       const errorText = await paytechResponse.text();
       console.error("PayTech API HTTP error:", errorText);
       await supabase.from("orders").update({ status: "cancelled" }).eq("id", orderId);
+      
+      // Essayer d'extraire le message d'erreur si c'est du JSON
+      let errorMessage = "Erreur HTTP lors de la communication avec PayTech.";
+      try {
+        const errJson = JSON.parse(errorText);
+        if (errJson.error && errJson.error.length > 0) {
+          errorMessage = errJson.error[0];
+        } else if (errJson.message) {
+          errorMessage = errJson.message;
+        }
+      } catch (e) {}
+
       return NextResponse.json(
-        { error: "Erreur HTTP lors de la communication avec PayTech." },
+        { error: errorMessage },
         { status: 502 }
       );
     }
