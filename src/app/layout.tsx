@@ -10,8 +10,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "SK Academia - Educational Marketplace",
-  description: "Top-tier educational resources, study guides, and online courses for students in Senegal and beyond.",
+  title: "SK Academia - Votre plateforme pour la réussite académique",
+  description: "Ressources éducatives, fascicules de concours et formations en ligne pour les étudiants au Sénégal et au-delà.",
 };
 
 export default function RootLayout({

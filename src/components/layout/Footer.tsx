@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Mail, Phone, MapPin, Globe, MessageCircle, Video } from "lucide-react";
+import { Mail, Phone, MapPin, Facebook, Youtube, Instagram, MessageCircle } from "lucide-react";
 
 export default function Footer() {
   return (
@@ -8,14 +8,15 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
           {/* Column 1 */}
           <div>
-            <h3 className="text-xl font-black mb-6 tracking-tight">SK ACADEMY</h3>
+            <h3 className="text-xl font-black mb-6 tracking-tight">SK ACADEMIA</h3>
             <p className="text-blue-100 text-sm mb-6 leading-relaxed">
               Votre clé pour réussir les concours au Sénégal. Fascicules numériques, cours vidéo, et formations en informatique de qualité pour exceller.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="w-8 h-8 rounded bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"><Globe size={16} /></a>
-              <a href="#" className="w-8 h-8 rounded bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"><MessageCircle size={16} /></a>
-              <a href="#" className="w-8 h-8 rounded bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"><Video size={16} /></a>
+              <a href="https://wa.me/221000000000" target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded bg-white/10 flex items-center justify-center hover:bg-green-500 transition-colors"><MessageCircle size={16} /></a>
+              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded bg-white/10 flex items-center justify-center hover:bg-blue-600 transition-colors"><Facebook size={16} /></a>
+              <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded bg-white/10 flex items-center justify-center hover:bg-red-600 transition-colors"><Youtube size={16} /></a>
+              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded bg-white/10 flex items-center justify-center hover:bg-pink-600 transition-colors"><Instagram size={16} /></a>
             </div>
           </div>
 

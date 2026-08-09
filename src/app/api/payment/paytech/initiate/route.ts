@@ -30,13 +30,15 @@ export async function POST(request: Request) {
       0
     );
 
-    // Generate a unique reference
+    // Generate a unique reference and order ID
     const reference = `SK-${Math.floor(100000 + Math.random() * 900000)}`;
+    const orderId = crypto.randomUUID();
 
-    // 1. Create the order in DB (pending)
-    const { data: order, error: orderError } = await supabase
+    // 1. Create the order in DB (pending) - NO .select() to avoid RLS read restrictions!
+    const { error: orderError } = await supabase
       .from("orders")
       .insert({
+        id: orderId,
         reference,
         user_id: user?.id || null,
         customer_first_name: formData.firstName,
@@ -46,9 +48,7 @@ export async function POST(request: Request) {
         total_amount: total,
         payment_method: "paytech", // Storing paytech generically
         status: "pending",
-      })
-      .select()
-      .single();
+      });
 
     if (orderError) {
       console.error("Order creation error:", orderError);
@@ -57,7 +57,7 @@ export async function POST(request: Request) {
 
     // 2. Insert order items
     const orderItems = items.map((item: any) => ({
-      order_id: order.id,
+      order_id: orderId,
       product_id: item.id,
       product_name: item.name,
       quantity: item.quantity,
@@ -70,7 +70,7 @@ export async function POST(request: Request) {
 
     if (itemsError) {
       // Rollback order if items fail
-      await supabase.from("orders").delete().eq("id", order.id);
+      await supabase.from("orders").delete().eq("id", orderId);
       throw itemsError;
     }
 
@@ -85,7 +85,7 @@ export async function POST(request: Request) {
       ipn_url: `${BASE_URL}/api/payment/paytech/callback`,
       success_url: `${BASE_URL}/success?ref=${reference}`,
       cancel_url: `${BASE_URL}/checkout?error=payment_cancelled`,
-      custom_field: JSON.stringify({ order_id: order.id, email: formData.email })
+      custom_field: JSON.stringify({ order_id: orderId, email: formData.email })
     };
 
     const paytechResponse = await fetch("https://paytech.sn/api/payment/request-payment", {
@@ -101,7 +101,7 @@ export async function POST(request: Request) {
     if (!paytechResponse.ok) {
       const errorText = await paytechResponse.text();
       console.error("PayTech API HTTP error:", errorText);
-      await supabase.from("orders").update({ status: "cancelled" }).eq("id", order.id);
+      await supabase.from("orders").update({ status: "cancelled" }).eq("id", orderId);
       return NextResponse.json(
         { error: "Erreur HTTP lors de la communication avec PayTech." },
         { status: 502 }
@@ -112,7 +112,7 @@ export async function POST(request: Request) {
 
     if (paytechData.success !== 1) {
       console.error("PayTech API logical error:", paytechData);
-      await supabase.from("orders").update({ status: "cancelled" }).eq("id", order.id);
+      await supabase.from("orders").update({ status: "cancelled" }).eq("id", orderId);
       return NextResponse.json(
         { error: "Erreur logique de l'API PayTech." },
         { status: 502 }
@@ -123,7 +123,7 @@ export async function POST(request: Request) {
 
     if (!redirectUrl) {
       console.error("No redirect URL in PayTech response:", paytechData);
-      await supabase.from("orders").update({ status: "cancelled" }).eq("id", order.id);
+      await supabase.from("orders").update({ status: "cancelled" }).eq("id", orderId);
       return NextResponse.json(
         { error: "Réponse PayTech invalide (URL manquante)." },
         { status: 502 }
