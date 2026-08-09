@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Mail, Phone, MapPin, Facebook, Youtube, Instagram, MessageCircle } from "lucide-react";
+import { Mail, Phone, MapPin, MessageCircle } from "lucide-react";
 
 export default function Footer() {
   return (
@@ -14,9 +14,9 @@ export default function Footer() {
             </p>
             <div className="flex space-x-4">
               <a href="https://wa.me/221000000000" target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded bg-white/10 flex items-center justify-center hover:bg-green-500 transition-colors"><MessageCircle size={16} /></a>
-              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded bg-white/10 flex items-center justify-center hover:bg-blue-600 transition-colors"><Facebook size={16} /></a>
-              <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded bg-white/10 flex items-center justify-center hover:bg-red-600 transition-colors"><Youtube size={16} /></a>
-              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded bg-white/10 flex items-center justify-center hover:bg-pink-600 transition-colors"><Instagram size={16} /></a>
+              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="w-8 h-8 text-xs font-bold rounded bg-white/10 flex items-center justify-center hover:bg-blue-600 transition-colors">Fb</a>
+              <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="w-8 h-8 text-xs font-bold rounded bg-white/10 flex items-center justify-center hover:bg-red-600 transition-colors">Yt</a>
+              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="w-8 h-8 text-xs font-bold rounded bg-white/10 flex items-center justify-center hover:bg-pink-600 transition-colors">Ig</a>
             </div>
           </div>
 
