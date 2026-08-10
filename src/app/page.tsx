@@ -4,7 +4,6 @@ import ScrollReveal from "@/components/ui/ScrollReveal";
 import ProductMarquee from "@/components/ui/ProductMarquee";
 import { Award, MonitorPlay, BookDown, ArrowRight, MessageCircle, Star, ShieldCheck, Zap, HelpCircle, CheckCircle2 } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
-import { WelcomeModal } from "@/components/ui/WelcomeModal";
 
 export default async function Home() {
   const supabase = await createClient();
@@ -17,7 +16,6 @@ export default async function Home() {
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
-      <WelcomeModal />
       {/* 1. Hero Section (Reverted to Original Clean Design) */}
       <section className="bg-white overflow-hidden pt-12 pb-24 border-b border-gray-100">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
