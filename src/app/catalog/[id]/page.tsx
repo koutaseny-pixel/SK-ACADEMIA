@@ -93,6 +93,17 @@ export default async function ProductDetail({ params }: { params: { id: string }
 
             <AddToCartButton product={product} />
 
+            {product.preview_url && (
+              <a 
+                href={product.preview_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-4 w-full font-bold py-4 px-6 rounded-xl transition-all text-sm md:text-base shadow-sm bg-white border-2 border-gray-200 text-gray-700 hover:bg-gray-50 hover:border-gray-300 flex items-center justify-center gap-2"
+              >
+                👀 Regarder un aperçu avant d'acheter
+              </a>
+            )}
+
             {/* Reassurance */}
             <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 gap-6 pt-8 border-t border-gray-100">
               <div className="flex items-start gap-3">

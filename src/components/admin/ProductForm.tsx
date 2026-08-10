@@ -16,6 +16,7 @@ type Product = {
   is_published: boolean;
   image_url: string;
   file_url: string;
+  preview_url?: string;
 };
 
 export default function ProductForm({ initialData }: { initialData?: Product }) {
@@ -34,10 +35,12 @@ export default function ProductForm({ initialData }: { initialData?: Product }) 
     is_published: initialData?.is_published || false,
     image_url: initialData?.image_url || "",
     file_url: initialData?.file_url || "",
+    preview_url: initialData?.preview_url || "",
   });
 
   const [coverFile, setCoverFile] = useState<File | null>(null);
   const [pdfFile, setPdfFile] = useState<File | null>(null);
+  const [previewFile, setPreviewFile] = useState<File | null>(null);
 
   const uploadFile = async (file: File, bucket: string, path: string) => {
     const fileExt = file.name.split('.').pop();
@@ -67,9 +70,14 @@ export default function ProductForm({ initialData }: { initialData?: Product }) 
     try {
       let finalImageUrl = formData.image_url;
       let finalFileUrl = formData.file_url;
+      let finalPreviewUrl = formData.preview_url;
 
       if (coverFile) {
         finalImageUrl = await uploadFile(coverFile, 'product-covers', 'covers');
+      }
+
+      if (previewFile) {
+        finalPreviewUrl = await uploadFile(previewFile, 'product-covers', 'previews');
       }
 
       if (pdfFile) {
@@ -85,6 +93,7 @@ export default function ProductForm({ initialData }: { initialData?: Product }) 
         is_published: formData.is_published,
         image_url: finalImageUrl,
         file_url: finalFileUrl,
+        preview_url: finalPreviewUrl,
       };
 
       if (initialData?.id) {
@@ -201,6 +210,29 @@ export default function ProductForm({ initialData }: { initialData?: Product }) 
                 </span>
                 {formData.image_url && !coverFile && (
                   <span className="text-xs text-green-600 font-bold mt-2">Image actuelle déjà enregistrée</span>
+                )}
+              </label>
+            </div>
+          </div>
+
+          {/* Fichier Aperçu */}
+          <div>
+            <label className="block text-sm font-bold text-gray-700 mb-2">Fichier Aperçu (Image ou PDF) - Optionnel</label>
+            <div className="border-2 border-dashed border-gray-200 rounded-xl p-6 text-center hover:border-purple-500 transition-colors bg-gray-50">
+              <input 
+                type="file" 
+                accept="image/*,.pdf"
+                onChange={e => setPreviewFile(e.target.files?.[0] || null)}
+                className="hidden" 
+                id="preview-upload" 
+              />
+              <label htmlFor="preview-upload" className="cursor-pointer flex flex-col items-center">
+                <FileText size={32} className="text-gray-400 mb-3" />
+                <span className="text-sm font-medium text-gray-600">
+                  {previewFile ? previewFile.name : "Cliquez pour uploader un aperçu gratuit"}
+                </span>
+                {formData.preview_url && !previewFile && (
+                  <span className="text-xs text-green-600 font-bold mt-2">Aperçu actuel déjà enregistré</span>
                 )}
               </label>
             </div>

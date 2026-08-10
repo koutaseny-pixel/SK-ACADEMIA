@@ -10,7 +10,8 @@ export interface Product {
   category: string;
   price: number;
   image_url?: string;
-  badge?: string; // Optional badge like "Nouveau", "Promo"
+  badge?: string;
+  preview_url?: string;
 }
 
 export default function ProductCard({ product }: { product: Product }) {
@@ -79,6 +80,16 @@ export default function ProductCard({ product }: { product: Product }) {
           >
             {added ? "AJOUTÉ !" : "AJOUTER AU PANIER"}
           </button>
+          {product.preview_url && (
+            <a 
+              href={product.preview_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-3 w-full font-bold py-2 px-4 rounded-xl transition-all text-sm shadow-sm bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 hover:border-gray-300 flex items-center justify-center"
+            >
+              Voir un aperçu
+            </a>
+          )}
         </div>
       </div>
     </div>
