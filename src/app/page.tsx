@@ -57,12 +57,63 @@ export default async function Home() {
             {/* Right Image */}
             <div className="w-full lg:w-1/2 relative flex justify-end">
               <ScrollReveal direction="left" delay={0.5} className="w-full flex justify-end">
-                <div className="relative w-full max-w-[600px] rounded-3xl overflow-hidden shadow-2xl bg-gray-100 aspect-[4/3] flex items-center justify-center border-8 border-white">
-                  <img 
-                    src="/hero.jpg" 
-                    alt="SK Academia Accueil" 
-                    className="w-full h-full object-cover"
-                  />
+                <div className="relative w-full max-w-[600px] rounded-3xl overflow-hidden shadow-2xl bg-gradient-to-br from-gray-900 via-gray-800 to-[#0a192f] aspect-[4/3] border-8 border-white flex items-center justify-center">
+                  
+                  {/* Decorative Elements */}
+                  <div className="absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-[#d4af37]/20 to-transparent"></div>
+                  <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-30"></div>
+                  
+                  {/* Abstract Shelves Background */}
+                  <div className="absolute inset-0 flex flex-col justify-between py-16 opacity-20">
+                     <div className="h-px w-full bg-gradient-to-r from-transparent via-[#d4af37] to-transparent"></div>
+                     <div className="h-px w-full bg-gradient-to-r from-transparent via-[#d4af37] to-transparent"></div>
+                     <div className="h-px w-full bg-gradient-to-r from-transparent via-[#d4af37] to-transparent"></div>
+                  </div>
+
+                  {/* Secondary Books in Background */}
+                  <div className="absolute left-8 bottom-12 w-[140px] h-[200px] bg-gradient-to-br from-green-700 to-green-900 rounded-r-lg rounded-l-sm shadow-2xl border-l-4 border-green-950 flex flex-col items-center justify-center p-4 transform -rotate-12 opacity-80 blur-[1px] hover:blur-none hover:opacity-100 transition-all duration-500">
+                     <h3 className="text-white font-black text-lg uppercase text-center leading-tight">Annales<br/><span className="text-yellow-400">Douanes</span></h3>
+                     <div className="absolute left-0 top-0 bottom-0 w-3 bg-gradient-to-r from-black/40 to-transparent"></div>
+                  </div>
+                  
+                  <div className="absolute right-8 bottom-16 w-[140px] h-[190px] bg-gradient-to-br from-red-700 to-red-900 rounded-r-lg rounded-l-sm shadow-2xl border-l-4 border-red-950 flex flex-col items-center justify-center p-4 transform rotate-12 opacity-80 blur-[1px] hover:blur-none hover:opacity-100 transition-all duration-500">
+                     <h3 className="text-white font-black text-lg uppercase text-center leading-tight">Concours<br/><span className="text-yellow-400">ENA</span></h3>
+                     <div className="absolute left-0 top-0 bottom-0 w-3 bg-gradient-to-r from-black/40 to-transparent"></div>
+                  </div>
+
+                  {/* Main Featured Book (FASTEF) */}
+                  <div className="relative z-10 w-[240px] h-[320px] bg-gradient-to-br from-[#1b508f] to-blue-900 rounded-r-xl rounded-l-sm shadow-[20px_20px_40px_rgba(0,0,0,0.6),inset_4px_0_10px_rgba(255,255,255,0.2)] border-l-8 border-[#0a2e5c] flex flex-col items-center justify-center p-6 text-center transform transition-transform hover:scale-105 duration-500 group">
+                    <div className="absolute top-3 right-3 flex gap-1.5 opacity-80">
+                       <span className="w-6 h-1 bg-green-500 rounded-full"></span>
+                       <span className="w-6 h-1 bg-yellow-400 rounded-full"></span>
+                       <span className="w-6 h-1 bg-red-500 rounded-full"></span>
+                    </div>
+                    
+                    <div className="w-16 h-16 mb-4 mt-4 rounded-full bg-gradient-to-tr from-[#d4af37] to-yellow-200 p-1 shadow-lg group-hover:rotate-12 transition-transform duration-500">
+                      <div className="w-full h-full bg-[#1b508f] rounded-full flex items-center justify-center border-2 border-white/20">
+                         <span className="text-[#d4af37] font-black text-xl font-serif">SK</span>
+                      </div>
+                    </div>
+                    
+                    <h3 className="text-white font-black text-[1.35rem] uppercase tracking-wider mb-2 leading-tight">
+                      Réussir le <br/>
+                      <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#d4af37] to-yellow-200">Concours</span>
+                    </h3>
+                    
+                    <div className="h-px w-20 bg-gradient-to-r from-transparent via-[#d4af37] to-transparent mb-3"></div>
+                    
+                    <p className="text-white font-black text-4xl mb-6 tracking-widest drop-shadow-md">FASTEF</p>
+                    
+                    <div className="mt-auto bg-gradient-to-r from-[#d4af37] to-yellow-500 text-[#0a2e5c] text-xs font-black uppercase px-5 py-2 rounded-full shadow-[0_0_15px_rgba(212,175,55,0.4)]">
+                      Édition 2025
+                    </div>
+                    
+                    {/* Book spine lighting effect */}
+                    <div className="absolute left-0 top-0 bottom-0 w-6 bg-gradient-to-r from-white/10 to-transparent rounded-l-sm"></div>
+                  </div>
+                  
+                  {/* Floating Gold Stand Shadow */}
+                  <div className="absolute bottom-10 left-1/2 -translate-x-1/2 w-64 h-6 bg-gradient-to-b from-[#d4af37]/40 to-transparent rounded-[100%] blur-md z-0"></div>
                 </div>
               </ScrollReveal>
 
