@@ -1,6 +1,8 @@
 import { MapPin, Phone, Mail, Send } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 
+export const revalidate = 0; // Disable static caching so settings update instantly
+
 export default async function Contact() {
   const supabase = await createClient();
   let settings = null;
