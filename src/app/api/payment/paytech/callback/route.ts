@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { NextResponse } from "next/server";
 import { createHash } from "crypto";
+import { sendOrderConfirmationEmail, OrderItemInfo } from "@/lib/email";
 
 export async function POST(request: Request) {
   try {
@@ -58,7 +59,7 @@ export async function POST(request: Request) {
 
     const { data: order, error: findError } = await supabase
       .from("orders")
-      .select("id, status, reference")
+      .select("id, status, reference, customer_first_name, customer_email")
       .eq("reference", clientReference)
       .single();
 
@@ -86,6 +87,55 @@ export async function POST(request: Request) {
 
     console.log(`✅ Order ${clientReference} marked as PAID. Downloads unlocked.`);
     
+    // 4.5. Send Confirmation Email with Download Links
+    try {
+      const { data: orderItems, error: itemsError } = await supabase
+        .from("order_items")
+        .select(`
+          id,
+          product_name,
+          products!inner(file_url)
+        `)
+        .eq("order_id", order.id);
+
+      if (!itemsError && orderItems && orderItems.length > 0 && order.customer_email) {
+        const itemsForEmail: OrderItemInfo[] = [];
+
+        for (const item of orderItems) {
+          const product: any = Array.isArray(item.products) ? item.products[0] : item.products;
+          if (product && product.file_url) {
+            // Generate signed URL (7 days = 60 * 60 * 24 * 7 = 604800 seconds)
+            const { data: signedData } = await supabase.storage
+              .from("product-files")
+              .createSignedUrl(product.file_url, 604800);
+
+            if (signedData?.signedUrl) {
+              itemsForEmail.push({
+                product_name: item.product_name,
+                download_url: signedData.signedUrl
+              });
+            }
+          }
+        }
+
+        if (itemsForEmail.length > 0) {
+          const emailResult = await sendOrderConfirmationEmail(
+            order.customer_email,
+            order.customer_first_name,
+            order.reference,
+            itemsForEmail
+          );
+          if (emailResult.error) {
+            console.error("Error sending email:", emailResult.error);
+          } else {
+            console.log(`✉️ Email sent to ${order.customer_email} for order ${order.reference}`);
+          }
+        }
+      }
+    } catch (emailErr) {
+      console.error("Unexpected error while sending email:", emailErr);
+    }
+
     // 5. Respond 200 OK to PayTech
     return NextResponse.json({ success: 1 });
   } catch (err: any) {
