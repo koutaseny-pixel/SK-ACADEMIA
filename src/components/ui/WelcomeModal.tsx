@@ -53,37 +53,39 @@ export function WelcomeModal() {
     }
   ];
 
-  return (
-    <Modal
-      isOpen={isOpen}
-      onClose={() => setIsOpen(false)}
-      title="Bienvenue sur SK Academia 👋"
-      maxWidth="lg"
-    >
-      <div className="space-y-6">
-        <p className="text-gray-600">
-          Pour vous proposer les meilleurs fascicules et ressources, dites-nous dans quelle filière vous étudiez actuellement :
-        </p>
+  if (!isOpen) return null;
 
-        <div className="space-y-6">
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[url('https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80')] bg-cover bg-center animate-in fade-in duration-500">
+      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm"></div>
+      
+      <div className="relative z-10 w-full max-w-2xl bg-white/10 backdrop-blur-md border border-white/20 p-6 sm:p-10 rounded-3xl shadow-2xl animate-in zoom-in-95 duration-500">
+        <div className="text-center mb-8">
+          <h2 className="text-3xl font-black text-white mb-3">Bienvenue sur SK Academia 👋</h2>
+          <p className="text-gray-200 text-lg">
+            Pour vous proposer les meilleurs fascicules et ressources, dites-nous dans quelle filière vous étudiez actuellement :
+          </p>
+        </div>
+
+        <div className="space-y-6 max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar">
           {filieres.map((group) => (
             <div key={group.category}>
-              <h3 className="font-bold text-gray-900 mb-3 text-sm uppercase tracking-wider">{group.category}</h3>
-              <div className="grid grid-cols-1 gap-3">
+              <h3 className="font-bold text-white mb-3 text-sm uppercase tracking-wider">{group.category}</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {group.items.map((item) => {
                   const Icon = item.icon;
                   return (
                     <button
                       key={item.id}
                       onClick={() => handleSelectFiliere(item.id)}
-                      className="flex items-center gap-4 p-4 rounded-xl border border-gray-100 hover:border-[#00853f] hover:shadow-md transition-all text-left group bg-white"
+                      className="flex items-center gap-4 p-4 rounded-xl border border-white/10 hover:border-white/50 hover:bg-white/10 transition-all text-left group bg-white/5"
                     >
-                      <div className={`w-12 h-12 rounded-full flex items-center justify-center shrink-0 ${item.bg} ${item.color} group-hover:scale-110 transition-transform`}>
+                      <div className={`w-12 h-12 rounded-full flex items-center justify-center shrink-0 ${item.bg} ${item.color} group-hover:scale-110 transition-transform shadow-lg`}>
                         <Icon size={24} />
                       </div>
                       <div>
-                        <div className="font-bold text-gray-900">{item.name}</div>
-                        <div className="text-sm text-gray-500">Recommandations sur mesure</div>
+                        <div className="font-bold text-white text-sm">{item.name}</div>
+                        <div className="text-xs text-gray-300">Sélectionner</div>
                       </div>
                     </button>
                   );
@@ -95,11 +97,11 @@ export function WelcomeModal() {
         
         <button 
           onClick={() => setIsOpen(false)}
-          className="w-full text-center text-sm font-medium text-gray-400 hover:text-gray-600 mt-4"
+          className="w-full text-center text-sm font-medium text-gray-300 hover:text-white mt-8 transition-colors"
         >
           Passer pour le moment
         </button>
       </div>
-    </Modal>
+    </div>
   );
 }
