@@ -54,16 +54,16 @@ export default function AdminSettings() {
     setMessage("");
 
     try {
-      // Upsert: met à jour ou insère si n'existe pas
+      // Utilise update au lieu de upsert car la ligne existe déjà et RLS n'autorise que UPDATE
       const { error } = await supabase
         .from('site_settings')
-        .upsert({ 
-          id: 1, 
+        .update({ 
           email: settings.email, 
           phone: settings.phone, 
           address: settings.address,
           updated_at: new Date().toISOString()
-        });
+        })
+        .eq('id', 1);
 
       if (error) throw error;
       
