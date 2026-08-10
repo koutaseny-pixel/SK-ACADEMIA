@@ -61,6 +61,14 @@ export default function UserMenu({ user, role }: UserMenuProps) {
             >
               <LayoutDashboard size={16} /> Mon Espace
             </Link>
+
+            <Link 
+              href="/dashboard/settings" 
+              onClick={() => setIsOpen(false)}
+              className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-orange-50 hover:text-orange-500 transition-colors font-medium"
+            >
+              <User size={16} /> Mon Profil
+            </Link>
             
             {role === 'admin' && (
               <Link 
@@ -78,7 +86,7 @@ export default function UserMenu({ user, role }: UserMenuProps) {
               onClick={handleSignOut}
               className="w-full flex items-center gap-3 px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors font-medium"
             >
-              <LogOut size={16} /> Se déconnecter
+              <LogOut size={16} /> Déconnexion
             </button>
           </div>
         </div>

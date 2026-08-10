@@ -19,12 +19,12 @@ BEGIN
     END IF;
 
     -- 3. Insérer une fausse commande "payée"
-    INSERT INTO public.orders (user_id, reference, customer_email, customer_first_name, customer_last_name, total_amount, status, payment_method)
-    VALUES (v_user_id, 'TEST-' || substr(md5(random()::text), 1, 6), 'skacademia25@gmail.com', 'Admin', 'Test', 0, 'paid', 'simulation')
+    INSERT INTO public.orders (user_id, reference, customer_email, customer_first_name, customer_last_name, customer_phone, total_amount, status, payment_method)
+    VALUES (v_user_id, 'TEST-' || substr(md5(random()::text), 1, 6), 'skacademia25@gmail.com', 'Admin', 'Test', '+221770000000', 0, 'paid', 'simulation')
     RETURNING id INTO v_order_id;
 
     -- 4. Insérer l'article de la commande
-    INSERT INTO public.order_items (order_id, product_id, product_name, price)
-    VALUES (v_order_id, v_product_id, (SELECT name FROM public.products WHERE id = v_product_id), 0);
+    INSERT INTO public.order_items (order_id, product_id, product_name, quantity, price_at_time)
+    VALUES (v_order_id, v_product_id, (SELECT name FROM public.products WHERE id = v_product_id), 1, 0);
 
 END $$;
