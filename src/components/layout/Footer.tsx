@@ -1,7 +1,20 @@
 import Link from "next/link";
 import { Mail, Phone, MapPin, MessageCircle } from "lucide-react";
+import { createClient } from "@/lib/supabase/server";
 
-export default function Footer() {
+export default async function Footer() {
+  const supabase = await createClient();
+  let settings = null;
+  try {
+    const { data } = await supabase.from('site_settings').select('*').eq('id', 1).single();
+    settings = data;
+  } catch (err) {
+    console.error("Footer settings fetch error:", err);
+  }
+
+  const email = settings?.email || "support@skacademy.sn";
+  const phone = settings?.phone || "+221 77 000 00 00";
+  const address = settings?.address || "Dakar, Sénégal";
   return (
     <footer className="bg-[#1b508f] text-white py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -48,15 +61,15 @@ export default function Footer() {
             <ul className="space-y-4 text-sm text-blue-100">
               <li className="flex items-start gap-3">
                 <Phone size={18} className="shrink-0 mt-0.5" />
-                <span>+221 77 000 00 00<br/>+221 76 000 00 00</span>
+                <span className="whitespace-pre-wrap">{phone}</span>
               </li>
               <li className="flex items-start gap-3">
                 <Mail size={18} className="shrink-0 mt-0.5" />
-                <a href="mailto:support@skacademy.sn" className="hover:text-white transition-colors">support@skacademy.sn</a>
+                <a href={`mailto:${email}`} className="hover:text-white transition-colors">{email}</a>
               </li>
               <li className="flex items-start gap-3">
                 <MapPin size={18} className="shrink-0 mt-0.5" />
-                <span>Dakar, Sénégal</span>
+                <span className="whitespace-pre-wrap">{address}</span>
               </li>
             </ul>
           </div>

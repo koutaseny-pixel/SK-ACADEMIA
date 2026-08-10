@@ -202,11 +202,21 @@ export default function Checkout() {
                   <p className="text-sm text-gray-600 mb-3">
                     Payez avec Orange Money, Wave, Free Money ou par Carte Bancaire sur la passerelle sécurisée PayTech.
                   </p>
-                  <div className="flex flex-wrap gap-2">
-                    <span className="text-xs bg-orange-100 text-orange-700 font-bold px-2.5 py-1 rounded-md">Orange Money</span>
-                    <span className="text-xs bg-blue-100 text-blue-700 font-bold px-2.5 py-1 rounded-md">Wave</span>
-                    <span className="text-xs bg-red-100 text-red-700 font-bold px-2.5 py-1 rounded-md">Free Money</span>
-                    <span className="text-xs bg-gray-100 text-gray-700 font-bold px-2.5 py-1 rounded-md">Visa / Mastercard</span>
+                  <div className="flex flex-wrap gap-3 mt-4 items-center">
+                    <div className="h-8 bg-white rounded-md p-1 shadow-sm border border-gray-100 flex items-center justify-center">
+                      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Orange_logo.svg/1024px-Orange_logo.svg.png" alt="Orange Money" className="h-6 w-auto object-contain" />
+                      <span className="text-xs font-bold text-orange-500 ml-1">Money</span>
+                    </div>
+                    <div className="h-8 bg-[#1dc0ed] rounded-md p-1 px-2 shadow-sm border border-gray-100 flex items-center justify-center">
+                      <span className="text-white font-black text-sm tracking-tighter">wave</span>
+                    </div>
+                    <div className="h-8 bg-white rounded-md p-1 px-2 shadow-sm border border-gray-100 flex items-center justify-center">
+                      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Logo_Free_S%C3%A9n%C3%A9gal.svg/512px-Logo_Free_S%C3%A9n%C3%A9gal.svg.png" alt="Free Money" className="h-4 w-auto object-contain" />
+                    </div>
+                    <div className="h-8 bg-white rounded-md p-1 px-2 shadow-sm border border-gray-100 flex items-center justify-center gap-1">
+                      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/512px-Visa_Inc._logo.svg.png" alt="Visa" className="h-4 w-auto object-contain" />
+                      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/512px-Mastercard-logo.svg.png" alt="Mastercard" className="h-4 w-auto object-contain ml-2" />
+                    </div>
                   </div>
                 </div>
               </div>

@@ -21,11 +21,10 @@ export default async function Home() {
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col lg:flex-row items-center gap-12">
             
-            {/* Left Content */}
             <div className="w-full lg:w-1/2 flex flex-col justify-center relative">
               <ScrollReveal direction="up" delay={0.1}>
                 {/* Top Badge */}
-                <div className="inline-flex items-center gap-2 bg-orange-50 text-orange-500 font-bold px-4 py-2 rounded-full text-xs uppercase tracking-wider mb-8 w-max">
+                <div className="inline-flex items-center gap-2 bg-[#00853f]/10 text-[#00853f] font-bold px-4 py-2 rounded-full text-xs uppercase tracking-wider mb-8 w-max border border-[#00853f]/20">
                   La Plateforme Éducative #1 au Sénégal
                 </div>
               </ScrollReveal>
@@ -33,23 +32,23 @@ export default async function Home() {
               <ScrollReveal direction="up" delay={0.2}>
                 <h1 className="text-5xl md:text-6xl lg:text-[4rem] font-black tracking-tight text-gray-900 leading-[1.1] mb-6">
                   SK ACADEMIA :<br/>VOTRE CLÉ POUR<br/>
-                  <span className="text-orange-500">RÉUSSIR LES<br/>CONCOURS AU<br/>SÉNÉGAL</span>
+                  <span className="text-[#00853f]">RÉUSSIR LES<br/>CONCOURS AU<br/>SÉNÉGAL</span>
                 </h1>
               </ScrollReveal>
               
               <ScrollReveal direction="up" delay={0.3}>
-                <p className="text-lg text-gray-500 mb-10 max-w-lg font-medium leading-relaxed">
+                <p className="text-lg text-gray-600 mb-10 max-w-lg font-medium leading-relaxed">
                   Fascicules numériques, cours vidéo, et formations en informatique de qualité pour exceller dans vos études.
                 </p>
               </ScrollReveal>
 
               <ScrollReveal direction="up" delay={0.4}>
                 <div className="flex flex-wrap gap-4">
-                  <Link href="/catalog" className="inline-flex items-center justify-center bg-orange-500 hover:bg-orange-600 text-white font-bold py-4 px-8 rounded-full transition-colors text-lg shadow-xl shadow-orange-500/20">
+                  <Link href="/catalog" className="inline-flex items-center justify-center bg-[#00853f] hover:bg-[#006e33] text-white font-bold py-4 px-8 rounded-full transition-colors text-lg shadow-xl shadow-[#00853f]/20">
                     Découvrir nos produits
                   </Link>
-                  <div className="flex items-center gap-3 text-sm font-bold text-gray-500 px-4">
-                    <ShieldCheck size={20} className="text-[#1b508f]" /> Paiement 100% Sécurisé
+                  <div className="flex items-center gap-3 text-sm font-bold text-gray-600 px-4">
+                    <ShieldCheck size={20} className="text-[#00853f]" /> Paiement 100% Sécurisé
                   </div>
                 </div>
               </ScrollReveal>
@@ -60,8 +59,8 @@ export default async function Home() {
               <ScrollReveal direction="left" delay={0.5} className="w-full flex justify-end">
                 <div className="relative w-full max-w-[600px] rounded-3xl overflow-hidden shadow-2xl bg-gray-100 aspect-[4/3] flex items-center justify-center border-8 border-white">
                   <img 
-                    src="https://images.unsplash.com/photo-1544717305-2782549b5136?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-                    alt="Étudiant étudiant sur son ordinateur" 
+                    src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                    alt="Étudiants universitaires professionnels" 
                     className="w-full h-full object-cover"
                   />
                 </div>
@@ -69,7 +68,7 @@ export default async function Home() {
 
               {/* Floating Badges */}
               <div className="absolute top-1/4 -left-8 bg-white p-4 rounded-xl shadow-xl flex items-center gap-4 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-300">
-                <div className="bg-blue-50 p-3 rounded-lg text-[#1b508f]">
+                <div className="bg-[#e31b23]/10 p-3 rounded-lg text-[#e31b23]">
                   <BookDown size={24} />
                 </div>
                 <div>
@@ -79,7 +78,7 @@ export default async function Home() {
               </div>
 
               <div className="absolute bottom-8 right-8 bg-white p-4 rounded-xl shadow-xl flex items-center gap-4 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-500 z-10">
-                <div className="bg-orange-50 p-3 rounded-lg text-orange-500">
+                <div className="bg-[#fdef42]/20 p-3 rounded-lg text-yellow-600">
                   <Award size={24} />
                 </div>
                 <div>
@@ -90,10 +89,7 @@ export default async function Home() {
 
               {/* Floating Chat Buttons */}
               <div className="absolute -right-4 -bottom-4 flex flex-col gap-3 z-20">
-                <div className="w-14 h-14 bg-blue-600 rounded-full flex items-center justify-center text-white shadow-lg cursor-pointer hover:scale-110 transition-transform">
-                  <MessageCircle size={28} />
-                </div>
-                <div className="w-14 h-14 bg-green-500 rounded-full flex items-center justify-center text-white shadow-lg cursor-pointer hover:scale-110 transition-transform">
+                <div className="w-14 h-14 bg-[#00853f] rounded-full flex items-center justify-center text-white shadow-lg cursor-pointer hover:scale-110 transition-transform">
                   <MessageCircle size={28} />
                 </div>
               </div>
@@ -108,7 +104,7 @@ export default async function Home() {
         <div className="max-w-7xl mx-auto">
           <ScrollReveal direction="up">
             <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-black text-[#1b508f] tracking-tight mb-4">TROUVEZ CE QU'IL VOUS FAUT</h2>
+              <h2 className="text-3xl md:text-4xl font-black text-gray-900 tracking-tight mb-4">TROUVEZ CE QU'IL VOUS FAUT</h2>
               <p className="text-gray-500 font-medium max-w-2xl mx-auto">Des ressources adaptées à chaque étape de votre parcours académique et professionnel.</p>
             </div>
           </ScrollReveal>
@@ -116,7 +112,7 @@ export default async function Home() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
             <ScrollReveal direction="up" delay={0.1}>
               <Link href="/catalog?category=prepa" className="group bg-white rounded-3xl p-8 text-center transition-all duration-300 hover:shadow-xl hover:-translate-y-2 border border-gray-100 flex flex-col items-center h-full">
-                <div className="w-20 h-20 mb-6 bg-orange-50 rounded-2xl flex items-center justify-center text-orange-500 group-hover:bg-orange-500 group-hover:text-white transition-colors">
+                <div className="w-20 h-20 mb-6 bg-[#00853f]/10 rounded-2xl flex items-center justify-center text-[#00853f] group-hover:bg-[#00853f] group-hover:text-white transition-colors">
                   <Award size={40} strokeWidth={2} />
                 </div>
                 <h3 className="text-xl font-black text-gray-900 mb-3 uppercase">Préparation Concours</h3>
@@ -128,7 +124,7 @@ export default async function Home() {
 
             <ScrollReveal direction="up" delay={0.2}>
               <Link href="/catalog?category=formation" className="group bg-white rounded-3xl p-8 text-center transition-all duration-300 hover:shadow-xl hover:-translate-y-2 border border-gray-100 flex flex-col items-center h-full">
-                <div className="w-20 h-20 mb-6 bg-blue-50 rounded-2xl flex items-center justify-center text-[#1b508f] group-hover:bg-[#1b508f] group-hover:text-white transition-colors">
+                <div className="w-20 h-20 mb-6 bg-[#fdef42]/20 rounded-2xl flex items-center justify-center text-yellow-600 group-hover:bg-yellow-400 group-hover:text-gray-900 transition-colors">
                   <MonitorPlay size={40} strokeWidth={2} />
                 </div>
                 <h3 className="text-xl font-black text-gray-900 mb-3 uppercase">Formations Informatique</h3>
@@ -140,7 +136,7 @@ export default async function Home() {
 
             <ScrollReveal direction="up" delay={0.3}>
               <Link href="/catalog?category=ressources" className="group bg-white rounded-3xl p-8 text-center transition-all duration-300 hover:shadow-xl hover:-translate-y-2 border border-gray-100 flex flex-col items-center h-full">
-                <div className="w-20 h-20 mb-6 bg-purple-50 rounded-2xl flex items-center justify-center text-purple-600 group-hover:bg-purple-600 group-hover:text-white transition-colors">
+                <div className="w-20 h-20 mb-6 bg-[#e31b23]/10 rounded-2xl flex items-center justify-center text-[#e31b23] group-hover:bg-[#e31b23] group-hover:text-white transition-colors">
                   <BookDown size={40} strokeWidth={2} />
                 </div>
                 <h3 className="text-xl font-black text-gray-900 mb-3 uppercase">Ressources & E-books</h3>
@@ -179,7 +175,7 @@ export default async function Home() {
             {/* Step 2 */}
             <ScrollReveal direction="up" delay={0.2}>
               <div className="relative z-10 flex flex-col items-center text-center">
-                <div className="w-20 h-20 bg-white border-4 border-[#1b508f] rounded-full flex items-center justify-center text-3xl font-black text-[#1b508f] mb-6 shadow-md">2</div>
+                <div className="w-20 h-20 bg-white border-4 border-yellow-400 rounded-full flex items-center justify-center text-3xl font-black text-yellow-500 mb-6 shadow-md">2</div>
                 <h3 className="text-lg font-bold text-gray-900 mb-2">Payez en toute sécurité</h3>
                 <p className="text-gray-500 text-sm font-medium">Validez votre commande via Orange Money, Wave ou Carte Bancaire en quelques clics.</p>
               </div>
@@ -188,7 +184,7 @@ export default async function Home() {
             {/* Step 3 */}
             <ScrollReveal direction="up" delay={0.3}>
               <div className="relative z-10 flex flex-col items-center text-center">
-                <div className="w-20 h-20 bg-orange-500 border-4 border-white shadow-xl rounded-full flex items-center justify-center text-3xl font-black text-white mb-6">3</div>
+                <div className="w-20 h-20 bg-[#00853f] border-4 border-white shadow-xl rounded-full flex items-center justify-center text-3xl font-black text-white mb-6">3</div>
                 <h3 className="text-lg font-bold text-gray-900 mb-2">Téléchargez instantanément</h3>
                 <p className="text-gray-500 text-sm font-medium">Vos documents sont immédiatement disponibles dans votre espace client (PDF/Vidéos).</p>
               </div>
@@ -219,7 +215,7 @@ export default async function Home() {
       </section>
 
       {/* 5. Testimonials (Preuve Sociale) - NOUVEAU */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-[#1b508f] text-white overflow-hidden">
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-[#00853f] text-white overflow-hidden">
         <div className="max-w-7xl mx-auto">
           <ScrollReveal direction="up">
             <div className="text-center mb-16">
@@ -301,21 +297,21 @@ export default async function Home() {
           
           <div className="space-y-4">
             <div className="border border-gray-200 rounded-2xl p-6">
-              <h3 className="font-bold text-gray-900 text-lg mb-2 flex items-center gap-2"><HelpCircle size={20} className="text-[#1b508f]"/> Comment vais-je recevoir mes fascicules ?</h3>
-              <p className="text-gray-600 font-medium">Une fois le paiement validé, vos documents seront disponibles immédiatement et à vie dans la rubrique "Mes Téléchargements" de votre tableau de bord.</p>
+              <h3 className="font-bold text-gray-900 text-lg mb-2 flex items-center gap-2"><HelpCircle size={20} className="text-[#00853f]"/> Comment vais-je recevoir mes fascicules ?</h3>
+              <p className="text-gray-500 text-sm">Une fois le paiement validé, vous recevrez un lien de téléchargement immédiat par email et dans votre espace personnel.</p>
             </div>
-            <div className="border border-gray-200 rounded-2xl p-6">
-              <h3 className="font-bold text-gray-900 text-lg mb-2 flex items-center gap-2"><HelpCircle size={20} className="text-[#1b508f]"/> Quels sont les moyens de paiement ?</h3>
-              <p className="text-gray-600 font-medium">Nous acceptons le paiement mobile (Wave, Orange Money, Free Money) ainsi que les paiements par Carte Bancaire via nos partenaires sécurisés.</p>
+            <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+              <h3 className="font-bold text-gray-900 text-lg mb-2 flex items-center gap-2"><HelpCircle size={20} className="text-[#00853f]"/> Quels sont les moyens de paiement ?</h3>
+              <p className="text-gray-500 text-sm">Nous acceptons Orange Money, Wave, Free Money et les paiements par carte bancaire (Visa/Mastercard).</p>
             </div>
-            <div className="border border-gray-200 rounded-2xl p-6">
-              <h3 className="font-bold text-gray-900 text-lg mb-2 flex items-center gap-2"><HelpCircle size={20} className="text-[#1b508f]"/> Les documents sont-ils mis à jour ?</h3>
+            <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+              <h3 className="font-bold text-gray-900 text-lg mb-2 flex items-center gap-2"><HelpCircle size={20} className="text-[#00853f]"/> Les documents sont-ils mis à jour ?</h3>
               <p className="text-gray-600 font-medium">Oui, toutes nos annales sont révisées chaque année pour inclure les concours récents et les corrections les plus précises.</p>
             </div>
           </div>
           
           <div className="mt-8 text-center">
-            <Link href="/faq" className="text-[#1b508f] font-bold hover:underline">Voir toutes les questions fréquentes &rarr;</Link>
+            <Link href="/faq" className="text-[#00853f] font-bold hover:underline">Voir toutes les questions fréquentes &rarr;</Link>
           </div>
         </div>
       </section>
@@ -337,14 +333,12 @@ export default async function Home() {
             <div className="w-full md:w-1/2 p-10 md:p-14">
               <h2 className="text-3xl md:text-5xl font-black text-gray-900 mb-6 leading-tight">
                 NE LAISSEZ PAS <br/>VOTRE AVENIR <br/>
-                <span className="text-[#1b508f]">AU HASARD.</span>
+                <span className="text-[#00853f]">AU HASARD.</span>
               </h2>
-              <ul className="space-y-4 mb-10">
-                <li className="flex items-center gap-3 text-gray-600 font-bold"><CheckCircle2 size={24} className="text-orange-500" /> Documents de haute qualité</li>
-                <li className="flex items-center gap-3 text-gray-600 font-bold"><CheckCircle2 size={24} className="text-orange-500" /> Accès à vie illimité</li>
-                <li className="flex items-center gap-3 text-gray-600 font-bold"><CheckCircle2 size={24} className="text-orange-500" /> + de 5000 étudiants satisfaits</li>
-              </ul>
-              <Link href="/catalog" className="inline-block bg-[#1b508f] hover:bg-blue-800 text-white font-bold py-4 px-10 rounded-full transition-colors shadow-lg text-lg w-full text-center sm:w-auto">
+              <p className="text-xl text-gray-600 mb-10 max-w-2xl mx-auto font-medium">
+                Rejoignez des milliers d'étudiants qui font confiance à SK Academia pour leur réussite. N'attendez plus.
+              </p>
+              <Link href="/catalog" className="inline-block bg-[#e31b23] hover:bg-red-700 text-white font-bold py-4 px-10 rounded-full transition-colors shadow-lg text-lg w-full text-center sm:w-auto">
                 COMMENCER MA PRÉPARATION
               </Link>
             </div>

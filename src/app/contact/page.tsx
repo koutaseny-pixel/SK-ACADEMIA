@@ -1,6 +1,19 @@
 import { MapPin, Phone, Mail, Send } from "lucide-react";
+import { createClient } from "@/lib/supabase/server";
 
-export default function Contact() {
+export default async function Contact() {
+  const supabase = await createClient();
+  let settings = null;
+  try {
+    const { data } = await supabase.from('site_settings').select('*').eq('id', 1).single();
+    settings = data;
+  } catch (err) {
+    console.error("Contact settings fetch error:", err);
+  }
+
+  const email = settings?.email || "support@skacademia.sn";
+  const phone = settings?.phone || "+221 77 000 00 00";
+  const address = settings?.address || "Dakar, Sénégal\n(Sur rendez-vous uniquement)";
   return (
     <div className="min-h-screen bg-gray-50 py-16">
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
@@ -22,7 +35,7 @@ export default function Contact() {
               <div>
                 <h3 className="font-bold text-gray-900 text-lg mb-1">Email</h3>
                 <p className="text-gray-600 mb-2">Notre équipe répond sous 24h.</p>
-                <a href="mailto:support@skacademia.sn" className="font-medium text-[#1b508f] hover:underline">support@skacademia.sn</a>
+                <a href={`mailto:${email}`} className="font-medium text-[#1b508f] hover:underline">{email}</a>
               </div>
             </div>
 
@@ -33,7 +46,7 @@ export default function Contact() {
               <div>
                 <h3 className="font-bold text-gray-900 text-lg mb-1">Téléphone</h3>
                 <p className="text-gray-600 mb-2">Lun - Ven, 9h à 18h.</p>
-                <a href="tel:+221770000000" className="font-medium text-orange-500 hover:underline">+221 77 000 00 00</a>
+                <a href={`tel:${phone}`} className="font-medium text-orange-500 hover:underline">{phone}</a>
               </div>
             </div>
 
@@ -43,7 +56,7 @@ export default function Contact() {
               </div>
               <div>
                 <h3 className="font-bold text-gray-900 text-lg mb-1">Siège</h3>
-                <p className="text-gray-600">Dakar, Sénégal<br/>(Sur rendez-vous uniquement)</p>
+                <p className="text-gray-600 whitespace-pre-wrap">{address}</p>
               </div>
             </div>
           </div>

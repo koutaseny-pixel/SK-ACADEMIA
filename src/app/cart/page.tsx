@@ -141,9 +141,17 @@ export default function CartPage() {
                   Passer à la caisse <ArrowRight size={20} />
                 </Link>
                 
-                <div className="mt-6 flex justify-center gap-2 opacity-60">
-                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Orange_Money_logo.svg/200px-Orange_Money_logo.svg.png" alt="Orange Money" className="h-6 object-contain grayscale hover:grayscale-0 transition-all" />
-                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Wave_Mobile_Money_logo.png/200px-Wave_Mobile_Money_logo.png" alt="Wave" className="h-6 object-contain grayscale hover:grayscale-0 transition-all" />
+                <div className="mt-6 flex justify-center gap-3 items-center opacity-80 hover:opacity-100 transition-opacity">
+                  <div className="h-6 bg-white rounded-md p-0.5 shadow-sm border border-gray-100 flex items-center justify-center">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Orange_logo.svg/1024px-Orange_logo.svg.png" alt="Orange Money" className="h-4 w-auto object-contain" />
+                    <span className="text-[10px] font-bold text-orange-500 ml-0.5">Money</span>
+                  </div>
+                  <div className="h-6 bg-[#1dc0ed] rounded-md px-1.5 shadow-sm border border-gray-100 flex items-center justify-center">
+                    <span className="text-white font-black text-xs tracking-tighter">wave</span>
+                  </div>
+                  <div className="h-6 bg-white rounded-md px-1 shadow-sm border border-gray-100 flex items-center justify-center">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Logo_Free_S%C3%A9n%C3%A9gal.svg/512px-Logo_Free_S%C3%A9n%C3%A9gal.svg.png" alt="Free Money" className="h-3 w-auto object-contain" />
+                  </div>
                 </div>
               </div>
             </div>
