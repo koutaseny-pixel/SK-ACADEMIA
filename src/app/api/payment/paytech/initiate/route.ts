@@ -83,7 +83,7 @@ export async function POST(request: Request) {
       currency: "XOF",
       ref_command: reference,
       command_name: `Paiement commande ${reference} sur SK Academia`,
-      env: "test", // Change to "prod" once your PayTech account is activated for production!
+      env: "prod", // Change to "prod" once your PayTech account is activated for production!
       ipn_url: `${BASE_URL}/api/payment/paytech/callback`,
       success_url: `${BASE_URL}/success?ref=${reference}`,
       cancel_url: `${BASE_URL}/checkout?error=payment_cancelled`,
