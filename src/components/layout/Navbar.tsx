@@ -4,6 +4,7 @@ import { GraduationCap, Gift, UserCircle } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { getUserRole } from "@/lib/supabase/role";
 import UserMenu from "./UserMenu";
+import MobileMenu from "./MobileMenu";
 
 export default async function Navbar() {
   const supabase = await createClient();
@@ -14,8 +15,10 @@ export default async function Navbar() {
     <header className="bg-white border-b border-gray-100 sticky top-0 z-50 shadow-sm">
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-2">
+          <div className="flex items-center gap-2 md:gap-4">
+            <MobileMenu />
+            {/* Logo */}
+            <Link href="/" className="flex items-center gap-2">
             <div className="text-[#1b508f]">
               <GraduationCap size={32} strokeWidth={2.5} />
             </div>
@@ -24,6 +27,7 @@ export default async function Navbar() {
               <span className="text-[10px] uppercase tracking-widest text-orange-500 mt-1 font-bold">Excellence Académique</span>
             </div>
           </Link>
+          </div>
 
           {/* Navigation Links */}
           <nav className="hidden md:flex items-center space-x-6 lg:space-x-8">
