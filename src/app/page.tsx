@@ -59,8 +59,8 @@ export default async function Home() {
               <ScrollReveal direction="left" delay={0.5} className="w-full flex justify-end">
                 <div className="relative w-full max-w-[600px] rounded-3xl overflow-hidden shadow-2xl bg-gray-100 aspect-[4/3] flex items-center justify-center border-8 border-white">
                   <img 
-                    src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-                    alt="Étudiants universitaires professionnels" 
+                    src="/hero.jpg" 
+                    alt="SK Academia Accueil" 
                     className="w-full h-full object-cover"
                   />
                 </div>
