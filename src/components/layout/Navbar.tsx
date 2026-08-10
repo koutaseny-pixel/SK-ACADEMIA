@@ -43,6 +43,9 @@ export default async function Navbar() {
             <Link href="/catalog?category=formation" className="text-sm font-bold text-gray-600 hover:text-orange-500 transition-colors">
               Formations Informatique
             </Link>
+            <Link href="/catalog?category=ressources" className="text-sm font-bold text-gray-600 hover:text-orange-500 transition-colors">
+              Ressources & E-books
+            </Link>
             <Link href="/about" className="text-sm font-bold text-gray-600 hover:text-orange-500 transition-colors">
               À Propos
             </Link>

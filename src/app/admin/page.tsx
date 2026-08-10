@@ -81,7 +81,7 @@ export default async function AdminDashboard() {
     });
   });
   const donutData = Object.entries(categoryMap).map(([name, value]) => ({
-    name: name === "prepa" ? "Préparation" : name === "formation" ? "Formation" : name,
+    name: name === "prepa" ? "Préparation" : name === "formation" ? "Formation" : name === "ressources" ? "Ressource & E-book" : name,
     value
   }));
 

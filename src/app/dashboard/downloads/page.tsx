@@ -116,7 +116,7 @@ export default async function DownloadsLibrary() {
                   </div>
                   <div className="absolute top-3 right-3">
                     <span className="bg-white/20 backdrop-blur-sm text-white text-xs font-bold px-2 py-1 rounded-full">
-                      {item.products?.category === "prepa" ? "Préparation" : "Formation"}
+                      {item.products?.category === "prepa" ? "Préparation" : item.products?.category === "formation" ? "Formation" : "Ressource"}
                     </span>
                   </div>
                 </div>

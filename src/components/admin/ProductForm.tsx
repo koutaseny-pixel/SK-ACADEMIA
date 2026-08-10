@@ -151,6 +151,7 @@ export default function ProductForm({ initialData }: { initialData?: Product }) 
               >
                 <option value="prepa">Préparation</option>
                 <option value="formation">Formation</option>
+                <option value="ressources">Ressource et E-book</option>
               </select>
             </div>
             <div>

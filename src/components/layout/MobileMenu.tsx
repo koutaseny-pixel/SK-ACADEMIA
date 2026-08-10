@@ -57,6 +57,9 @@ export default function MobileMenu() {
           <Link href="/catalog?category=formation" onClick={closeMenu} className="block px-4 py-3 text-lg font-bold text-gray-800 hover:bg-orange-50 hover:text-orange-500 rounded-xl transition-colors">
             Formations Informatique
           </Link>
+          <Link href="/catalog?category=ressources" onClick={closeMenu} className="block px-4 py-3 text-lg font-bold text-gray-800 hover:bg-orange-50 hover:text-orange-500 rounded-xl transition-colors">
+            Ressources & E-books
+          </Link>
           <Link href="/about" onClick={closeMenu} className="block px-4 py-3 text-lg font-bold text-gray-800 hover:bg-orange-50 hover:text-orange-500 rounded-xl transition-colors">
             À Propos
           </Link>
