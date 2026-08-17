@@ -41,17 +41,15 @@ export default function Formations() {
   const [searchTerm, setSearchTerm] = useState("");
 
   return (
-    <div className="bg-surface text-on-background min-h-screen pb-24">
+    <div className="bg-slate-50 min-h-screen pb-24">
       {/* Hero Section */}
-      <section className="bg-primary pt-24 pb-16 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-primary to-primary-hover opacity-90"></div>
-        <div className="absolute inset-0 hero-pattern opacity-20 mix-blend-overlay"></div>
-        <div className="max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop relative z-10">
+      <section className="bg-primary text-white pt-24 pb-16 relative overflow-hidden">
+        <div className="max-w-[1280px] mx-auto px-4 md:px-8 relative z-10">
           <div className="max-w-2xl">
-            <h1 className="font-display text-headline-lg lg:text-[48px] font-bold text-on-primary mb-6 leading-tight">
+            <h1 className="text-4xl md:text-5xl font-extrabold mb-6 leading-tight">
               Développez vos compétences avec nos Formations Pro.
             </h1>
-            <p className="font-body-lg text-body-lg text-primary-fixed-dim mb-8 leading-relaxed">
+            <p className="text-lg text-blue-100 mb-8 leading-relaxed">
               Des cours intensifs, certifiants et créés par des experts de l'industrie pour vous aider à atteindre vos objectifs professionnels.
             </p>
             
@@ -62,25 +60,25 @@ export default function Formations() {
                 placeholder="Quelle compétence souhaitez-vous apprendre ?"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full bg-surface text-on-surface rounded-2xl py-4 pl-12 pr-6 font-body-md text-body-md shadow-lg outline-none focus:ring-4 focus:ring-primary-container border-2 border-transparent focus:border-primary transition-all"
+                className="w-full bg-white text-gray-900 rounded-xl py-4 pl-12 pr-6 shadow-lg outline-none focus:ring-2 focus:ring-orange-500 border border-transparent transition-all"
               />
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant" size={24} />
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={24} />
             </div>
           </div>
         </div>
       </section>
 
-      <div className="max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop py-12">
+      <div className="max-w-[1280px] mx-auto px-4 md:px-8 py-12">
         
         {/* Categories */}
         <div className="flex flex-wrap gap-3 mb-12">
           {["Toutes les formations", "Bureautique", "Programmation", "IA & Data", "Design", "Marketing"].map((cat, i) => (
             <button 
               key={i} 
-              className={`px-6 py-2.5 rounded-full font-label-md text-label-md font-bold transition-all shadow-sm
+              className={`px-6 py-2.5 rounded-full font-medium transition-all shadow-sm
                 ${i === 0 
-                  ? 'bg-primary text-on-primary border border-primary' 
-                  : 'bg-surface border border-outline-variant text-on-surface-variant hover:bg-surface-variant hover:text-on-surface'
+                  ? 'bg-primary text-white border border-primary' 
+                  : 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                 }`}
             >
               {cat}
@@ -91,39 +89,39 @@ export default function Formations() {
         {/* Courses Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {COURSES.map((course) => (
-            <Link href={`/formations/${course.id}`} key={course.id} className="group glass-card rounded-[24px] overflow-hidden flex flex-col hover:-translate-y-2 transition-all duration-300">
-              <div className="relative h-48 bg-surface-container overflow-hidden">
+            <Link href={`/formations/${course.id}`} key={course.id} className="group bg-white border border-gray-100 rounded-2xl overflow-hidden flex flex-col shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+              <div className="relative h-48 bg-gray-100 overflow-hidden">
                 <img 
                   src={course.image} 
                   alt={course.title} 
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                 />
-                <div className="absolute top-4 left-4 bg-surface/90 backdrop-blur-md px-3 py-1.5 rounded-lg">
-                  <span className="font-caption text-caption font-bold text-on-surface uppercase tracking-wider">{course.category}</span>
+                <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-lg">
+                  <span className="text-xs font-bold text-gray-800 uppercase tracking-wider">{course.category}</span>
                 </div>
               </div>
               <div className="p-6 flex flex-col flex-grow">
-                <h3 className="font-display text-[20px] font-bold text-on-background mb-4 leading-tight group-hover:text-primary transition-colors">{course.title}</h3>
+                <h3 className="text-xl font-bold text-gray-900 mb-4 leading-tight group-hover:text-primary transition-colors">{course.title}</h3>
                 
-                <div className="flex items-center gap-4 mb-6 text-on-surface-variant">
-                  <div className="flex items-center gap-1.5 font-caption text-caption">
-                    <span className="material-symbols-outlined text-[18px]">signal_cellular_alt</span>
+                <div className="flex items-center gap-4 mb-6 text-gray-500 text-sm">
+                  <div className="flex items-center gap-1.5">
+                    <span>📊</span>
                     {course.level}
                   </div>
-                  <div className="flex items-center gap-1.5 font-caption text-caption">
-                    <span className="material-symbols-outlined text-[18px]">schedule</span>
+                  <div className="flex items-center gap-1.5">
+                    <span>⏱️</span>
                     {course.duration}
                   </div>
                 </div>
 
-                <div className="mt-auto pt-4 border-t border-outline-variant/30 flex items-center justify-between">
+                <div className="mt-auto pt-4 border-t border-gray-100 flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center font-bold text-xs uppercase">
+                    <div className="w-8 h-8 rounded-full bg-blue-100 text-blue-800 flex items-center justify-center font-bold text-xs uppercase">
                       {course.instructor.charAt(0)}
                     </div>
-                    <span className="font-caption text-caption font-medium text-on-surface">{course.instructor}</span>
+                    <span className="text-sm font-medium text-gray-700">{course.instructor}</span>
                   </div>
-                  <span className="font-display text-[20px] font-bold text-primary">
+                  <span className="text-lg font-bold text-orange-500">
                     {course.price.toLocaleString("fr-SN", { style: "currency", currency: "XOF" })}
                   </span>
                 </div>

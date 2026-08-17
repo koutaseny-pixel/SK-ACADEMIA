@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useCartStore } from "@/store/cart";
+import { ShoppingCart, CheckCircle2 } from "lucide-react";
 import { Product } from "@/components/ui/ProductCard";
 
 export default function AddToCartButton({ product }: { product: Product }) {
@@ -17,20 +18,20 @@ export default function AddToCartButton({ product }: { product: Product }) {
   return (
     <button 
       onClick={handleAdd}
-      className={`w-full md:w-auto flex items-center justify-center gap-3 font-label-md text-label-md py-4 px-8 rounded-xl transition-all shadow-sm hover:shadow-md hover:-translate-y-1
+      className={`w-full md:w-auto flex items-center justify-center gap-2 font-black py-4 px-8 rounded-xl transition-all text-lg shadow-xl hover:-translate-y-1
         ${added 
-          ? 'bg-[#1b5e20] text-white shadow-green-500/20' 
-          : 'bg-primary text-on-primary'
+          ? 'bg-green-500 hover:bg-green-600 text-white shadow-green-500/30' 
+          : 'bg-orange-500 hover:bg-orange-600 text-white shadow-orange-500/30'
         }`}
     >
       {added ? (
         <>
-          <span className="material-symbols-outlined text-[24px]">check_circle</span>
+          <CheckCircle2 size={24} />
           Ajouté au panier !
         </>
       ) : (
         <>
-          <span className="material-symbols-outlined text-[24px]">shopping_cart</span>
+          <ShoppingCart size={24} />
           Ajouter au panier
         </>
       )}

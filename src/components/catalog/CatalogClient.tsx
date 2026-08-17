@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import ProductCard, { Product } from "@/components/ui/ProductCard";
-import { useSearchParams, useRouter } from "next/navigation";
+import { Search, Filter, X, ChevronLeft, ChevronRight } from "lucide-react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 
 interface CatalogClientProps {
@@ -13,9 +14,9 @@ interface CatalogClientProps {
 }
 
 const CATEGORIES = [
-  { id: "prepa", label: "Préparation Concours", icon: "assignment" },
-  { id: "formation", label: "Formations Informatique", icon: "laptop_mac" },
-  { id: "ressources", label: "Ressources & E-books", icon: "library_books" }
+  { id: "prepa", label: "Préparation Concours" },
+  { id: "formation", label: "Formation Informatique" },
+  { id: "ressources", label: "Ressources & E-books" }
 ];
 
 export default function CatalogClient({ products, currentCategory, currentSearch, currentSort }: CatalogClientProps) {
@@ -25,7 +26,7 @@ export default function CatalogClient({ products, currentCategory, currentSearch
   const [searchTerm, setSearchTerm] = useState(currentSearch || "");
   const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
   
-  // Pagination
+  // Pagination (client-side for now, could be server-side too)
   const [currentPage, setCurrentPage] = useState(1);
   const ITEMS_PER_PAGE = 9;
   
@@ -57,178 +58,159 @@ export default function CatalogClient({ products, currentCategory, currentSearch
   };
 
   return (
-    <div className="bg-surface text-on-background min-h-screen">
-      {/* Header Section */}
-      <section className="bg-surface-dim border-b border-outline-variant/30 py-12">
-        <div className="max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop">
-          <div className="max-w-2xl">
-            <h1 className="font-display text-headline-lg font-bold text-on-background mb-4">Notre Catalogue</h1>
-            <p className="font-body-lg text-body-lg text-on-surface-variant">Explorez nos ressources pédagogiques premium et trouvez les outils parfaits pour votre réussite.</p>
+    <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
+      <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
+        <div>
+          <h1 className="text-3xl md:text-4xl font-black text-gray-900 tracking-tight">Le Catalogue</h1>
+          <p className="text-gray-500 font-medium mt-2">Découvrez nos fascicules et formations pour exceller.</p>
+        </div>
+        
+        {/* Search Bar */}
+        <form onSubmit={handleSearch} className="relative w-full md:w-96">
+          <input 
+            type="text" 
+            placeholder="Rechercher un document..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full pl-12 pr-4 py-3 rounded-full border border-gray-200 focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all shadow-sm"
+          />
+          <button type="submit" className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-orange-500">
+            <Search size={20} />
+          </button>
+        </form>
+      </div>
+      
+      <div className="flex flex-col lg:flex-row gap-8">
+        
+        {/* Mobile Filter Toggle */}
+        <button 
+          onClick={() => setIsMobileFiltersOpen(true)}
+          className="lg:hidden flex items-center justify-center gap-2 w-full bg-white border border-gray-200 py-3 rounded-xl font-bold text-gray-700 shadow-sm"
+        >
+          <Filter size={20} /> Filtrer les résultats
+        </button>
+
+        {/* Sidebar Filters */}
+        <div className={`
+          fixed inset-0 z-50 bg-white p-6 lg:p-0 lg:bg-transparent lg:static lg:block lg:w-72 shrink-0 overflow-y-auto lg:overflow-visible transition-transform duration-300
+          ${isMobileFiltersOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+        `}>
+          <div className="flex justify-between items-center lg:hidden mb-6">
+            <h2 className="text-xl font-black text-gray-900">Filtres</h2>
+            <button onClick={() => setIsMobileFiltersOpen(false)} className="p-2 text-gray-500 bg-gray-100 rounded-full">
+              <X size={20} />
+            </button>
+          </div>
+
+          <div className="bg-white lg:p-6 lg:rounded-3xl lg:shadow-sm lg:border lg:border-gray-100 space-y-8">
+            <div>
+              <h3 className="font-black text-gray-900 mb-4 uppercase tracking-wider text-sm">Catégories</h3>
+              <ul className="space-y-3">
+                {CATEGORIES.map(category => (
+                  <li key={category.id}>
+                    <Link 
+                      href={`/catalog?${new URLSearchParams({...Object.fromEntries(searchParams.entries()), category: category.id}).toString()}`}
+                      className="flex items-center gap-3 cursor-pointer group"
+                      scroll={false}
+                    >
+                      <div className={`w-5 h-5 rounded border flex items-center justify-center transition-colors
+                        ${currentCategory === category.id ? 'bg-orange-500 border-orange-500 text-white' : 'border-gray-300 group-hover:border-orange-400'}
+                      `}>
+                        {currentCategory === category.id && <svg className="w-3 h-3 fill-current" viewBox="0 0 20 20"><path d="M0 11l2-2 5 5L18 3l2 2L7 18z"/></svg>}
+                      </div>
+                      <span className="text-gray-700 font-medium group-hover:text-gray-900">{category.label}</span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            
+            <button 
+              onClick={clearFilters}
+              className="w-full bg-gray-100 text-gray-600 font-bold py-3 rounded-xl hover:bg-gray-200 transition-colors"
+            >
+              Réinitialiser
+            </button>
           </div>
         </div>
-      </section>
 
-      <div className="max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop py-xl">
-        <div className="flex flex-col lg:flex-row gap-lg items-start">
-          
-          {/* Mobile Filter Toggle */}
-          <button 
-            onClick={() => setIsMobileFiltersOpen(true)}
-            className="lg:hidden flex items-center justify-center gap-2 w-full bg-surface-container border border-outline-variant py-3 rounded-xl font-label-md text-label-md text-on-surface shadow-sm"
-          >
-            <span className="material-symbols-outlined">tune</span> Filtrer les résultats
-          </button>
-
-          {/* Sidebar / Filters */}
-          <aside className={`
-            fixed inset-0 z-50 bg-surface/95 backdrop-blur-md p-6 lg:p-0 lg:bg-transparent lg:static lg:block lg:w-72 shrink-0 overflow-y-auto lg:overflow-visible transition-transform duration-300
-            ${isMobileFiltersOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
-          `}>
-            <div className="flex justify-between items-center lg:hidden mb-6">
-              <h2 className="font-display text-headline-md font-bold text-on-background">Filtres</h2>
-              <button onClick={() => setIsMobileFiltersOpen(false)} className="w-10 h-10 flex items-center justify-center bg-surface-container rounded-full text-on-surface-variant">
-                <span className="material-symbols-outlined">close</span>
-              </button>
+        {/* Product Grid */}
+        <div className="flex-1">
+          <div className="mb-6 flex flex-col sm:flex-row justify-between items-center gap-4 bg-white p-4 rounded-2xl border border-gray-100 shadow-sm">
+            <span className="text-gray-600 font-medium">
+              <span className="font-bold text-gray-900">{products.length}</span> documents trouvés
+            </span>
+            <div className="flex items-center gap-2 w-full sm:w-auto">
+              <span className="text-gray-500 text-sm hidden sm:block">Trier par:</span>
+              <select 
+                value={currentSort || 'recommended'}
+                onChange={(e) => updateFilters('sort', e.target.value)}
+                className="w-full sm:w-auto border border-gray-200 rounded-lg py-2 px-4 bg-gray-50 outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 font-medium text-gray-700"
+              >
+                <option value="recommended">Recommandés</option>
+                <option value="price-asc">Prix : Croissant</option>
+                <option value="price-desc">Prix : Décroissant</option>
+                <option value="newest">Plus Récents</option>
+              </select>
             </div>
+          </div>
 
-            <div className="glass-panel lg:rounded-3xl p-6 lg:shadow-sm space-y-8 sticky top-28">
-              
-              {/* Search Box */}
-              <div>
-                <h3 className="font-label-md text-label-md font-bold text-on-background mb-3 uppercase tracking-wider">Recherche</h3>
-                <form onSubmit={handleSearch} className="relative w-full">
-                  <input 
-                    type="text" 
-                    placeholder="Titre, mot-clé..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-outline-variant bg-surface text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all font-body-md text-body-md"
-                  />
-                  <button type="submit" className="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-primary transition-colors">
-                    <span className="material-symbols-outlined text-xl">search</span>
-                  </button>
-                </form>
+          {products.length === 0 ? (
+            <div className="bg-white rounded-3xl border border-gray-100 p-12 text-center shadow-sm">
+              <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4 text-gray-400">
+                <Search size={32} />
               </div>
-
-              {/* Categories */}
-              <div>
-                <h3 className="font-label-md text-label-md font-bold text-on-background mb-4 uppercase tracking-wider">Catégories</h3>
-                <ul className="space-y-2">
-                  {CATEGORIES.map(category => (
-                    <li key={category.id}>
-                      <Link 
-                        href={`/catalog?${new URLSearchParams({...Object.fromEntries(searchParams.entries()), category: category.id}).toString()}`}
-                        className={`flex items-center gap-3 p-3 rounded-xl transition-all font-body-md text-body-md cursor-pointer group ${
-                          currentCategory === category.id 
-                            ? 'bg-primary-container text-on-primary-container font-bold shadow-sm' 
-                            : 'text-on-surface-variant hover:bg-surface-variant hover:text-on-surface'
-                        }`}
-                        scroll={false}
-                      >
-                        <span className="material-symbols-outlined" style={{fontVariationSettings: currentCategory === category.id ? "'FILL' 1" : "'FILL' 0"}}>{category.icon}</span>
-                        {category.label}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              
+              <h3 className="text-xl font-bold text-gray-900 mb-2">Aucun résultat trouvé</h3>
+              <p className="text-gray-500">Essayez de modifier vos filtres ou vos termes de recherche.</p>
               <button 
                 onClick={clearFilters}
-                className="w-full flex items-center justify-center gap-2 bg-surface-container text-on-surface-variant hover:text-error hover:bg-error-container font-label-md text-label-md py-3 rounded-xl transition-colors"
+                className="mt-6 text-orange-500 font-bold hover:underline"
               >
-                <span className="material-symbols-outlined text-[18px]">clear_all</span>
-                Réinitialiser les filtres
+                Effacer les filtres
               </button>
             </div>
-          </aside>
-
-          {/* Main Content Area */}
-          <div className="flex-1 min-w-0">
-            {/* Toolbar */}
-            <div className="mb-6 flex flex-col sm:flex-row justify-between items-center gap-4 bg-surface-dim/30 p-2 rounded-2xl border border-outline-variant/30">
-              <span className="font-body-md text-body-md text-on-surface-variant pl-4">
-                <strong className="text-on-background">{products.length}</strong> résultats
-              </span>
-              <div className="flex items-center gap-3 w-full sm:w-auto">
-                <span className="font-label-md text-label-md text-on-surface-variant hidden sm:block">Trier par:</span>
-                <select 
-                  value={currentSort || 'recommended'}
-                  onChange={(e) => updateFilters('sort', e.target.value)}
-                  className="w-full sm:w-auto border border-outline-variant rounded-xl py-2 pl-4 pr-10 bg-surface font-body-md text-body-md text-on-surface focus:ring-2 focus:ring-primary/20 focus:border-primary appearance-none cursor-pointer"
-                  style={{
-                    backgroundImage: `url('data:image/svg+xml;utf8,<svg fill="none" viewBox="0 0 24 24" stroke="%23444653" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>')`,
-                    backgroundRepeat: 'no-repeat',
-                    backgroundPosition: 'right 0.75rem center',
-                    backgroundSize: '1.2em'
-                  }}
-                >
-                  <option value="recommended">Recommandés</option>
-                  <option value="price-asc">Prix Croissant</option>
-                  <option value="price-desc">Prix Décroissant</option>
-                  <option value="newest">Nouveautés</option>
-                </select>
-              </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {paginatedProducts.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
             </div>
+          )}
 
-            {/* Grid */}
-            {products.length === 0 ? (
-              <div className="glass-panel rounded-3xl p-16 text-center border-dashed border-2 border-outline-variant/50">
-                <div className="w-24 h-24 bg-surface-container rounded-full flex items-center justify-center mx-auto mb-6 text-outline">
-                  <span className="material-symbols-outlined text-[48px]">search_off</span>
-                </div>
-                <h3 className="font-display text-[24px] font-bold text-on-background mb-2">Aucun résultat trouvé</h3>
-                <p className="font-body-md text-body-md text-on-surface-variant max-w-md mx-auto">Nous n'avons trouvé aucun document correspondant à vos critères actuels. Essayez d'élargir votre recherche.</p>
-                <button 
-                  onClick={clearFilters}
-                  className="mt-8 px-6 py-2 bg-primary text-on-primary rounded-full font-label-md text-label-md hover:bg-primary-hover transition-colors shadow-sm"
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <div className="flex justify-center items-center gap-2 mt-12">
+              <button 
+                onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                disabled={currentPage === 1}
+                className="w-10 h-10 flex items-center justify-center rounded-lg border border-gray-200 bg-white text-gray-600 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 transition-colors"
+              >
+                <ChevronLeft size={20} />
+              </button>
+              
+              {Array.from({ length: totalPages }).map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setCurrentPage(i + 1)}
+                  className={`w-10 h-10 flex items-center justify-center rounded-lg font-bold transition-colors ${
+                    currentPage === i + 1 
+                      ? 'bg-orange-500 text-white shadow-md' 
+                      : 'border border-gray-200 bg-white text-gray-600 hover:bg-gray-50'
+                  }`}
                 >
-                  Effacer les filtres
+                  {i + 1}
                 </button>
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
-                {paginatedProducts.map((product) => (
-                  <ProductCard key={product.id} product={product} />
-                ))}
-              </div>
-            )}
+              ))}
 
-            {/* Pagination */}
-            {totalPages > 1 && (
-              <div className="flex justify-center items-center gap-2 mt-12 mb-12">
-                <button 
-                  onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-                  disabled={currentPage === 1}
-                  className="w-10 h-10 flex items-center justify-center rounded-xl border border-outline-variant bg-surface text-on-surface disabled:opacity-30 disabled:cursor-not-allowed hover:bg-surface-variant transition-colors"
-                >
-                  <span className="material-symbols-outlined">chevron_left</span>
-                </button>
-                
-                {Array.from({ length: totalPages }).map((_, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setCurrentPage(i + 1)}
-                    className={`w-10 h-10 flex items-center justify-center rounded-xl font-label-md text-label-md transition-all ${
-                      currentPage === i + 1 
-                        ? 'bg-primary text-on-primary shadow-md' 
-                        : 'border border-outline-variant bg-surface text-on-surface hover:bg-surface-variant'
-                    }`}
-                  >
-                    {i + 1}
-                  </button>
-                ))}
-
-                <button 
-                  onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-                  disabled={currentPage === totalPages}
-                  className="w-10 h-10 flex items-center justify-center rounded-xl border border-outline-variant bg-surface text-on-surface disabled:opacity-30 disabled:cursor-not-allowed hover:bg-surface-variant transition-colors"
-                >
-                  <span className="material-symbols-outlined">chevron_right</span>
-                </button>
-              </div>
-            )}
-          </div>
+              <button 
+                onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                disabled={currentPage === totalPages}
+                className="w-10 h-10 flex items-center justify-center rounded-lg border border-gray-200 bg-white text-gray-600 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 transition-colors"
+              >
+                <ChevronRight size={20} />
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>
