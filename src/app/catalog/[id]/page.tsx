@@ -1,7 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ChevronLeft, FileText, Download, ShieldCheck, CheckCircle2 } from "lucide-react";
 import AddToCartButton from "./AddToCartButton";
 import ProductCard from "@/components/ui/ProductCard";
 
@@ -35,59 +34,61 @@ export default async function ProductDetail({ params }: { params: { id: string }
     : "https://images.unsplash.com/photo-1571260894064-6e13d8e5d790?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80";
 
   // Dynamic colors for categories
-  const getCategoryColor = (name: string, category: string) => {
+  const getCategoryTheme = (name: string, category: string) => {
     const lowerName = name?.toLowerCase() || "";
-    if (lowerName.includes("ena")) return "bg-blue-600";
-    if (lowerName.includes("douane")) return "bg-yellow-600";
-    if (lowerName.includes("police")) return "bg-red-600";
-    if (lowerName.includes("gendarmerie")) return "bg-green-700";
-    if (lowerName.includes("fastef")) return "bg-purple-600";
+    if (lowerName.includes("ena")) return { bg: "bg-[#00288e]", text: "text-[#00288e]", light: "bg-[#00288e]/10" };
+    if (lowerName.includes("douane")) return { bg: "bg-[#ba1a1a]", text: "text-[#ba1a1a]", light: "bg-[#ba1a1a]/10" };
+    if (lowerName.includes("police")) return { bg: "bg-[#7f3500]", text: "text-[#7f3500]", light: "bg-[#7f3500]/10" };
     
-    if (category?.toLowerCase() === "formation") return "bg-indigo-600";
-    if (category?.toLowerCase() === "ressources") return "bg-teal-600";
-    return "bg-orange-500";
+    if (category?.toLowerCase() === "formation") return { bg: "bg-[#0058be]", text: "text-[#0058be]", light: "bg-[#0058be]/10" };
+    if (category?.toLowerCase() === "ressources") return { bg: "bg-[#3755c3]", text: "text-[#3755c3]", light: "bg-[#3755c3]/10" };
+    return { bg: "bg-[#00288e]", text: "text-[#00288e]", light: "bg-[#00288e]/10" };
   };
 
-  const badgeColorClass = getCategoryColor(product.name, product.category);
+  const theme = getCategoryTheme(product.name, product.category);
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-24">
+    <div className="bg-surface text-on-background min-h-screen pb-24">
       {/* Breadcrumb */}
-      <div className="bg-white border-b border-gray-200">
-        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <Link href="/catalog" className="inline-flex items-center gap-2 text-gray-500 hover:text-orange-500 font-medium transition-colors">
-            <ChevronLeft size={20} />
+      <div className="bg-surface-dim border-b border-outline-variant/30">
+        <div className="max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop py-4">
+          <Link href="/catalog" className="inline-flex items-center gap-2 font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors">
+            <span className="material-symbols-outlined text-[20px]">arrow_back</span>
             Retour au catalogue
           </Link>
         </div>
       </div>
 
-      <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="bg-white rounded-3xl overflow-hidden shadow-sm border border-gray-100 flex flex-col md:flex-row">
+      <div className="max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop py-12">
+        <div className="glass-panel rounded-[32px] overflow-hidden flex flex-col lg:flex-row">
           
           {/* Product Image Section */}
-          <div className="w-full md:w-1/2 bg-gray-100 relative min-h-[300px] md:min-h-0">
+          <div className="w-full lg:w-1/2 relative min-h-[300px] lg:min-h-[500px] bg-surface-container">
             <img 
               src={product.image_url || defaultImage} 
               alt={product.name} 
               className="absolute inset-0 w-full h-full object-cover"
             />
+            {/* Gradient overlay for blending */}
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent to-surface/80 lg:to-surface hidden lg:block"></div>
+            <div className="absolute inset-0 bg-gradient-to-t from-surface to-transparent lg:hidden"></div>
           </div>
 
           {/* Product Info Section */}
-          <div className="w-full md:w-1/2 p-8 md:p-12 lg:p-16 flex flex-col justify-center">
-            <span className={`inline-block w-fit text-xs font-bold text-white px-3 py-1 rounded-full uppercase tracking-wider mb-4 ${badgeColorClass}`}>
+          <div className="w-full lg:w-1/2 p-8 md:p-12 lg:p-16 flex flex-col justify-center relative z-10 bg-surface lg:bg-transparent">
+            <span className={`inline-block w-fit font-caption text-caption font-bold px-3 py-1.5 rounded-lg tracking-wider mb-6 ${theme.bg} text-white shadow-sm`}>
               {product.category}
             </span>
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-gray-900 leading-tight mb-6 tracking-tight">
+            
+            <h1 className="font-display text-headline-lg lg:text-[48px] font-bold text-on-background leading-tight mb-6 tracking-tight">
               {product.name}
             </h1>
             
-            <p className="text-gray-600 text-lg mb-8 leading-relaxed">
+            <p className="font-body-lg text-body-lg text-on-surface-variant mb-8 leading-relaxed max-w-xl">
               {product.description || "Ce document complet vous fournira toutes les connaissances nécessaires pour exceller dans votre domaine. Téléchargement immédiat après paiement."}
             </p>
 
-            <div className="text-5xl font-black text-[#1b508f] mb-8 tracking-tight">
+            <div className="font-display text-[40px] font-bold text-primary mb-8 tracking-tight">
               {Number(product.price).toLocaleString("fr-SN", { style: "currency", currency: "XOF" })}
             </div>
 
@@ -98,30 +99,31 @@ export default async function ProductDetail({ params }: { params: { id: string }
                 href={product.preview_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-4 w-full font-bold py-4 px-6 rounded-xl transition-all text-sm md:text-base shadow-sm bg-white border-2 border-gray-200 text-gray-700 hover:bg-gray-50 hover:border-gray-300 flex items-center justify-center gap-2"
+                className="mt-4 w-full md:w-auto font-label-md text-label-md py-4 px-8 rounded-xl bg-surface border border-outline-variant text-on-surface hover:bg-surface-variant transition-colors flex items-center justify-center gap-2"
               >
-                👀 Regarder un aperçu avant d'acheter
+                <span className="material-symbols-outlined text-[20px]">visibility</span>
+                Regarder un aperçu avant d'acheter
               </a>
             )}
 
             {/* Reassurance */}
-            <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 gap-6 pt-8 border-t border-gray-100">
-              <div className="flex items-start gap-3">
-                <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center shrink-0">
-                  <Download className="text-[#1b508f]" size={20} />
+            <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 gap-6 pt-8 border-t border-outline-variant/30">
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 rounded-full bg-secondary-container flex items-center justify-center shrink-0 text-on-secondary-container">
+                  <span className="material-symbols-outlined" style={{fontVariationSettings: "'FILL' 1"}}>download</span>
                 </div>
                 <div>
-                  <h4 className="font-bold text-gray-900 text-sm">Téléchargement instantané</h4>
-                  <p className="text-xs text-gray-500 mt-1">Accédez à votre fichier PDF juste après le paiement.</p>
+                  <h4 className="font-label-md text-label-md font-bold text-on-background">Téléchargement instantané</h4>
+                  <p className="font-caption text-caption text-on-surface-variant mt-1">Accédez à votre fichier juste après le paiement.</p>
                 </div>
               </div>
-              <div className="flex items-start gap-3">
-                <div className="w-10 h-10 rounded-full bg-green-50 flex items-center justify-center shrink-0">
-                  <ShieldCheck className="text-green-600" size={20} />
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 rounded-full bg-[#1b5e20]/10 flex items-center justify-center shrink-0 text-[#1b5e20]">
+                  <span className="material-symbols-outlined" style={{fontVariationSettings: "'FILL' 1"}}>verified_user</span>
                 </div>
                 <div>
-                  <h4 className="font-bold text-gray-900 text-sm">Paiement 100% Sécurisé</h4>
-                  <p className="text-xs text-gray-500 mt-1">Transactions protégées par Wave et Orange Money.</p>
+                  <h4 className="font-label-md text-label-md font-bold text-on-background">Paiement 100% Sécurisé</h4>
+                  <p className="font-caption text-caption text-on-surface-variant mt-1">Transactions protégées par Wave et Orange Money.</p>
                 </div>
               </div>
             </div>
@@ -129,9 +131,9 @@ export default async function ProductDetail({ params }: { params: { id: string }
         </div>
 
         {/* Content Details */}
-        <div className="mt-16 bg-white rounded-3xl p-8 md:p-12 shadow-sm border border-gray-100 max-w-3xl mx-auto">
-          <h2 className="text-2xl font-black text-gray-900 mb-8 flex items-center gap-3">
-            <FileText className="text-orange-500" size={28} />
+        <div className="mt-16 glass-card rounded-3xl p-8 md:p-12 max-w-4xl mx-auto">
+          <h2 className="font-display text-[28px] font-bold text-on-background mb-8 flex items-center gap-3">
+            <span className="material-symbols-outlined text-primary text-[32px]" style={{fontVariationSettings: "'FILL' 1"}}>description</span>
             Ce que contient ce fascicule
           </h2>
           <ul className="space-y-4">
@@ -141,9 +143,9 @@ export default async function ProductDetail({ params }: { params: { id: string }
               "Annales des années précédentes pour s'entraîner.",
               "Astuces et méthodologies pour gagner des points le jour J."
             ].map((item, index) => (
-              <li key={index} className="flex items-start gap-3">
-                <CheckCircle2 className="text-green-500 shrink-0 mt-0.5" size={20} />
-                <span className="text-gray-700">{item}</span>
+              <li key={index} className="flex items-start gap-3 bg-surface-dim/30 p-4 rounded-2xl">
+                <span className="material-symbols-outlined text-[#1b5e20] shrink-0 mt-0.5" style={{fontVariationSettings: "'FILL' 1"}}>check_circle</span>
+                <span className="font-body-md text-body-md text-on-surface">{item}</span>
               </li>
             ))}
           </ul>
@@ -152,14 +154,10 @@ export default async function ProductDetail({ params }: { params: { id: string }
         {/* Related Products */}
         {relatedProducts && relatedProducts.length > 0 && (
           <div className="mt-24">
-            <h2 className="text-3xl font-black text-gray-900 mb-8">Produits Similaires</h2>
+            <h2 className="font-display text-headline-lg font-bold text-on-background mb-8">Produits Similaires</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {relatedProducts.map(p => (
-                <div key={p.id} className="transform hover:-translate-y-2 transition-transform duration-300">
-                  {/* We can't easily import ProductCard because it's a client component and this is a server component? 
-                      Actually we can import client components in server components! */}
-                  <ProductCard product={p} />
-                </div>
+                <ProductCard key={p.id} product={p} />
               ))}
             </div>
           </div>

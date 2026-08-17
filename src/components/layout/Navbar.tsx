@@ -1,6 +1,5 @@
 import Link from "next/link";
 import CartBadge from "@/components/ui/CartBadge";
-import { GraduationCap, Gift, UserCircle } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { getUserRole } from "@/lib/supabase/role";
 import UserMenu from "./UserMenu";
@@ -12,66 +11,69 @@ export default async function Navbar() {
   const role = user ? await getUserRole() : null;
 
   return (
-    <header className="bg-white border-b border-gray-100 sticky top-0 z-50 shadow-sm">
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-20">
-          <div className="flex items-center gap-2 md:gap-4">
-            <MobileMenu />
-            {/* Logo */}
-            <Link href="/" className="flex items-center gap-2">
-            <div className="text-[#1b508f]">
-              <GraduationCap size={32} strokeWidth={2.5} />
+    <header className="fixed top-0 w-full z-50 bg-white/80 dark:bg-on-background/80 backdrop-blur-xl border-b border-white/20 dark:border-on-surface-variant/20 shadow-sm transition-transform duration-300" id="top-nav">
+      <div className="max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop flex justify-between items-center h-20">
+        
+        {/* Brand */}
+        <div className="flex items-center gap-2 md:gap-4">
+          <MobileMenu />
+          <Link href="/" className="font-display text-headline-md font-bold text-primary dark:text-primary-fixed-dim flex items-center gap-2 group">
+            <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-on-primary shadow-sm group-hover:scale-95 transition-transform duration-300">
+              <span className="material-symbols-outlined font-bold" style={{fontVariationSettings: "'FILL' 1"}}>school</span>
             </div>
-            <div className="flex flex-col">
-              <span className="text-xl font-black tracking-tight text-[#1b508f] leading-none">SK ACADEMIA</span>
-              <span className="text-[10px] uppercase tracking-widest text-orange-500 mt-1 font-bold">Excellence Académique</span>
-            </div>
+            <span className="hidden sm:block">SK Academia</span>
           </Link>
-          </div>
+        </div>
 
-          {/* Navigation Links */}
-          <nav className="hidden md:flex items-center space-x-6 lg:space-x-8">
-            <Link href="/" className="text-sm font-bold text-orange-500 hover:text-orange-600 transition-colors border-b-2 border-orange-500 pb-1">
-              Accueil
-            </Link>
-            <Link href="/catalog" className="text-sm font-bold text-gray-600 hover:text-orange-500 transition-colors">
-              Boutique
-            </Link>
-            <Link href="/catalog?category=prepa" className="text-sm font-bold text-gray-600 hover:text-orange-500 transition-colors">
-              Préparation Concours
-            </Link>
-            <Link href="/catalog?category=formation" className="text-sm font-bold text-gray-600 hover:text-orange-500 transition-colors">
-              Formations Informatique
-            </Link>
-            <Link href="/catalog?category=ressources" className="text-sm font-bold text-gray-600 hover:text-orange-500 transition-colors">
-              Ressources & E-books
-            </Link>
-            <Link href="/about" className="text-sm font-bold text-gray-600 hover:text-orange-500 transition-colors">
-              À Propos
-            </Link>
-            <Link href="/contact" className="text-sm font-bold text-gray-600 hover:text-orange-500 transition-colors">
-              Contact
-            </Link>
-          </nav>
+        {/* Desktop Nav */}
+        <nav className="hidden lg:flex items-center gap-gutter">
+          <Link href="/catalog" className="font-body-md text-body-md text-on-surface-variant dark:text-on-surface-variant/80 hover:text-primary transition-colors duration-200">
+            Boutique
+          </Link>
+          <Link href="/catalog?category=prepa" className="font-body-md text-body-md text-on-surface-variant dark:text-on-surface-variant/80 hover:text-primary transition-colors duration-200">
+            Concours
+          </Link>
+          <Link href="/catalog?category=formation" className="font-body-md text-body-md text-on-surface-variant dark:text-on-surface-variant/80 hover:text-primary transition-colors duration-200">
+            Formations
+          </Link>
+          <Link href="/catalog?category=ressources" className="font-body-md text-body-md text-on-surface-variant dark:text-on-surface-variant/80 hover:text-primary transition-colors duration-200">
+            E-books
+          </Link>
+          <Link href="/about" className="font-body-md text-body-md text-on-surface-variant dark:text-on-surface-variant/80 hover:text-primary transition-colors duration-200">
+            À Propos
+          </Link>
+          <Link href="/contact" className="font-body-md text-body-md text-on-surface-variant dark:text-on-surface-variant/80 hover:text-primary transition-colors duration-200">
+            Contact
+          </Link>
+        </nav>
 
-          {/* Cart & Parrainage & Auth */}
-          <div className="flex items-center gap-6">
+        {/* Actions */}
+        <div className="flex items-center gap-sm">
+          <div className="hidden md:flex items-center gap-2">
+            <button aria-label="search" className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-variant text-on-surface-variant hover:text-primary transition-colors">
+              <span className="material-symbols-outlined">search</span>
+            </button>
             <CartBadge />
-            
-            <div className="flex items-center gap-3">
-              <Link href="#" className="hidden sm:flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white px-5 py-2.5 rounded-full font-bold text-sm transition-colors shadow-md">
-                <Gift size={16} /> Parrainage
-              </Link>
-              
-              {user ? (
-                <UserMenu user={user} role={role} />
-              ) : (
-                <Link href="/login" className="text-gray-400 hover:text-orange-500 transition-colors ml-2">
-                  <UserCircle size={32} strokeWidth={1.5} />
-                </Link>
-              )}
-            </div>
           </div>
+
+          {user ? (
+            <div className="ml-2">
+              <UserMenu user={user} role={role} />
+            </div>
+          ) : (
+            <>
+              <Link href="/login" className="hidden md:flex items-center justify-center px-6 py-2.5 font-label-md text-label-md text-primary hover:bg-surface-variant rounded-lg transition-colors">
+                Connexion
+              </Link>
+              <Link href="/login" className="items-center justify-center px-6 py-2.5 font-label-md text-label-md bg-primary text-on-primary rounded-lg hover:shadow-md hover:-translate-y-0.5 active:scale-95 transition-all hidden sm:flex">
+                S'inscrire
+              </Link>
+              {/* Mobile login icon */}
+              <Link href="/login" className="flex sm:hidden items-center justify-center p-sm text-primary hover:bg-surface-container rounded-full transition-colors duration-200">
+                <span className="material-symbols-outlined">account_circle</span>
+              </Link>
+            </>
+          )}
         </div>
       </div>
     </header>
