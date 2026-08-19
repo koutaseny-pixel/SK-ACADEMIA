@@ -52,8 +52,8 @@ export default function Checkout() {
     setError("");
 
     try {
-      // Call our secure server-side Bictorys initiation route
-      const response = await fetch("/api/payment/bictorys/initiate", {
+      // Call our secure server-side PayDunya initiation route
+      const response = await fetch("/api/payment/paydunya/initiate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ formData, items }),
@@ -192,15 +192,15 @@ export default function Checkout() {
                 Méthode de paiement
               </h2>
 
-              {/* Bictorys option */}
+              {/* PayDunya option */}
               <div className="flex items-start gap-4 p-5 rounded-2xl border-2 border-[#1b508f] bg-gradient-to-br from-blue-50 to-white">
                 <div className="w-12 h-12 bg-[#1b508f] rounded-xl flex items-center justify-center shrink-0">
                   <CreditCard size={24} className="text-white" />
                 </div>
                 <div className="flex-1">
-                  <p className="font-black text-gray-900 mb-0.5">Mobile Money & Carte (Bictorys)</p>
+                  <p className="font-black text-gray-900 mb-0.5">Mobile Money & Carte (PayDunya)</p>
                   <p className="text-sm text-gray-600 mb-3">
-                    Payez avec Orange Money, Wave, Free Money ou par Carte Bancaire via Bictorys.
+                    Payez avec Orange Money, Wave, Free Money ou par Carte Bancaire via PayDunya.
                   </p>
                   <div className="flex flex-wrap gap-3 mt-4 items-center">
                     <div className="h-8 bg-white rounded-md p-1 shadow-sm border border-gray-100 flex items-center justify-center">

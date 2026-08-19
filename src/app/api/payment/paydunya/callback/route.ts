@@ -3,24 +3,28 @@ import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   try {
-    const data = await req.json();
+    // PayDunya sends a POST request with the invoice data
+    const text = await req.text();
+    let data;
+    try {
+      data = JSON.parse(text);
+    } catch (e) {
+      // If not JSON, try parsing as URL encoded
+      const params = new URLSearchParams(text);
+      data = Object.fromEntries(params.entries());
+    }
 
-    console.log("Bictorys Webhook Received:", data);
+    console.log("PayDunya Webhook Received:", data);
 
-    // Récupération de la référence de la transaction (ID de commande côté SK Academia)
-    // Bictorys renvoie généralement les données de transaction dans un objet event ou transaction
-    const transactionId = data.merchantReference || data.transaction?.merchantReference || data.data?.merchantReference;
-    
-    // Vous pouvez vérifier le statut du webhook
-    // Par exemple: data.status === 'SUCCESS' ou data.event === 'charge.success'
-    const status = data.status || data.transaction?.status || data.data?.status;
+    const transactionId = data?.custom_data?.transaction_id || data?.invoice?.custom_data?.transaction_id || data?.custom_data?.transaction_id;
+    const status = data?.status || data?.invoice?.status;
 
     if (!transactionId) {
        console.log("Webhook ignoré: aucune référence de transaction trouvée.");
-       return new NextResponse("OK", { status: 200 }); // On répond 200 pour éviter que Bictorys ne renvoie la notification
+       return new NextResponse("OK", { status: 200 }); // On répond 200 pour éviter que PayDunya ne renvoie la notification
     }
 
-    if (status === "SUCCESS" || status === "COMPLETED" || status === "AUTHORIZED" || status === "CAPTURED") {
+    if (status === "completed") {
       console.log(`Payment SUCCESS for transaction: ${transactionId}`);
       
       // Mettre à jour la commande dans Supabase
@@ -32,7 +36,7 @@ export async function POST(req: Request) {
       //   .from('orders')
       //   .update({ 
       //     status: 'paid', 
-      //     payment_method: 'bictorys',
+      //     payment_method: 'paydunya',
       //   })
       //   .eq('id', transactionId);
 
@@ -44,7 +48,7 @@ export async function POST(req: Request) {
     return new NextResponse("OK", { status: 200 });
 
   } catch (error) {
-    console.error("Error in Bictorys Webhook:", error);
+    console.error("Error in PayDunya Webhook:", error);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
