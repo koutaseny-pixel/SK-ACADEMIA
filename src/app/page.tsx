@@ -242,6 +242,7 @@ export default async function Home() {
               </div>
             </ScrollReveal>
           </div>
+        </div>
       </section>
 
       {/* 4. Featured Products */}
