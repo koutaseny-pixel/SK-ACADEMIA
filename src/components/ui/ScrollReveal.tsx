@@ -40,7 +40,14 @@ export default function ScrollReveal({
         variants={getVariants()}
         initial="hidden"
         animate={isInView ? "visible" : "hidden"}
-        transition={{ duration: 0.6, delay: delay, ease: "easeOut" }}
+        transition={{ 
+          type: "spring", 
+          stiffness: 100, 
+          damping: 20, 
+          mass: 1,
+          bounce: 0.25,
+          delay: delay 
+        }}
       >
         {children}
       </motion.div>

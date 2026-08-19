@@ -252,21 +252,16 @@ export default async function Home() {
                 <h3 className="text-2xl font-black text-gray-900">Découvrez comment utiliser la plateforme de A à Z</h3>
               </div>
               
-              <div className="rounded-3xl overflow-hidden shadow-2xl relative aspect-video bg-gray-900 border-8 border-gray-100">
-                <iframe 
-                  width="100%" 
-                  height="100%" 
-                  src="https://www.youtube.com/embed/dQw4w9WgXcQ?rel=0&modestbranding=1" 
-                  title="Tutoriel complet SK Academia" 
-                  frameBorder="0" 
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                  allowFullScreen
-                  className="w-full h-full"
-                ></iframe>
+              <div className="rounded-3xl overflow-hidden shadow-2xl relative bg-gray-900 border-8 border-gray-100">
+                <img 
+                  src="/images/sk_academia_demo.webp" 
+                  alt="Tutoriel complet SK Academia"
+                  className="w-full h-auto object-cover"
+                />
                 
                 {/* Indication pour le client */}
-                <div className="absolute top-4 left-4 z-20 bg-black/70 backdrop-blur-md text-white text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-2">
-                  ℹ️ Vidéo en attente. À remplacer par votre vrai tutoriel.
+                <div className="absolute top-4 left-4 z-20 bg-green-600/90 backdrop-blur-md text-white text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-2">
+                  ✓ Démo Automatique
                 </div>
               </div>
             </div>
