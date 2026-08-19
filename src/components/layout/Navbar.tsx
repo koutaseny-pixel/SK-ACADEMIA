@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import CartBadge from "@/components/ui/CartBadge";
 import { GraduationCap, Gift, UserCircle } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
@@ -18,15 +19,15 @@ export default async function Navbar() {
           <div className="flex items-center gap-2 md:gap-4">
             <MobileMenu />
             {/* Logo */}
-            <Link href="/" className="flex items-center gap-2">
-            <div className="text-[#1b508f]">
-              <GraduationCap size={32} strokeWidth={2.5} />
-            </div>
-            <div className="flex flex-col">
-              <span className="text-xl font-black tracking-tight text-[#1b508f] leading-none">SK ACADEMIA</span>
-              <span className="text-[10px] uppercase tracking-widest text-orange-500 mt-1 font-bold">Excellence Académique</span>
-            </div>
-          </Link>
+            <Link href="/" className="flex items-center gap-3">
+              <div className="relative h-12 w-12 rounded-lg overflow-hidden border border-gray-100 shadow-sm">
+                <Image src="/images/logo.jpg" alt="SK Academia Logo" fill className="object-cover" />
+              </div>
+              <div className="flex flex-col hidden sm:flex">
+                <span className="text-xl font-black tracking-tight text-[#1b508f] leading-none">SK ACADEMIA</span>
+                <span className="text-[10px] uppercase tracking-widest text-orange-500 mt-1 font-bold">Excellence Académique</span>
+              </div>
+            </Link>
           </div>
 
           {/* Navigation Links */}

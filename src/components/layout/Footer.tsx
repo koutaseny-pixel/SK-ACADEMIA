@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Mail, Phone, MapPin, MessageCircle } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 
@@ -21,7 +22,12 @@ export default async function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
           {/* Column 1 */}
           <div>
-            <h3 className="text-xl font-black mb-6 tracking-tight">SK ACADEMIA</h3>
+            <div className="flex items-center gap-3 mb-6">
+              <div className="relative h-10 w-10 rounded-md overflow-hidden bg-white/90">
+                <Image src="/images/logo.jpg" alt="SK Academia Logo" fill className="object-contain p-0.5" />
+              </div>
+              <h3 className="text-xl font-black tracking-tight">SK ACADEMIA</h3>
+            </div>
             <p className="text-blue-100 text-sm mb-6 leading-relaxed">
               Votre clé pour réussir les concours au Sénégal. Fascicules numériques, cours vidéo, et formations en informatique de qualité pour exceller.
             </p>
