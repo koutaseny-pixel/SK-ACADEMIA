@@ -52,8 +52,8 @@ export default function Checkout() {
     setError("");
 
     try {
-      // Call our secure server-side PayTech initiation route
-      const response = await fetch("/api/payment/paytech/initiate", {
+      // Call our secure server-side CinetPay initiation route
+      const response = await fetch("/api/payment/cinetpay/initiate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ formData, items }),
@@ -67,10 +67,10 @@ export default function Checkout() {
 
       const { redirect_url } = data;
 
-      // Clear cart before redirecting to PayTech
+      // Clear cart before redirecting to CinetPay
       clearCart();
 
-      // Redirect to PayTech payment page
+      // Redirect to CinetPay payment page
       window.location.href = redirect_url;
 
     } catch (err: any) {
@@ -184,7 +184,7 @@ export default function Checkout() {
               </div>
             </div>
 
-            {/* Payment method — PayTech */}
+            {/* Payment method — CinetPay */}
             <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 relative overflow-hidden">
               <div className="absolute top-0 left-0 w-1 h-full bg-[#1b508f]" />
               <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
@@ -192,15 +192,15 @@ export default function Checkout() {
                 Méthode de paiement
               </h2>
 
-              {/* PayTech option */}
+              {/* CinetPay option */}
               <div className="flex items-start gap-4 p-5 rounded-2xl border-2 border-[#1b508f] bg-gradient-to-br from-blue-50 to-white">
                 <div className="w-12 h-12 bg-[#1b508f] rounded-xl flex items-center justify-center shrink-0">
                   <CreditCard size={24} className="text-white" />
                 </div>
                 <div className="flex-1">
-                  <p className="font-black text-gray-900 mb-0.5">Mobile Money & Carte (PayTech)</p>
+                  <p className="font-black text-gray-900 mb-0.5">Mobile Money & Carte (CinetPay)</p>
                   <p className="text-sm text-gray-600 mb-3">
-                    Payez avec Orange Money, Wave, Free Money ou par Carte Bancaire sur la passerelle sécurisée PayTech.
+                    Payez avec Orange Money, Wave, Free Money ou par Carte Bancaire via CinetPay.
                   </p>
                   <div className="flex flex-wrap gap-3 mt-4 items-center">
                     <div className="h-8 bg-white rounded-md p-1 shadow-sm border border-gray-100 flex items-center justify-center">
