@@ -34,6 +34,10 @@ export default async function Navbar() {
             <Link href="/" className="text-sm font-bold text-orange-500 hover:text-orange-600 transition-colors border-b-2 border-orange-500 pb-1">
               Accueil
             </Link>
+            <Link href="/calendrier" className="text-sm font-bold text-gray-600 hover:text-orange-500 transition-colors relative flex items-center gap-1">
+              <span className="absolute -top-3 -right-3 bg-red-500 text-white text-[10px] font-black px-1.5 py-0.5 rounded-full animate-pulse">NOUVEAU</span>
+              Calendrier
+            </Link>
             <Link href="/catalog" className="text-sm font-bold text-gray-600 hover:text-orange-500 transition-colors">
               Boutique
             </Link>
