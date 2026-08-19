@@ -9,6 +9,7 @@ interface ScrollRevealProps {
   className?: string;
   delay?: number;
   direction?: "up" | "down" | "left" | "right";
+  index?: number; // New prop for staggered animations
 }
 
 export default function ScrollReveal({ 
@@ -16,9 +17,11 @@ export default function ScrollReveal({
   width = "100%", 
   className = "", 
   delay = 0,
-  direction = "up"
+  direction = "up",
+  index = 0
 }: ScrollRevealProps) {
   const ref = useRef(null);
+  const effectiveDelay = delay + (index * 0.15); // CinetPay style staggered delay
   const isInView = useInView(ref, { once: true, margin: "-10% 0px" });
 
   const getVariants = () => {
@@ -46,7 +49,7 @@ export default function ScrollReveal({
           damping: 20, 
           mass: 1,
           bounce: 0.25,
-          delay: delay 
+          delay: effectiveDelay 
         }}
       >
         {children}

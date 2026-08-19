@@ -44,8 +44,9 @@ export default async function Home() {
 
               <ScrollReveal direction="up" delay={0.4}>
                 <div className="flex flex-wrap gap-4">
-                  <Link href="/catalog" className="inline-flex items-center justify-center bg-[#00853f] hover:bg-[#006e33] text-white font-bold py-4 px-8 rounded-full transition-colors text-lg shadow-xl shadow-[#00853f]/20">
-                    Découvrir nos produits
+                  <Link href="/catalog" className="relative overflow-hidden group inline-flex items-center justify-center bg-[#00853f] hover:bg-[#006e33] text-white font-bold py-4 px-8 rounded-full transition-all duration-300 text-lg shadow-xl hover:shadow-[#00853f]/40 hover:-translate-y-1">
+                    <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></div>
+                    <span className="relative z-10">Découvrir nos produits</span>
                   </Link>
                   <div className="flex items-center gap-3 text-sm font-bold text-gray-600 px-4">
                     <ShieldCheck size={20} className="text-[#00853f]" /> Paiement 100% Sécurisé
@@ -161,8 +162,8 @@ export default async function Home() {
           </ScrollReveal>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            <ScrollReveal direction="up" delay={0.1}>
-              <Link href="/catalog?category=prepa" className="group bg-white rounded-3xl p-8 text-center transition-all duration-300 hover:shadow-xl hover:-translate-y-2 border border-gray-100 flex flex-col items-center h-full">
+            <ScrollReveal direction="up" delay={0.1} index={0}>
+              <Link href="/catalog?category=prepa" className="group bg-white rounded-3xl p-8 text-center transition-all duration-500 ease-out hover:shadow-2xl hover:-translate-y-3 border border-gray-100 flex flex-col items-center h-full">
                 <div className="w-20 h-20 mb-6 bg-[#00853f]/10 rounded-2xl flex items-center justify-center text-[#00853f] group-hover:bg-[#00853f] group-hover:text-white transition-colors">
                   <Award size={40} strokeWidth={2} />
                 </div>
@@ -173,8 +174,8 @@ export default async function Home() {
               </Link>
             </ScrollReveal>
 
-            <ScrollReveal direction="up" delay={0.2}>
-              <Link href="/catalog?category=formation" className="group bg-white rounded-3xl p-8 text-center transition-all duration-300 hover:shadow-xl hover:-translate-y-2 border border-gray-100 flex flex-col items-center h-full">
+            <ScrollReveal direction="up" delay={0.1} index={1}>
+              <Link href="/catalog?category=formation" className="group bg-white rounded-3xl p-8 text-center transition-all duration-500 ease-out hover:shadow-2xl hover:-translate-y-3 border border-gray-100 flex flex-col items-center h-full">
                 <div className="w-20 h-20 mb-6 bg-[#fdef42]/20 rounded-2xl flex items-center justify-center text-yellow-600 group-hover:bg-yellow-400 group-hover:text-gray-900 transition-colors">
                   <MonitorPlay size={40} strokeWidth={2} />
                 </div>
@@ -185,8 +186,8 @@ export default async function Home() {
               </Link>
             </ScrollReveal>
 
-            <ScrollReveal direction="up" delay={0.3}>
-              <Link href="/catalog?category=ressources" className="group bg-white rounded-3xl p-8 text-center transition-all duration-300 hover:shadow-xl hover:-translate-y-2 border border-gray-100 flex flex-col items-center h-full">
+            <ScrollReveal direction="up" delay={0.1} index={2}>
+              <Link href="/catalog?category=ressources" className="group bg-white rounded-3xl p-8 text-center transition-all duration-500 ease-out hover:shadow-2xl hover:-translate-y-3 border border-gray-100 flex flex-col items-center h-full">
                 <div className="w-20 h-20 mb-6 bg-[#e31b23]/10 rounded-2xl flex items-center justify-center text-[#e31b23] group-hover:bg-[#e31b23] group-hover:text-white transition-colors">
                   <BookDown size={40} strokeWidth={2} />
                 </div>
@@ -215,8 +216,8 @@ export default async function Home() {
             <div className="hidden md:block absolute top-10 left-[15%] right-[15%] h-1 bg-gray-100 z-0"></div>
             
             {/* Step 1 */}
-            <ScrollReveal direction="up" delay={0.1}>
-              <div className="relative z-10 flex flex-col items-center text-center">
+            <ScrollReveal direction="up" delay={0.1} index={0}>
+              <div className="relative z-10 flex flex-col items-center text-center group cursor-pointer transition-transform duration-500 hover:-translate-y-2">
                 <div className="w-20 h-20 bg-white border-4 border-gray-100 rounded-full flex items-center justify-center text-3xl font-black text-gray-300 mb-6 shadow-sm">1</div>
                 <h3 className="text-lg font-bold text-gray-900 mb-2">Choisissez vos fascicules</h3>
                 <p className="text-gray-500 text-sm font-medium">Parcourez notre catalogue et ajoutez les documents de votre choix à votre panier.</p>
@@ -224,8 +225,8 @@ export default async function Home() {
             </ScrollReveal>
 
             {/* Step 2 */}
-            <ScrollReveal direction="up" delay={0.2}>
-              <div className="relative z-10 flex flex-col items-center text-center">
+            <ScrollReveal direction="up" delay={0.1} index={1}>
+              <div className="relative z-10 flex flex-col items-center text-center group cursor-pointer transition-transform duration-500 hover:-translate-y-2">
                 <div className="w-20 h-20 bg-white border-4 border-yellow-400 rounded-full flex items-center justify-center text-3xl font-black text-yellow-500 mb-6 shadow-md">2</div>
                 <h3 className="text-lg font-bold text-gray-900 mb-2">Payez en toute sécurité</h3>
                 <p className="text-gray-500 text-sm font-medium">Validez votre commande via Orange Money, Wave ou Carte Bancaire en quelques clics.</p>
@@ -233,8 +234,8 @@ export default async function Home() {
             </ScrollReveal>
 
             {/* Step 3 */}
-            <ScrollReveal direction="up" delay={0.3}>
-              <div className="relative z-10 flex flex-col items-center text-center">
+            <ScrollReveal direction="up" delay={0.1} index={2}>
+              <div className="relative z-10 flex flex-col items-center text-center group cursor-pointer transition-transform duration-500 hover:-translate-y-2">
                 <div className="w-20 h-20 bg-[#00853f] border-4 border-white shadow-xl rounded-full flex items-center justify-center text-3xl font-black text-white mb-6">3</div>
                 <h3 className="text-lg font-bold text-gray-900 mb-2">Téléchargez instantanément</h3>
                 <p className="text-gray-500 text-sm font-medium">Vos documents sont immédiatement disponibles dans votre espace client (PDF/Vidéos).</p>
@@ -414,8 +415,9 @@ export default async function Home() {
               <p className="text-xl text-gray-600 mb-10 max-w-2xl mx-auto font-medium">
                 Rejoignez des milliers d'étudiants qui font confiance à SK Academia pour leur réussite. N'attendez plus.
               </p>
-              <Link href="/catalog" className="inline-block bg-[#e31b23] hover:bg-red-700 text-white font-bold py-4 px-10 rounded-full transition-colors shadow-lg text-lg w-full text-center sm:w-auto">
-                COMMENCER MA PRÉPARATION
+              <Link href="/catalog" className="relative overflow-hidden group inline-block bg-[#e31b23] hover:bg-red-700 text-white font-bold py-4 px-10 rounded-full transition-all duration-300 shadow-xl hover:shadow-red-500/40 hover:-translate-y-1 text-lg w-full text-center sm:w-auto">
+                <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-500 ease-in-out"></div>
+                <span className="relative z-10">COMMENCER MA PRÉPARATION</span>
               </Link>
             </div>
           </div>
