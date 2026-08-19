@@ -241,6 +241,36 @@ export default async function Home() {
               </div>
             </ScrollReveal>
           </div>
+
+          {/* Vidéo Tutoriel */}
+          <ScrollReveal direction="up" delay={0.4}>
+            <div className="max-w-4xl mx-auto mt-20 relative">
+              <div className="text-center mb-8">
+                <div className="inline-flex items-center gap-2 bg-blue-50 text-[#1b508f] font-bold px-4 py-2 rounded-full text-sm mb-3">
+                  <MonitorPlay size={16} /> Guide Vidéo
+                </div>
+                <h3 className="text-2xl font-black text-gray-900">Découvrez comment utiliser la plateforme de A à Z</h3>
+              </div>
+              
+              <div className="rounded-3xl overflow-hidden shadow-2xl relative aspect-video bg-gray-900 border-8 border-gray-100">
+                <iframe 
+                  width="100%" 
+                  height="100%" 
+                  src="https://www.youtube.com/embed/dQw4w9WgXcQ?rel=0&modestbranding=1" 
+                  title="Tutoriel complet SK Academia" 
+                  frameBorder="0" 
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                  allowFullScreen
+                  className="w-full h-full"
+                ></iframe>
+                
+                {/* Indication pour le client */}
+                <div className="absolute top-4 left-4 z-20 bg-black/70 backdrop-blur-md text-white text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-2">
+                  ℹ️ Vidéo en attente. À remplacer par votre vrai tutoriel.
+                </div>
+              </div>
+            </div>
+          </ScrollReveal>
         </div>
       </section>
 
