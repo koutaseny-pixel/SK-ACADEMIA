@@ -6,14 +6,14 @@ import { useCartStore } from "@/store/cart";
 import { useEffect, useState } from "react";
 
 export default function CartBadge() {
-  const getItemCount = useCartStore((state) => state.getItemCount);
+  const items = useCartStore((state) => state.items);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  const count = mounted ? getItemCount() : 0;
+  const count = mounted ? items.reduce((sum, item) => sum + item.quantity, 0) : 0;
 
   return (
     <Link href="/cart" className="flex items-center gap-2 hover:text-accent transition-colors relative">

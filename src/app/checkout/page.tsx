@@ -199,25 +199,9 @@ export default function Checkout() {
                 </div>
                 <div className="flex-1">
                   <p className="font-black text-gray-900 mb-0.5">Mobile Money & Carte (PayDunya)</p>
-                  <p className="text-sm text-gray-600 mb-3">
-                    Payez avec Orange Money, Wave, Free Money ou par Carte Bancaire via PayDunya.
+                  <p className="text-sm text-gray-600">
+                    Vous allez être redirigé vers l'interface de paiement sécurisée PayDunya pour finaliser votre commande avec Mobile Money ou Carte Bancaire.
                   </p>
-                  <div className="flex flex-wrap gap-3 mt-4 items-center">
-                    <div className="h-8 bg-white rounded-md p-1 shadow-sm border border-gray-100 flex items-center justify-center">
-                      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Orange_logo.svg/1024px-Orange_logo.svg.png" alt="Orange Money" className="h-6 w-auto object-contain" />
-                      <span className="text-xs font-bold text-orange-500 ml-1">Money</span>
-                    </div>
-                    <div className="h-8 bg-[#1dc0ed] rounded-md p-1 px-2 shadow-sm border border-gray-100 flex items-center justify-center">
-                      <span className="text-white font-black text-sm tracking-tighter">wave</span>
-                    </div>
-                    <div className="h-8 bg-white rounded-md p-1 px-2 shadow-sm border border-gray-100 flex items-center justify-center">
-                      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Logo_Free_S%C3%A9n%C3%A9gal.svg/512px-Logo_Free_S%C3%A9n%C3%A9gal.svg.png" alt="Free Money" className="h-4 w-auto object-contain" />
-                    </div>
-                    <div className="h-8 bg-white rounded-md p-1 px-2 shadow-sm border border-gray-100 flex items-center justify-center gap-1">
-                      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/512px-Visa_Inc._logo.svg.png" alt="Visa" className="h-4 w-auto object-contain" />
-                      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/512px-Mastercard-logo.svg.png" alt="Mastercard" className="h-4 w-auto object-contain ml-2" />
-                    </div>
-                  </div>
                 </div>
               </div>
 
