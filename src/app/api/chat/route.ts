@@ -1,5 +1,5 @@
 import { google } from "@ai-sdk/google";
-import { streamText, Message } from "ai";
+import { streamText } from "ai";
 
 export async function POST(req: Request) {
   try {
@@ -16,7 +16,7 @@ Sois toujours poli, encourageant, professionnel et chaleureux. Tes réponses doi
       system: systemPrompt,
     });
 
-    return result.toDataStreamResponse();
+    return result.toTextStreamResponse();
   } catch (error) {
     console.error("Chat API Error:", error);
     return new Response("Internal Server Error", { status: 500 });

@@ -1,16 +1,55 @@
 "use client";
 
-import { useChat } from "ai/react";
+
 import { useState, useRef, useEffect } from "react";
-import { MessageCircle, X, Send, User, Bot, Loader2, Sparkles } from "lucide-react";
+import { MessageCircle, X, Send, Bot, Loader2, Sparkles } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 
 export default function ChatBot() {
   const [isOpen, setIsOpen] = useState(false);
-  const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat({
-    api: "/api/chat",
-  });
+  const [input, setInput] = useState("");
+  const [messages, setMessages] = useState<Array<{id: string, role: string, content: string}>>([]);
+  const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!input.trim() || isLoading) return;
+    const text = input;
+    setInput("");
+    
+    const userMessage = { id: Date.now().toString(), role: "user", content: text };
+    const newMessages = [...messages, userMessage];
+    setMessages(newMessages);
+    setIsLoading(true);
+
+    try {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ messages: newMessages }),
+      });
+
+      if (!response.body) throw new Error("No response body");
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder("utf-8");
+      let botMessage = { id: (Date.now() + 1).toString(), role: "assistant", content: "" };
+      setMessages((prev) => [...prev, botMessage]);
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        const chunk = decoder.decode(value, { stream: true });
+        botMessage.content += chunk;
+        setMessages((prev) => [...prev.slice(0, -1), { ...botMessage }]);
+      }
+    } catch (error) {
+      console.error("Chat error:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -60,7 +99,7 @@ export default function ChatBot() {
                       <Sparkles size={32} />
                     </div>
                     <p className="font-medium">Bonjour ! Je suis Seny.</p>
-                    <p className="text-sm mt-1">Comment puis-je vous aider avec vos préparations aux concours ou nos fascicules aujourd'hui ?</p>
+                    <p className="text-sm mt-1">Comment puis-je vous aider avec vos préparations aux concours ou nos fascicules aujourd&apos;hui ?</p>
                   </div>
                 )}
                 {messages.map((message) => (
@@ -110,7 +149,7 @@ export default function ChatBot() {
                   <input
                     type="text"
                     value={input}
-                    onChange={handleInputChange}
+                    onChange={(e) => setInput(e.target.value)}
                     placeholder="Posez votre question..."
                     className="flex-1 bg-transparent py-2 outline-none text-sm text-gray-900 placeholder:text-gray-400"
                     disabled={isLoading}
