@@ -1,9 +1,9 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import N8nChatWidget from "@/components/layout/N8nChatWidget";
+import ChatBot from "@/components/layout/ChatBot";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -26,7 +26,7 @@ export default function RootLayout({
         <Navbar />
         <main className="flex-1 flex flex-col">{children}</main>
         <Footer />
-        <N8nChatWidget />
+        <ChatBot />
       </body>
     </html>
   );
